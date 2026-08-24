@@ -1,0 +1,21 @@
+{
+  "name": "Rates & Calculators Hub - ದೈನಂದಿನ ದರಗಳು ಮತ್ತು ಕ್ಯಾಲ್ಕುಲೇಟರ್‌ಗಳು",
+  "short_name": "Rates & Calcs",
+  "description": "Live Gold, Silver, Fuel, Krushi & Grocery Rates with Instant Financial Calculators",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f59e0b",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
