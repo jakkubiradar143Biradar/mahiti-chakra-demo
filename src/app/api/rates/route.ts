@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { defaultRatesData } from '@/lib/ratesStore';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
-    // Return live rates JSON
     return NextResponse.json(defaultRatesData, {
       headers: {
         'Cache-Control': 'no-store, max-age=0',
