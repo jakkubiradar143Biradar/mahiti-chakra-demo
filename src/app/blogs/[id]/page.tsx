@@ -8,6 +8,8 @@ import { getStoredBlogs } from '@/lib/ratesStore';
 import { BlogPost } from '@/lib/types';
 import { ArrowLeft, Calendar, User, Share2, Coins } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default function SingleBlogPage() {
   const params = useParams();
   const { t, lang } = useLanguage();
