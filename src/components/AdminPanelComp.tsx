@@ -61,7 +61,7 @@ export const AdminPanelComp: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode === adminSettings.passcode || (adminSettings.passcode === '2477' && passcode === '2477') || passcode === '1234') {
+    if (passcode.trim() === adminSettings.passcode.trim()) {
       setIsLoggedIn(true);
       setErrorMsg('');
     } else {
