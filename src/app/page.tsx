@@ -9,7 +9,7 @@ import {
   Search, Star, ArrowRight, ShoppingCart, FileText, Coins,
   GraduationCap, Building2, Sparkles, Flame, Calendar, Calculator,
   HeartPulse, CalendarDays, Gauge, Zap, Trophy, ShieldCheck, Mail,
-  CheckCircle2, Smartphone, Award, Grid, Lock, CheckCircle
+  CheckCircle2, Smartphone, Award, Grid, Lock, CheckCircle, X, ExternalLink
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -20,6 +20,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribedMsg, setSubscribedMsg] = useState('');
+  const [activeEmbedApp, setActiveEmbedApp] = useState<AppItem | null>(null);
 
   useEffect(() => {
     setApps(getStoredAppItems());
@@ -61,6 +62,51 @@ export default function HomePage() {
 
   return (
     <div className="space-y-6 max-w-full overflow-x-hidden select-none">
+
+      {/* EMBEDDED APP MODAL DRAWER */}
+      {activeEmbedApp && (
+        <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-md p-2 sm:p-6 flex items-center justify-center animate-fadeIn">
+          <div className="bg-white text-slate-900 w-full max-w-5xl h-[90vh] rounded-3xl p-4 sm:p-6 flex flex-col justify-between shadow-2xl relative border border-slate-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-black bg-amber-100 text-amber-900 px-3 py-1 rounded-full">
+                  🔗 Embed Web App
+                </span>
+                <h3 className="text-base font-black text-slate-950">
+                  {lang === 'kn' ? activeEmbedApp.titleKn : activeEmbedApp.titleEn}
+                </h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={activeEmbedApp.embedLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span className="hidden sm:inline">Open External</span>
+                </a>
+                <button
+                  onClick={() => setActiveEmbedApp(null)}
+                  className="p-2 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 w-full my-3 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50">
+              <iframe
+                src={activeEmbedApp.embedLink}
+                className="w-full h-full border-0"
+                title={activeEmbedApp.titleEn}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* HERO BANNER BOX (ULTRA-PREMIUM APPLE/STRIPE STYLE) */}
       <div className="relative overflow-hidden bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-amber-500/10 rounded-3xl border border-amber-500/30 p-5 sm:p-8 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6 max-w-full">
@@ -183,7 +229,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 2-COLUMN MOBILE APP CARDS GRID (EXACT MATCH WITH USER IMAGE & 100% RESPONSIVE) */}
+      {/* 2-COLUMN MOBILE APP CARDS GRID */}
       <div className="space-y-3" id="all-apps">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-black text-slate-950 flex items-center gap-2">
@@ -229,13 +275,23 @@ export default function HomePage() {
                   <span>Free</span>
                 </span>
 
-                <Link
-                  href={app.href}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-[11px] shadow-xs transition-all active:scale-95 shrink-0"
-                >
-                  <span>{lang === 'kn' ? 'ಪ್ರಾರಂಭಿಸಿ' : 'Launch'}</span>
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
+                {app.embedLink ? (
+                  <button
+                    onClick={() => setActiveEmbedApp(app)}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] shadow-xs transition-all active:scale-95 shrink-0"
+                  >
+                    <span>{lang === 'kn' ? 'ಓಪನ್ 🔗' : 'Embed Open'}</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                ) : (
+                  <Link
+                    href={app.href}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-[11px] shadow-xs transition-all active:scale-95 shrink-0"
+                  >
+                    <span>{lang === 'kn' ? 'ಪ್ರಾರಂಭಿಸಿ' : 'Launch'}</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                )}
               </div>
             </div>
           ))}

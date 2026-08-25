@@ -64,6 +64,7 @@ export interface AppItem {
   userCountKn: string;
   userCountEn: string;
   href: string;
+  embedLink?: string;
   bgColor: string;
   iconColor: string;
   isPopular?: boolean;

@@ -140,6 +140,7 @@ export const AdminPanelComp: React.FC = () => {
       userCountKn: newApp.userCountKn || '10K+',
       userCountEn: newApp.userCountEn || '10K+',
       href: newApp.href || '/',
+      embedLink: newApp.embedLink || '',
       bgColor: newApp.bgColor || 'bg-amber-500 text-white',
       iconColor: newApp.iconColor || 'text-amber-500',
     };
@@ -431,6 +432,17 @@ export const AdminPanelComp: React.FC = () => {
                   value={newApp.rating}
                   onChange={(e) => setNewApp({ ...newApp, rating: Number(e.target.value) })}
                   className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
+                />
+              </div>
+
+              <div className="col-span-1 sm:col-span-2">
+                <label className="block font-black text-amber-900 mb-1">🔗 Embed Link / Web App iFrame URL (ಆಪ್‌ ಎಂಬೆಡ್ ಲಿಂಕ್)</label>
+                <input
+                  type="text"
+                  placeholder="https://example.com/widget or /emi-calculator (ಉದಾ: https://...)"
+                  value={newApp.embedLink || ''}
+                  onChange={(e) => setNewApp({ ...newApp, embedLink: e.target.value })}
+                  className="w-full bg-amber-50/50 border-2 border-amber-300 rounded-xl p-3 font-bold text-slate-900"
                 />
               </div>
             </div>
