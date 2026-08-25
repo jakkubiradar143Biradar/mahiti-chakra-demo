@@ -52,6 +52,47 @@ export interface BlogPost {
   published: boolean;
 }
 
+export interface AppItem {
+  id: string;
+  titleKn: string;
+  titleEn: string;
+  descKn: string;
+  descEn: string;
+  iconName: string;
+  category: string;
+  rating: number;
+  userCountKn: string;
+  userCountEn: string;
+  href: string;
+  bgColor: string;
+  iconColor: string;
+  isPopular?: boolean;
+  isNew?: boolean;
+  isHot?: boolean;
+}
+
+export interface CategoryCard {
+  id: string;
+  titleKn: string;
+  titleEn: string;
+  appCountKn: string;
+  appCountEn: string;
+  bgColor: string;
+  iconColor: string;
+  iconName: string;
+  href: string;
+}
+
+export interface HeroConfig {
+  badgeKn: string;
+  badgeEn: string;
+  headlineKn: string;
+  headlineEn: string;
+  subheadlineKn: string;
+  subheadlineEn: string;
+  quickTags: { kn: string; en: string; href: string }[];
+}
+
 export interface RatesData {
   lastUpdated: string;
   isAutoMode: boolean;
@@ -93,4 +134,10 @@ export interface AdminSettings {
   goldApiKey?: string;
   telegramGroupUrl?: string;
   whatsappGroupUrl?: string;
+  youtubeGroupUrl?: string;
+  facebookGroupUrl?: string;
+  instagramGroupUrl?: string;
+  heroConfig?: HeroConfig;
+  customAppCards?: AppItem[];
+  customCategories?: CategoryCard[];
 }
