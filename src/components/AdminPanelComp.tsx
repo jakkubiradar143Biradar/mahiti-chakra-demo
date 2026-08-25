@@ -8,7 +8,7 @@ import { getStoredAppItems, saveStoredAppItems } from '@/lib/appsStore';
 import {
   ShieldCheck, Lock, Save, AlertCircle, CheckCircle, Sliders, Megaphone,
   Newspaper, Plus, Trash2, Key, Users, Send, Bell, Eye, EyeOff, LogOut, UserCheck,
-  Smartphone, Layout, Link2, Star
+  Smartphone, Layout, Link2, Star, Code, Copy, Check
 } from 'lucide-react';
 
 export const AdminPanelComp: React.FC = () => {
@@ -19,6 +19,7 @@ export const AdminPanelComp: React.FC = () => {
   const [inputPasscode, setInputPasscode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [copiedAppId, setCopiedAppId] = useState('');
   const [showPasscodeInLogin, setShowPasscodeInLogin] = useState(false);
   const [showPasscodeInSettings, setShowPasscodeInSettings] = useState(false);
 
@@ -232,7 +233,7 @@ export const AdminPanelComp: React.FC = () => {
           {/* Username Field */}
           <div className="space-y-1">
             <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್ (Username)' : 'Admin Username'}
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್ (USERNAME)' : 'Admin Username'}
             </label>
             <div className="relative">
               <input
@@ -250,7 +251,7 @@ export const AdminPanelComp: React.FC = () => {
           {/* Password Field */}
           <div className="space-y-1">
             <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್ (Password)' : 'Admin Password'}
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್ (PASSWORD)' : 'Admin Password'}
             </label>
             <div className="relative">
               <input
@@ -282,7 +283,7 @@ export const AdminPanelComp: React.FC = () => {
             type="submit"
             className="w-full py-4 rounded-2xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-sm shadow-xl transition-all active:scale-95 border border-amber-500/30"
           >
-            {t.loginBtn}
+            {lang === 'kn' ? 'ಅಡ್ಮಿನ್‌? ಲಾಗಿನ್ ಮಾಡಿ' : 'Admin Login'}
           </button>
         </form>
 
@@ -294,7 +295,7 @@ export const AdminPanelComp: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-10 space-y-8 max-w-5xl mx-auto text-slate-900">
+    <div className="bg-white rounded-3xl border border-slate-200 shadow-xl p-6 sm:p-10 space-y-8 max-w-5xl mx-auto text-slate-900 select-none">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div className="flex items-center gap-3">
@@ -360,132 +361,64 @@ export const AdminPanelComp: React.FC = () => {
         </div>
       </div>
 
-      {/* 📱 1. MASTER APP & LAYOUT CONTROL MANAGER SECTION */}
-      <div className="bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-amber-500/10 p-6 sm:p-8 rounded-3xl border-2 border-amber-400/50 space-y-6">
+      {/* ⚡ 1-CLICK HTML iFRAME EMBED CODE GENERATOR GATEWAY */}
+      <div className="bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-amber-500/10 p-6 sm:p-8 rounded-3xl border-2 border-amber-400/80 space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Smartphone className="w-6 h-6 text-amber-600" />
+            <Code className="w-6 h-6 text-amber-600" />
             <div>
               <h3 className="text-base font-black text-slate-950">
-                {lang === 'kn' ? '📱 App & layout Control Manager (ಆಪ್‌ಗಳ ಮಾಸ್ಟರ್ ಕಂಟ್ರೋಲ್)' : '📱 Master App & Layout Control Manager'}
+                {lang === 'kn' ? '⚡ 1-Click HTML iFrame Embed Code Generator (ಆಪ್‌ಗಳ ಎಂಬೆಡ್ ಕೋಡ್)' : '⚡ 1-Click HTML iFrame Embed Code Generator'}
               </h3>
               <p className="text-xs text-slate-600 font-bold">
-                {lang === 'kn' ? 'ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಕಾಣಿಸುವ ಪ್ರತಿಯೊಂದು App ಕಾರ್ಡ್, ಶೀರ್ಷಿಕೆ ಮತ್ತು ಲಿಂಕ್‌ಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಿ!' : 'Control every app card, headline & link rendered on the website!'}
+                {lang === 'kn' ? 'ನಿಮ್ಮ ಪ್ರತಿಯೊಂದು App ನ HTML ಎಂಬೆಡ್ ಕೋಡ್ ಪಡೆಯಿರಿ ಮತ್ತು ಬೇರೆ ಯಾವುದೇ ವೆಬ್‌ಸೈಟ್/WordPress ನಲ್ಲಿ ಸೇರಿಸಿ!' : 'Copy HTML iFrame code for any app & embed into external websites!'}
               </p>
             </div>
           </div>
-
-          <button
-            onClick={() => setShowAddAppModal(!showAddAppModal)}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-950 text-amber-400 font-black text-xs shadow-md"
-          >
-            <Plus className="w-4 h-4" />
-            <span>{lang === 'kn' ? 'ಹೊಸ App ಸೇರಿಸಿ' : 'Add New App'}</span>
-          </button>
         </div>
 
-        {/* Create App Form Modal */}
-        {showAddAppModal && (
-          <form onSubmit={handleCreateApp} className="bg-white border-2 border-amber-300 rounded-3xl p-6 space-y-4 text-xs shadow-lg">
-            <h4 className="font-black text-sm text-slate-950 border-b pb-2">➕ ಹೊಸ App ಸೇರಿಸಿ (Create New App Card)</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block font-bold text-slate-800 mb-1">App Title (ಕನ್ನಡ)</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="ಉದಾ: ಸಾಲದ ಬಡ್ಡಿ ಲೆಕ್ಕಾಚಾರ..."
-                  value={newApp.titleKn}
-                  onChange={(e) => setNewApp({ ...newApp, titleKn: e.target.value })}
-                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
-                />
-              </div>
+        {/* Existing App Cards HTML Embed Code Generator List */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {appItems.map((app) => {
+            const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mahiti-chakra-portal.vercel.app';
+            const fullUrl = `${origin}${app.href}`;
+            const iframeCode = `<iframe src="${fullUrl}" width="100%" height="650" frameborder="0" style="border-radius:16px; border:1px solid #e2e8f0;" allowfullscreen></iframe>`;
 
-              <div>
-                <label className="block font-bold text-slate-800 mb-1">App Title (English)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Loan Interest Calc..."
-                  value={newApp.titleEn}
-                  onChange={(e) => setNewApp({ ...newApp, titleEn: e.target.value })}
-                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-800 mb-1">Target Href Link</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="/emi-calculator or /age-calculator"
-                  value={newApp.href}
-                  onChange={(e) => setNewApp({ ...newApp, href: e.target.value })}
-                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-800 mb-1">Rating (★)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={newApp.rating}
-                  onChange={(e) => setNewApp({ ...newApp, rating: Number(e.target.value) })}
-                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
-                />
-              </div>
-
-              <div className="col-span-1 sm:col-span-2">
-                <label className="block font-black text-amber-900 mb-1">🔗 Embed Link / Web App iFrame URL (ಆಪ್‌ ಎಂಬೆಡ್ ಲಿಂಕ್)</label>
-                <input
-                  type="text"
-                  placeholder="https://example.com/widget or /emi-calculator (ಉದಾ: https://...)"
-                  value={newApp.embedLink || ''}
-                  onChange={(e) => setNewApp({ ...newApp, embedLink: e.target.value })}
-                  className="w-full bg-amber-50/50 border-2 border-amber-300 rounded-xl p-3 font-bold text-slate-900"
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setShowAddAppModal(false)}
-                className="px-4 py-2 rounded-xl bg-slate-200 text-slate-800 font-bold"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-5 py-2 rounded-xl bg-amber-500 text-slate-950 font-black shadow"
-              >
-                Save & Publish App
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* Existing App Cards Management Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {appItems.map((app) => (
-            <div key={app.id} className="bg-white p-4 rounded-2xl border border-slate-200 flex items-center justify-between gap-3 shadow-2xs">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-black text-slate-950 text-xs">{lang === 'kn' ? app.titleKn : app.titleEn}</span>
-                  <span className="text-[9px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded">★ {app.rating}</span>
+            return (
+              <div key={app.id} className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                  <span className="font-black text-slate-950 text-xs sm:text-sm">{lang === 'kn' ? app.titleKn : app.titleEn}</span>
+                  <span className="text-[10px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded">★ {app.rating}</span>
                 </div>
-                <span className="text-[10px] text-slate-500 font-medium block">Link: {app.href}</span>
-              </div>
 
-              <button
-                onClick={() => handleDeleteApp(app.id)}
-                className="p-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors shrink-0"
-                title="Delete App"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          ))}
+                <div className="bg-slate-900 text-amber-300 p-2.5 rounded-xl font-mono text-[10px] overflow-x-auto select-all border border-slate-800">
+                  <code>{iframeCode}</code>
+                </div>
+
+                <div className="flex items-center justify-between gap-2 pt-1">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(iframeCode);
+                      setCopiedAppId(app.id);
+                      setTimeout(() => setCopiedAppId(''), 3000);
+                    }}
+                    className="flex-1 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-xs transition-all active:scale-95 flex items-center justify-center gap-1.5"
+                  >
+                    {copiedAppId === app.id ? <CheckCircle className="w-3.5 h-3.5" /> : <Code className="w-3.5 h-3.5" />}
+                    <span>{copiedAppId === app.id ? 'iFrame Code Copied! ✅' : '📋 Copy HTML iFrame Code'}</span>
+                  </button>
+
+                  <button
+                    onClick={() => handleDeleteApp(app.id)}
+                    className="p-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors shrink-0"
+                    title="Delete App"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
