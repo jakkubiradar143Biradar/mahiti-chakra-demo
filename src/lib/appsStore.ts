@@ -1,4 +1,4 @@
-import { AppItem, CategoryCard, HeroConfig } from './types';
+import { AppItem, CategoryCard, HeroConfig, SupporterCard, UserComment } from './types';
 
 export const defaultHeroConfig: HeroConfig = {
   badgeKn: '☀️ ಕರ್ನಾಟಕದ #1 ಡಿಜಿಟಲ್ ಸಹಾಯ & ಸೇವಾ ಪೋರ್ಟಲ್',
@@ -15,6 +15,55 @@ export const defaultHeroConfig: HeroConfig = {
     { kn: 'PDF to JPG', en: 'PDF to JPG', href: '/photo-resizer' },
   ],
 };
+
+export const defaultSupporters: SupporterCard[] = [
+  {
+    id: 'supporter-1',
+    name: 'Tech Kannada Official',
+    channelUrl: 'https://youtube.com',
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+    badgeText: 'YouTube Creator',
+  },
+  {
+    id: 'supporter-2',
+    name: 'Karnataka Digital Tips',
+    channelUrl: 'https://youtube.com',
+    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+    badgeText: 'Tech Supporter',
+  },
+  {
+    id: 'supporter-3',
+    name: 'Kannada Info Hub',
+    channelUrl: 'https://youtube.com',
+    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+    badgeText: 'Featured Creator',
+  },
+];
+
+export const defaultComments: UserComment[] = [
+  {
+    id: 'comment-1',
+    pageId: 'global',
+    userName: 'ಬಸವರಾಜ್ (ಮೈಸೂರು)',
+    userEmail: 'basava@gmail.com',
+    userRole: 'ವೀಕ್ಷಕರು',
+    commentText: 'ತುಂಬಾ ಉಪಯುಕ್ತವಾದ ವೆಬ್‌ಸೈಟ್! EMI ಲೆಕ್ಕಾಚಾರ ಹಾಗೂ ಇಂದಿನ ಚಿನ್ನದ ದರ ಲೈವ್ ಆಗಿ ನಿಖರವಾಗಿದೆ. ಧನ್ಯವಾದಗಳು ಸರ್!',
+    createdAt: '2026-08-25',
+    status: 'approved',
+    rating: 5,
+  },
+  {
+    id: 'comment-2',
+    pageId: 'global',
+    userName: 'ಪ್ರವೀಣ್ ಕುಮಾರ್ (ಬೆಂಗಳೂರು)',
+    userEmail: 'praveen@gmail.com',
+    userRole: 'ವೀಕ್ಷಕರು',
+    commentText: 'Photo Resizer ಟೂಲ್‌ನಿಂದ 20KB ಫೋಟೋ ಹಾಗೂ ಸಹಿ ಮಾಡಲು ತುಂಬಾ ಸಹಾಯವಾಯಿತು. ತುಂಬಾ ವೇಗವಾಗಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ!',
+    createdAt: '2026-08-25',
+    status: 'approved',
+    rating: 5,
+  },
+];
 
 export const defaultCategories: CategoryCard[] = [
   {
@@ -214,6 +263,134 @@ export const defaultAppItems: AppItem[] = [
     iconColor: 'text-amber-500',
     isPopular: true,
   },
+  {
+    id: 'app-gold',
+    titleKn: 'ಚಿನ್ನ & ಬೆಳ್ಳಿ ದರಗಳು',
+    titleEn: 'Live Gold & Silver Rates',
+    descKn: 'ಇಂದಿನ 24K / 22K ಚಿನ್ನದ ದರ ನೋಡಿ',
+    descEn: 'Live 24K and 22K Gold and Silver market prices',
+    iconName: 'Coins',
+    category: 'Daily Rates',
+    rating: 4.9,
+    userCountKn: '25K+',
+    userCountEn: '25K+',
+    href: '/gold-rates',
+    bgColor: 'bg-yellow-500 text-slate-950',
+    iconColor: 'text-yellow-500',
+    isPopular: false,
+  },
+  {
+    id: 'app-krushi',
+    titleKn: 'ಕೃಷಿ & APMC ಬೆಳೆ ದರ',
+    titleEn: 'Krushi & APMC Crop Prices',
+    descKn: 'ಅಡಿಕೆ, ತೆಂಗು ಹಾಗೂ ಧಾನ್ಯಗಳ ಬೆಲೆ',
+    descEn: 'Live Karnataka APMC market prices for crops & arecanut',
+    iconName: 'ShoppingCart',
+    category: 'Agriculture',
+    rating: 4.9,
+    userCountKn: '30K+',
+    userCountEn: '30K+',
+    href: '/krushi-rates',
+    bgColor: 'bg-emerald-600 text-white',
+    iconColor: 'text-emerald-600',
+    isPopular: false,
+  },
+  {
+    id: 'app-panchanga',
+    titleKn: 'ದೈನಂದಿನ ಪಂಚಾಂಗ',
+    titleEn: 'Daily Panchanga & Horoscope',
+    descKn: 'ಇಂದಿನ ತಿಥಿ, ನಕ್ಷತ್ರ ಹಾಗೂ ರಾಶಿ ಭವಿಷ್ಯ',
+    descEn: 'Daily Hindu Panchanga, tithi, nakshatra & horoscope',
+    iconName: 'Sparkles',
+    category: 'Utility',
+    rating: 4.8,
+    userCountKn: '18K+',
+    userCountEn: '18K+',
+    href: '/panchanga',
+    bgColor: 'bg-purple-600 text-white',
+    iconColor: 'text-purple-600',
+    isPopular: false,
+  },
+  {
+    id: 'app-tax',
+    titleKn: 'Tax & GST ಲೆಕ್ಕಾಚಾರ',
+    titleEn: 'Income Tax & GST Calculator',
+    descKn: 'ಆದಾಯ ತೆರಿಗೆ ಹಾಗೂ ಜಿಎಸ್‌ಟಿ ಲೆಕ್ಕ ಹಾಕಿ',
+    descEn: 'Calculate income tax slabs and GST amounts easily',
+    iconName: 'Calculator',
+    category: 'Finance',
+    rating: 4.7,
+    userCountKn: '11K+',
+    userCountEn: '11K+',
+    href: '/tax-calculator',
+    bgColor: 'bg-rose-500 text-white',
+    iconColor: 'text-rose-500',
+    isPopular: false,
+  },
+  {
+    id: 'app-sip',
+    titleKn: 'SIP ಲೆಕ್ಕಾಚಾರ',
+    titleEn: 'SIP Mutual Fund Calculator',
+    descKn: 'ಮ್ಯೂಚುಯಲ್ ಫಂಡ್ ಹೂಡಿಕೆಯ ರಿಟರ್ನ್ಸ್ ಲೆಕ್ಕ ಹಾಕಿ',
+    descEn: 'Calculate monthly SIP investment returns & wealth',
+    iconName: 'Coins',
+    category: 'Finance',
+    rating: 4.9,
+    userCountKn: '14K+',
+    userCountEn: '14K+',
+    href: '/sip-calculator',
+    bgColor: 'bg-blue-600 text-white',
+    iconColor: 'text-blue-600',
+    isPopular: false,
+  },
+  {
+    id: 'app-land',
+    titleKn: 'ಜಮೀನು ಅಳತೆ ಪರಿವರ್ತಕ',
+    titleEn: 'Land Unit Converter',
+    descKn: 'ಗುಂಟೆ, ಎಕರೆ, ಸ್ಕ್ವೇರ್ ಫೀಟ್ ಪರಿವರ್ತಿಸಿ',
+    descEn: 'Convert Gunta, Acre, Sqft & Cent land measurements',
+    iconName: 'Building2',
+    category: 'Utility',
+    rating: 4.8,
+    userCountKn: '16K+',
+    userCountEn: '16K+',
+    href: '/land-converter',
+    bgColor: 'bg-amber-600 text-white',
+    iconColor: 'text-amber-600',
+    isPopular: false,
+  },
+  {
+    id: 'app-fuel-trip',
+    titleKn: 'ಇಂಧನ ವೆಚ್ಚ ಲೆಕ್ಕಾಚಾರ',
+    titleEn: 'Fuel Trip Cost Calc',
+    descKn: 'ನಿಮ್ಮ ಪ್ರಯಾಣದ ಪೆಟ್ರೋಲ್ ವೆಚ್ಚ ಲೆಕ್ಕ ಹಾಕಿ',
+    descEn: 'Calculate exact petrol/diesel trip expenses',
+    iconName: 'Gauge',
+    category: 'Fuel',
+    rating: 4.7,
+    userCountKn: '9K+',
+    userCountEn: '9K+',
+    href: '/fuel-calculator',
+    bgColor: 'bg-sky-600 text-white',
+    iconColor: 'text-sky-600',
+    isPopular: false,
+  },
+  {
+    id: 'app-resizer',
+    titleKn: '20KB Photo Resizer',
+    titleEn: '20KB Passport Photo Resizer',
+    descKn: 'ಸರ್ಕಾರಿ ಅರ್ಜಿಗಳಿಗೆ ಫೋಟೋ 20KB ಮಾಡಿ',
+    descEn: 'Resize photo & signature to 20KB for govt applications',
+    iconName: 'FileText',
+    category: 'Document',
+    rating: 4.9,
+    userCountKn: '22K+',
+    userCountEn: '22K+',
+    href: '/photo-resizer',
+    bgColor: 'bg-teal-500 text-white',
+    iconColor: 'text-teal-500',
+    isPopular: false,
+  },
 ];
 
 export function getStoredAppItems(): AppItem[] {
@@ -232,5 +409,43 @@ export function getStoredAppItems(): AppItem[] {
 export function saveStoredAppItems(items: AppItem[]): void {
   if (typeof window !== 'undefined') {
     localStorage.setItem('app_items_data', JSON.stringify(items));
+  }
+}
+
+export function getStoredSupporters(): SupporterCard[] {
+  if (typeof window === 'undefined') return defaultSupporters;
+  const saved = localStorage.getItem('supporters_data');
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  return defaultSupporters;
+}
+
+export function saveStoredSupporters(items: SupporterCard[]): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('supporters_data', JSON.stringify(items));
+  }
+}
+
+export function getStoredComments(): UserComment[] {
+  if (typeof window === 'undefined') return defaultComments;
+  const saved = localStorage.getItem('user_comments_data');
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  return defaultComments;
+}
+
+export function saveStoredComments(items: UserComment[]): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('user_comments_data', JSON.stringify(items));
   }
 }

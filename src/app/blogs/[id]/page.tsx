@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/components/LanguageContext';
 import { getStoredBlogs } from '@/lib/ratesStore';
 import { BlogPost } from '@/lib/types';
+import { CommentSection } from '@/components/CommentSection';
 import { ArrowLeft, Calendar, User, Share2, Coins } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -97,16 +98,11 @@ export default function SingleBlogPage() {
             <Share2 className="w-4 h-4" />
             <span>{lang === 'kn' ? 'ಈ ಲೇಖನವನ್ನು ಶೇರ್ ಮಾಡಿ' : 'Share Article'}</span>
           </button>
-
-          <Link
-            href="/emi-calculator"
-            className="flex items-center gap-1 text-xs font-extrabold text-amber-600 hover:underline"
-          >
-            <Coins className="w-4 h-4" />
-            <span>Try Loan EMI Calculator</span>
-          </Link>
         </div>
       </article>
+
+      {/* 💬 PUBLIC COMMENT SECTION WITH FULL ADMIN APPROVAL ENGINE */}
+      <CommentSection pageId={post.id} />
     </div>
   );
 }

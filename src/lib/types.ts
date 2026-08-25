@@ -94,6 +94,26 @@ export interface HeroConfig {
   quickTags: { kn: string; en: string; href: string }[];
 }
 
+export interface SupporterCard {
+  id: string;
+  name: string;
+  channelUrl: string;
+  avatarUrl?: string;
+  badgeText?: string;
+}
+
+export interface UserComment {
+  id: string;
+  pageId: string;
+  userName: string;
+  userEmail?: string;
+  userRole?: string;
+  commentText: string;
+  createdAt: string;
+  status: 'pending' | 'approved' | 'disapproved';
+  rating?: number;
+}
+
 export interface RatesData {
   lastUpdated: string;
   isAutoMode: boolean;
@@ -141,4 +161,6 @@ export interface AdminSettings {
   heroConfig?: HeroConfig;
   customAppCards?: AppItem[];
   customCategories?: CategoryCard[];
+  supporters?: SupporterCard[];
+  comments?: UserComment[];
 }

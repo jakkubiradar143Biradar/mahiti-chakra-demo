@@ -2,13 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from './LanguageContext';
-import { AdminSettings, RatesData, BlogPost, AppItem } from '@/lib/types';
+import { AdminSettings, RatesData, BlogPost, AppItem, SupporterCard, UserComment } from '@/lib/types';
 import { defaultRatesData, defaultAdminSettings, getStoredBlogs, saveStoredBlogs } from '@/lib/ratesStore';
-import { getStoredAppItems, saveStoredAppItems } from '@/lib/appsStore';
+import {
+  getStoredAppItems, saveStoredAppItems,
+  getStoredSupporters, saveStoredSupporters,
+  getStoredComments, saveStoredComments
+} from '@/lib/appsStore';
 import {
   ShieldCheck, Lock, Save, AlertCircle, CheckCircle, Sliders, Megaphone,
   Newspaper, Plus, Trash2, Key, Users, Send, Bell, Eye, EyeOff, LogOut, UserCheck,
-  Smartphone, Layout, Link2, Star, Code, Copy, Check
+  Smartphone, Layout, Link2, Star, Code, Copy, Check, Heart, ExternalLink,
+  MessageSquare, Clock, ThumbsUp, ThumbsDown, Filter
 } from 'lucide-react';
 
 export const AdminPanelComp: React.FC = () => {
@@ -27,7 +32,11 @@ export const AdminPanelComp: React.FC = () => {
   const [adminSettings, setAdminSettings] = useState<AdminSettings>(defaultAdminSettings);
   const [ratesData, setRatesData] = useState<RatesData>(defaultRatesData);
 
-  // Dynamic Apps & Layout Control State
+  // Comments Moderation State
+  const [comments, setComments] = useState<UserComment[]>([]);
+  const [commentFilter, setCommentFilter] = useState<'pending' | 'approved' | 'disapproved' | 'all'>('pending');
+
+  // Dynamic Apps State
   const [appItems, setAppItems] = useState<AppItem[]>([]);
   const [showAddAppModal, setShowAddAppModal] = useState(false);
   const [newApp, setNewApp] = useState<Partial<AppItem>>({
@@ -43,6 +52,16 @@ export const AdminPanelComp: React.FC = () => {
     href: '/emi-calculator',
     bgColor: 'bg-amber-500 text-white',
     iconColor: 'text-amber-500',
+  });
+
+  // Supporters & Creator Wall State
+  const [supporters, setSupporters] = useState<SupporterCard[]>([]);
+  const [showAddSupporterModal, setShowAddSupporterModal] = useState(false);
+  const [newSupporter, setNewSupporter] = useState<Partial<SupporterCard>>({
+    name: '',
+    channelUrl: '',
+    avatarUrl: '',
+    badgeText: 'YouTube Creator',
   });
 
   // Blog Manager State
@@ -76,6 +95,8 @@ export const AdminPanelComp: React.FC = () => {
     }
     setBlogs(getStoredBlogs());
     setAppItems(getStoredAppItems());
+    setSupporters(getStoredSupporters());
+    setComments(getStoredComments());
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -115,12 +136,69 @@ export const AdminPanelComp: React.FC = () => {
     localStorage.setItem('admin_settings', JSON.stringify(adminSettings));
     saveStoredBlogs(blogs);
     saveStoredAppItems(appItems);
+    saveStoredSupporters(supporters);
+    saveStoredComments(comments);
     setSuccessMsg(
       lang === 'kn'
-        ? 'ಅಡ್ಮಿನ್ ಬದಲಾವಣೆಗಳು, ಲಾಗಿನ್ ವಿವರಗಳು ಹಾಗೂ Apps ಕಂಟ್ರೋಲ್ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಲಾಯಿತು!'
-        : 'Admin Settings, Login Details & Master App Control saved successfully!'
+        ? 'ಅಡ್ಮಿನ್ ಬದಲಾವಣೆಗಳು, ಕಾಮೆಂಟ್‌ಗಳ ಕಂಟ್ರೋಲ್ ಹಾಗೂ ಸಪೋರ್ಟರ್ಸ್ ಮಾಹಿತಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಲಾಯಿತು!'
+        : 'Admin Settings, Comments Moderation & Supporters saved successfully!'
     );
     setTimeout(() => setSuccessMsg(''), 4000);
+  };
+
+  // COMMENT MODERATION HANDLERS
+  const handleApproveComment = (id: string) => {
+    const updated = comments.map((c) => (c.id === id ? { ...c, status: 'approved' as const } : c));
+    setComments(updated);
+    saveStoredComments(updated);
+    setSuccessMsg(lang === 'kn' ? 'ಕಾಮೆಂಟ್ ಯಶಸ್ವಿಯಾಗಿ ಅನುಮೋದಿಸಲಾಗಿದೆ (Approved)!' : 'Comment approved successfully!');
+    setTimeout(() => setSuccessMsg(''), 3000);
+  };
+
+  const handleDisapproveComment = (id: string) => {
+    const updated = comments.map((c) => (c.id === id ? { ...c, status: 'disapproved' as const } : c));
+    setComments(updated);
+    saveStoredComments(updated);
+    setSuccessMsg(lang === 'kn' ? 'ಕಾಮೆಂಟ್ ತಿರಸ್ಕರಿಸಲಾಗಿದೆ (Disapproved)!' : 'Comment disapproved!');
+    setTimeout(() => setSuccessMsg(''), 3000);
+  };
+
+  const handleDeleteComment = (id: string) => {
+    if (confirm(lang === 'kn' ? 'ಈ ಕಾಮೆಂಟ್ ಅನ್ನು ಡಿಲೀಟ್ ಮಾಡಬೇಕೇ?' : 'Delete this comment?')) {
+      const filtered = comments.filter((c) => c.id !== id);
+      setComments(filtered);
+      saveStoredComments(filtered);
+    }
+  };
+
+  const handleCreateSupporter = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSupporter.name || !newSupporter.channelUrl) {
+      alert('Please enter Creator Name and Channel URL!');
+      return;
+    }
+    const created: SupporterCard = {
+      id: 'supporter-' + Date.now(),
+      name: newSupporter.name,
+      channelUrl: newSupporter.channelUrl,
+      avatarUrl: newSupporter.avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+      badgeText: newSupporter.badgeText || '⭐ Supporter',
+    };
+    const updated = [created, ...supporters];
+    setSupporters(updated);
+    saveStoredSupporters(updated);
+    setShowAddSupporterModal(false);
+    setNewSupporter({ name: '', channelUrl: '', avatarUrl: '', badgeText: 'YouTube Creator' });
+    setSuccessMsg(lang === 'kn' ? 'ಹೊಸ ಸಪೋರ್ಟರ್ ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಯಿತು!' : 'New Supporter card added successfully!');
+    setTimeout(() => setSuccessMsg(''), 4000);
+  };
+
+  const handleDeleteSupporter = (id: string) => {
+    if (confirm(lang === 'kn' ? 'ಈ ಸಪೋರ್ಟರ್ ಅನ್ನು ಡಿಲೀಟ್ ಮಾಡಬೇಕೇ?' : 'Are you sure to delete this Supporter?')) {
+      const filtered = supporters.filter((s) => s.id !== id);
+      setSupporters(filtered);
+      saveStoredSupporters(filtered);
+    }
   };
 
   const handleCreateApp = (e: React.FormEvent) => {
@@ -215,6 +293,12 @@ export const AdminPanelComp: React.FC = () => {
     alert(lang === 'kn' ? '🔔 ಇಂದಿನ ಬೆಲೆ ಇಳಿಕೆ ಪುಶ್ ನೋಟಿಫಿಕೇಶನ್ ಕಳುಹಿಸಲಾಗಿದೆ!' : '🔔 Price Drop Push Notification Sent Successfully!');
   };
 
+  const pendingCommentsCount = comments.filter((c) => c.status === 'pending').length;
+  const filteredCommentsList = comments.filter((c) => {
+    if (commentFilter === 'all') return true;
+    return c.status === commentFilter;
+  });
+
   // 🛡️ ULTRA-SECURE DUAL USERNAME + PASSWORD LOGIN GATE
   if (!isLoggedIn) {
     return (
@@ -230,7 +314,6 @@ export const AdminPanelComp: React.FC = () => {
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4 pt-2">
-          {/* Username Field */}
           <div className="space-y-1">
             <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
               {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್ (USERNAME)' : 'Admin Username'}
@@ -248,7 +331,6 @@ export const AdminPanelComp: React.FC = () => {
             </div>
           </div>
 
-          {/* Password Field */}
           <div className="space-y-1">
             <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
               {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್ (PASSWORD)' : 'Admin Password'}
@@ -361,6 +443,266 @@ export const AdminPanelComp: React.FC = () => {
         </div>
       </div>
 
+      {/* 💬 MASTER COMMENTS APPROVAL & MODERATION SYSTEM */}
+      <div className="bg-gradient-to-br from-indigo-500/10 via-indigo-500/5 to-indigo-500/10 p-6 sm:p-8 rounded-3xl border-2 border-indigo-300/80 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <MessageSquare className="w-6 h-6 text-indigo-600" />
+            <div>
+              <h3 className="text-base font-black text-slate-950 flex items-center gap-2">
+                <span>{lang === 'kn' ? '💬 ಕಾಮೆಂಟ್‌ಗಳ ನಿಯಂತ್ರಣ & ಅನುಮೋದನೆ (Comments Approval Panel)' : '💬 Comments Approval & Moderation Panel'}</span>
+                {pendingCommentsCount > 0 && (
+                  <span className="text-xs font-black bg-amber-400 text-slate-950 px-2.5 py-0.5 rounded-full animate-bounce">
+                    {pendingCommentsCount} {lang === 'kn' ? 'ಬಾಕಿ (Pending)' : 'Pending'}
+                  </span>
+                )}
+              </h3>
+              <p className="text-xs text-slate-600 font-bold">
+                {lang === 'kn' ? 'ಸಾರ್ವಜನಿಕರು ಬರೆದ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ಅನುಮೋದಿಸಿ (Approve), ತಿರಸ್ಕರಿಸಿ (Disapprove) ಅಥವಾ ಡಿಲೀಟ್ ಮಾಡಿ.' : 'Approve, Disapprove or Delete user submitted comments live!'}
+              </p>
+            </div>
+          </div>
+
+          {/* Status Filter Tabs */}
+          <div className="flex items-center gap-1.5 bg-white p-1 rounded-2xl border border-slate-200 text-xs font-bold shrink-0">
+            <button
+              onClick={() => setCommentFilter('pending')}
+              className={`px-3 py-1.5 rounded-xl transition-all ${
+                commentFilter === 'pending' ? 'bg-amber-400 text-slate-950 font-black shadow-xs' : 'text-slate-600 hover:text-slate-950'
+              }`}
+            >
+              ⏳ {lang === 'kn' ? 'ಬಾಕಿ (Pending)' : 'Pending'} ({comments.filter((c) => c.status === 'pending').length})
+            </button>
+
+            <button
+              onClick={() => setCommentFilter('approved')}
+              className={`px-3 py-1.5 rounded-xl transition-all ${
+                commentFilter === 'approved' ? 'bg-emerald-600 text-white font-black shadow-xs' : 'text-slate-600 hover:text-slate-950'
+              }`}
+            >
+              ✅ {lang === 'kn' ? 'ಅನುಮೋದಿತ' : 'Approved'} ({comments.filter((c) => c.status === 'approved').length})
+            </button>
+
+            <button
+              onClick={() => setCommentFilter('disapproved')}
+              className={`px-3 py-1.5 rounded-xl transition-all ${
+                commentFilter === 'disapproved' ? 'bg-rose-600 text-white font-black shadow-xs' : 'text-slate-600 hover:text-slate-950'
+              }`}
+            >
+              ❌ {lang === 'kn' ? 'ತಿರಸ್ಕರಿಸಿದ' : 'Disapproved'} ({comments.filter((c) => c.status === 'disapproved').length})
+            </button>
+
+            <button
+              onClick={() => setCommentFilter('all')}
+              className={`px-3 py-1.5 rounded-xl transition-all ${
+                commentFilter === 'all' ? 'bg-slate-950 text-white font-black shadow-xs' : 'text-slate-600 hover:text-slate-950'
+              }`}
+            >
+              {lang === 'kn' ? 'ಎಲ್ಲಾ' : 'All'} ({comments.length})
+            </button>
+          </div>
+        </div>
+
+        {/* Comments List */}
+        {filteredCommentsList.length > 0 ? (
+          <div className="space-y-3">
+            {filteredCommentsList.map((c) => (
+              <div
+                key={c.id}
+                className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              >
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-slate-950 text-xs sm:text-sm">{c.userName}</span>
+                    {c.userEmail && <span className="text-[10px] text-slate-400 font-semibold">({c.userEmail})</span>}
+                    <span
+                      className={`text-[9px] font-black px-2 py-0.5 rounded uppercase ${
+                        c.status === 'approved'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : c.status === 'disapproved'
+                          ? 'bg-rose-100 text-rose-800'
+                          : 'bg-amber-100 text-amber-900'
+                      }`}
+                    >
+                      {c.status}
+                    </span>
+                  </div>
+
+                  <p className="text-xs font-medium text-slate-800 bg-slate-50 p-2.5 rounded-xl border border-slate-100 leading-relaxed">
+                    "{c.commentText}"
+                  </p>
+
+                  <div className="flex items-center gap-2 text-[10px] text-slate-400 font-semibold">
+                    <span>Page: <strong>{c.pageId}</strong></span>
+                    <span>• Date: {c.createdAt}</span>
+                    <span>• Rating: ★ {c.rating || 5}</span>
+                  </div>
+                </div>
+
+                {/* Moderate Actions */}
+                <div className="flex items-center gap-2 shrink-0 border-t sm:border-t-0 border-slate-100 pt-2 sm:pt-0">
+                  {c.status !== 'approved' && (
+                    <button
+                      onClick={() => handleApproveComment(c.id)}
+                      className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs flex items-center gap-1 transition-transform active:scale-95"
+                    >
+                      <ThumbsUp className="w-3.5 h-3.5" />
+                      <span>{lang === 'kn' ? 'Approve' : 'Approve'}</span>
+                    </button>
+                  )}
+
+                  {c.status !== 'disapproved' && (
+                    <button
+                      onClick={() => handleDisapproveComment(c.id)}
+                      className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs shadow-xs flex items-center gap-1 transition-transform active:scale-95"
+                    >
+                      <ThumbsDown className="w-3.5 h-3.5" />
+                      <span>{lang === 'kn' ? 'Reject' : 'Disapprove'}</span>
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => handleDeleteComment(c.id)}
+                    className="p-2 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors"
+                    title="Delete Comment"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 bg-white rounded-2xl border border-slate-200 text-xs font-bold text-slate-400">
+            {lang === 'kn' ? 'ಈ ವಿಭಾಗದಲ್ಲಿ ಯಾವುದೇ ಕಾಮೆಂಟ್‌ಗಳಿಲ್ಲ.' : 'No comments in this section.'}
+          </div>
+        )}
+      </div>
+
+      {/* ❤️ SUPPORTERS & CREATOR WALL MANAGER */}
+      <div className="bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-rose-500/10 p-6 sm:p-8 rounded-3xl border-2 border-rose-300/80 space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Heart className="w-6 h-6 text-rose-600 fill-rose-600" />
+            <div>
+              <h3 className="text-base font-black text-slate-950">
+                {lang === 'kn' ? '❤️ ನಮ್ಮ ಸಪೋರ್ಟರ್ಸ್ & ಕ್ರಿಯೇಟರ್ಸ್ ಕಂಟ್ರೋಲ್ (Supporters & Creator Wall)' : '❤️ Supporters & Creator Wall Manager'}
+              </h3>
+              <p className="text-xs text-slate-600 font-bold">
+                {lang === 'kn' ? 'ನಿಮ್ಮ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಸಾಥ್ ನೀಡುವ ಯೂಟ್ಯೂಬರ್ಸ್/ಕ್ರಿಯೇಟರ್ಸ್ ಚಾನೆಲ್ ಹೆಸರು, DP ಫೋಟೋ ಹಾಗೂ ಲಿಂಕ್ ಸೇರಿಸಿ!' : 'Add YouTubers & creators featuring your website with channel link & DP avatar!'}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setShowAddSupporterModal(!showAddSupporterModal)}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-950 hover:bg-slate-800 text-amber-400 text-xs font-black shadow-md shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            <span>{lang === 'kn' ? 'ಹೊಸ ಸಪೋರ್ಟರ್ ಸೇರಿಸಿ' : 'Add Supporter'}</span>
+          </button>
+        </div>
+
+        {/* Add Supporter Modal Form */}
+        {showAddSupporterModal && (
+          <form onSubmit={handleCreateSupporter} className="bg-white border-2 border-rose-300 rounded-3xl p-6 space-y-4 text-xs shadow-lg">
+            <h4 className="font-black text-sm text-slate-950 border-b pb-2">➕ ಹೊಸ ಸಪೋರ್ಟರ್ ಸೇರಿಸಿ (Add Creator Card)</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block font-bold text-slate-800 mb-1">Creator / Channel Name (ಚಾನೆಲ್ ಹೆಸರು)</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Tech Kannada Official"
+                  value={newSupporter.name}
+                  onChange={(e) => setNewSupporter({ ...newSupporter, name: e.target.value })}
+                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 mb-1">Channel / Video URL (ಲಿಂಕ್)</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="https://youtube.com/@channel"
+                  value={newSupporter.channelUrl}
+                  onChange={(e) => setNewSupporter({ ...newSupporter, channelUrl: e.target.value })}
+                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 mb-1">DP Avatar Image URL (ಫೋಟೋ ಲಿಂಕ್)</label>
+                <input
+                  type="text"
+                  placeholder="https://images.unsplash.com/... or image link"
+                  value={newSupporter.avatarUrl}
+                  onChange={(e) => setNewSupporter({ ...newSupporter, avatarUrl: e.target.value })}
+                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-800 mb-1">Badge Tag (ಉದಾ: YouTube Creator)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. YouTube Creator or Tech Supporter"
+                  value={newSupporter.badgeText}
+                  onChange={(e) => setNewSupporter({ ...newSupporter, badgeText: e.target.value })}
+                  className="w-full bg-slate-50 border rounded-xl p-2.5 font-bold"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowAddSupporterModal(false)}
+                className="px-4 py-2 rounded-xl bg-slate-200 text-slate-800 font-bold"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-5 py-2 rounded-xl bg-rose-600 text-white font-black shadow"
+              >
+                Save Supporter Card
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Existing Supporters List */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {supporters.map((s) => (
+            <div key={s.id} className="bg-white p-4 rounded-2xl border border-slate-200/90 flex items-center justify-between gap-3 shadow-2xs">
+              <div className="flex items-center gap-3">
+                {s.avatarUrl ? (
+                  <img src={s.avatarUrl} alt={s.name} className="w-9 h-9 rounded-full object-cover border border-amber-400 shrink-0" />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-amber-100 text-amber-900 font-bold flex items-center justify-center text-xs shrink-0">
+                    DP
+                  </div>
+                )}
+                <div>
+                  <h4 className="font-black text-slate-950 text-xs">{s.name}</h4>
+                  <span className="text-[9px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.2 rounded block mt-0.5">{s.badgeText || 'Supporter'}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleDeleteSupporter(s.id)}
+                className="p-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 shrink-0"
+                title="Delete Supporter"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ⚡ 1-CLICK HTML iFRAME EMBED CODE GENERATOR GATEWAY */}
       <div className="bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-amber-500/10 p-6 sm:p-8 rounded-3xl border-2 border-amber-400/80 space-y-6">
         <div className="flex items-center justify-between">
@@ -430,7 +772,6 @@ export const AdminPanelComp: React.FC = () => {
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          {/* Admin Username Edit */}
           <div>
             <label className="block font-black text-slate-800 mb-1">
               {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್ ಬದಲಾಯಿಸಿ (Admin Username)' : 'Admin Username'}
@@ -445,7 +786,6 @@ export const AdminPanelComp: React.FC = () => {
             />
           </div>
 
-          {/* Admin Password Edit */}
           <div>
             <label className="block font-black text-slate-800 mb-1">
               {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಿ (Admin Password)' : 'Admin Password'}
@@ -469,7 +809,6 @@ export const AdminPanelComp: React.FC = () => {
           </div>
         </div>
 
-        {/* AdSense ID */}
         <div className="pt-2">
           <label className="block font-bold text-slate-800 mb-1">{t.adsensePublisherIdLabel}</label>
           <input
@@ -570,103 +909,44 @@ export const AdminPanelComp: React.FC = () => {
 
       </div>
 
-      {/* Manual Commodity Rate Overrides */}
-      <div className="space-y-4">
-        <h3 className="text-sm font-black text-slate-950 border-b border-slate-200 pb-2">
-          Manual Commodity Rate Overrides (ಮ್ಯಾನುಯಲ್ ಬೆಲೆಗಳ ಅಪ್‌ಡೇಟ್)
+      {/* 🌐 FOOTER SOCIAL MEDIA & COMMUNITY LINKS CONTROL BOX */}
+      <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200 space-y-4">
+        <h3 className="text-sm font-black text-slate-950 flex items-center gap-2">
+          <Link2 className="w-4 h-4 text-amber-600" />
+          {lang === 'kn' ? '🌐 ಫುಟರ್ ಸೋಷಿಯಲ್ ಮಿಡಿಯಾ & ಕಮ್ಯುನಿಟಿ ಲಿಂಕ್‌ಗಳು (Footer Social Links)' : '🌐 Footer Social Media & Community Links'}
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
-          <div className="bg-amber-50/50 p-4 rounded-2xl border border-amber-200 space-y-1">
-            <label className="font-bold text-amber-900 block">{t.gold24k}</label>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div>
+            <label className="block font-bold text-slate-800 mb-1">WhatsApp Group URL</label>
             <input
-              type="number"
-              value={adminSettings.manualRates.gold24k || ratesData.rates.gold24k}
-              onChange={(e) =>
-                setAdminSettings({
-                  ...adminSettings,
-                  manualRates: { ...adminSettings.manualRates, gold24k: Number(e.target.value) },
-                })
-              }
-              className="w-full bg-white border border-amber-300 rounded-xl p-2.5 font-black text-amber-700 text-sm focus:outline-none shadow-xs"
+              type="text"
+              placeholder="https://chat.whatsapp.com/..."
+              value={adminSettings.whatsappGroupUrl || ''}
+              onChange={(e) => setAdminSettings({ ...adminSettings, whatsappGroupUrl: e.target.value })}
+              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 font-bold text-slate-900"
             />
           </div>
 
-          <div className="bg-amber-50/50 p-4 rounded-2xl border border-amber-200 space-y-1">
-            <label className="font-bold text-amber-900 block">{t.gold22k}</label>
+          <div>
+            <label className="block font-bold text-slate-800 mb-1">Telegram Channel URL</label>
             <input
-              type="number"
-              value={adminSettings.manualRates.gold22k || ratesData.rates.gold22k}
-              onChange={(e) =>
-                setAdminSettings({
-                  ...adminSettings,
-                  manualRates: { ...adminSettings.manualRates, gold22k: Number(e.target.value) },
-                })
-              }
-              className="w-full bg-white border border-amber-300 rounded-xl p-2.5 font-black text-amber-700 text-sm focus:outline-none shadow-xs"
+              type="text"
+              placeholder="https://t.me/..."
+              value={adminSettings.telegramGroupUrl || ''}
+              onChange={(e) => setAdminSettings({ ...adminSettings, telegramGroupUrl: e.target.value })}
+              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 font-bold text-slate-900"
             />
           </div>
 
-          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
-            <label className="font-bold text-slate-900 block">{t.silver1kg}</label>
+          <div>
+            <label className="block font-bold text-slate-800 mb-1">YouTube Channel URL</label>
             <input
-              type="number"
-              value={adminSettings.manualRates.silver || ratesData.rates.silver}
-              onChange={(e) =>
-                setAdminSettings({
-                  ...adminSettings,
-                  manualRates: { ...adminSettings.manualRates, silver: Number(e.target.value) },
-                })
-              }
-              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 font-black text-slate-800 text-sm focus:outline-none shadow-xs"
-            />
-          </div>
-
-          <div className="bg-sky-50/50 p-4 rounded-2xl border border-sky-200 space-y-1">
-            <label className="font-bold text-sky-900 block">{t.petrol} (Bengaluru)</label>
-            <input
-              type="number"
-              step="0.01"
-              value={adminSettings.manualRates.petrolBlr || ratesData.rates.petrolBlr}
-              onChange={(e) =>
-                setAdminSettings({
-                  ...adminSettings,
-                  manualRates: { ...adminSettings.manualRates, petrolBlr: Number(e.target.value) },
-                })
-              }
-              className="w-full bg-white border border-sky-300 rounded-xl p-2.5 font-black text-rose-600 text-sm focus:outline-none shadow-xs"
-            />
-          </div>
-
-          <div className="bg-sky-50/50 p-4 rounded-2xl border border-sky-200 space-y-1">
-            <label className="font-bold text-sky-900 block">{t.diesel} (Bengaluru)</label>
-            <input
-              type="number"
-              step="0.01"
-              value={adminSettings.manualRates.dieselBlr || ratesData.rates.dieselBlr}
-              onChange={(e) =>
-                setAdminSettings({
-                  ...adminSettings,
-                  manualRates: { ...adminSettings.manualRates, dieselBlr: Number(e.target.value) },
-                })
-              }
-              className="w-full bg-white border border-sky-300 rounded-xl p-2.5 font-black text-sky-800 text-sm focus:outline-none shadow-xs"
-            />
-          </div>
-
-          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-1">
-            <label className="font-bold text-slate-900 block">USD to INR Rate</label>
-            <input
-              type="number"
-              step="0.01"
-              value={adminSettings.manualRates.usdInr || ratesData.rates.usdInr}
-              onChange={(e) =>
-                setAdminSettings({
-                  ...adminSettings,
-                  manualRates: { ...adminSettings.manualRates, usdInr: Number(e.target.value) },
-                })
-              }
-              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 font-black text-slate-800 text-sm focus:outline-none shadow-xs"
+              type="text"
+              placeholder="https://youtube.com/..."
+              value={adminSettings.youtubeGroupUrl || ''}
+              onChange={(e) => setAdminSettings({ ...adminSettings, youtubeGroupUrl: e.target.value })}
+              className="w-full bg-white border border-slate-300 rounded-xl p-2.5 font-bold text-slate-900"
             />
           </div>
         </div>

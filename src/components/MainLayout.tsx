@@ -5,8 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from './LanguageContext';
 import { Sidebar } from './Sidebar';
+import { Footer } from './Footer';
+import { SupportersMarquee } from './SupportersMarquee';
+import { SmartSearchModal } from './SmartSearchModal';
+import { ShareModal } from './ShareModal';
 import {
-  Menu, Sun, Globe, User, Search, Home, Grid, Heart, ShieldCheck, X
+  Menu, Sun, Globe, User, Search, Home, Grid, Heart, ShieldCheck, X, Share2
 } from 'lucide-react';
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -14,12 +18,19 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   const { lang, setLang } = useLanguage();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans select-none overflow-x-hidden max-w-full">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans select-none overflow-x-hidden max-w-full justify-between">
       
-      {/* TOP HEADER (100% MOBILE RESPONSIVE & HIGH-TRUST APPLE/STRIPE DESIGN) */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs px-3.5 sm:px-6 py-2.5 max-w-full overflow-hidden">
+      {/* SHARE MODAL DRAWER */}
+      {showShareModal && (
+        <ShareModal onClose={() => setShowShareModal(false)} />
+      )}
+
+      {/* TOP HEADER */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs px-3.5 sm:px-6 py-2.5 max-w-full overflow-visible">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2.5">
           
           {/* Left: Hamburger + Brand Logo */}
@@ -45,27 +56,40 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
             </Link>
           </div>
 
-          {/* Desktop Search Input */}
+          {/* Desktop Search Input with Smart Autocomplete Modal */}
           <div className="flex-1 max-w-md hidden md:block relative">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder={lang === 'kn' ? 'ಹುಡುಕಿ... Apps, Calculators, Tools' : 'Search... Apps, Calculators, Tools'}
+              placeholder={lang === 'kn' ? 'ಹುಡುಕಿ... (ಉದಾ: ವಯಸ್ಸು, EMI, ಚಿನ್ನ, photo)' : 'Search... (e.g. EMI, age, photo, gold)'}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowSearchModal(true);
+              }}
+              onFocus={() => setShowSearchModal(true)}
               className="w-full bg-slate-100 border border-slate-200 rounded-full py-2 pl-10 pr-4 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all shadow-2xs"
             />
+
+            {showSearchModal && searchQuery.trim() && (
+              <SmartSearchModal
+                query={searchQuery}
+                onQueryChange={setSearchQuery}
+                onClose={() => setShowSearchModal(false)}
+              />
+            )}
           </div>
 
           {/* Right Header Actions */}
           <div className="flex items-center gap-1.5 shrink-0">
-            {/* Sun Theme Icon */}
+            {/* Share Website Pill Button */}
             <button
-              onClick={() => alert(lang === 'kn' ? '☀️ ಲೈಟ್ ಮೋಡ್ ಸಕ್ರಿಯವಾಗಿದೆ!' : '☀️ Light Mode Active!')}
-              className="p-1.5 sm:p-2 rounded-full text-slate-700 hover:bg-slate-100 transition-colors"
-              title="Theme Toggle"
+              onClick={() => setShowShareModal(true)}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] sm:text-[11px] shadow-sm transition-all active:scale-95 border border-emerald-500"
+              title="Share Website"
             >
-              <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
+              <Share2 className="w-3.5 h-3.5" />
+              <span>{lang === 'kn' ? 'ಶೇರ್ ಮಾಡಿ' : 'Share'}</span>
             </button>
 
             {/* Language Switcher Pill */}
@@ -74,7 +98,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 font-extrabold text-[10px] sm:text-[11px] hover:bg-slate-200 transition-colors shadow-2xs"
             >
               <Globe className="w-3.5 h-3.5 text-amber-600" />
-              <span>{lang === 'kn' ? 'ಕನ್ನಡ (KN)' : 'English (EN)'}</span>
+              <span>{lang === 'kn' ? 'ಕನ್ನಡ' : 'English'}</span>
             </button>
 
             {/* User Profile / Admin Link */}
@@ -93,11 +117,23 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder={lang === 'kn' ? 'ಹುಡುಕಿ... Apps, Calculators, Tools' : 'Search... Apps, Calculators, Tools'}
+            placeholder={lang === 'kn' ? 'ಹುಡುಕಿ... (ಉದಾ: ವಯಸ್ಸು, ಸಾಲ, ಚಿನ್ನ, photo)' : 'Search... (e.g. EMI, age, photo, gold)'}
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setShowSearchModal(true);
+            }}
+            onFocus={() => setShowSearchModal(true)}
             className="w-full bg-slate-100 border border-slate-200 rounded-full py-2 pl-10 pr-4 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white shadow-2xs"
           />
+
+          {showSearchModal && searchQuery.trim() && (
+            <SmartSearchModal
+              query={searchQuery}
+              onQueryChange={setSearchQuery}
+              onClose={() => setShowSearchModal(false)}
+            />
+          )}
         </div>
       </header>
 
@@ -119,7 +155,13 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         </main>
       </div>
 
-      {/* MOBILE STICKY BOTTOM NAVIGATION BAR (100% RESPONSIVE NO OVERFLOW) */}
+      {/* ❤️ CONTINUOUS ANIMATED SUPPORTERS & CREATOR WALL */}
+      <SupportersMarquee />
+
+      {/* WORLD-CLASS ULTRA-PROFESSIONAL FOOTER */}
+      <Footer />
+
+      {/* MOBILE STICKY BOTTOM NAVIGATION BAR */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl px-2 py-1.5 flex items-center justify-around max-w-full overflow-hidden">
         
         {/* Tab 1: Home */}
@@ -148,7 +190,10 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         <button
           onClick={() => {
             const input = document.querySelector('header input') as HTMLInputElement;
-            if (input) input.focus();
+            if (input) {
+              input.focus();
+              setShowSearchModal(true);
+            }
           }}
           className="flex flex-col items-center justify-center -mt-5 shrink-0"
         >
@@ -158,16 +203,14 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           <span className="text-[10px] font-black text-slate-950 mt-0.5">{lang === 'kn' ? 'ಹುಡುಕು' : 'Search'}</span>
         </button>
 
-        {/* Tab 4: Utilities / Saved */}
-        <Link
-          href="/blogs"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 rounded-xl transition-all ${
-            pathname === '/blogs' ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
-          }`}
+        {/* Tab 4: SHARE WEBSITE BUTTON */}
+        <button
+          onClick={() => setShowShareModal(true)}
+          className="flex flex-col items-center gap-0.5 px-2.5 py-1 rounded-xl transition-all text-emerald-700 font-extrabold"
         >
-          <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span className="text-[10px]">{lang === 'kn' ? 'ಉಪಯುಕ್ತ' : 'Saved'}</span>
-        </Link>
+          <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
+          <span className="text-[10px]">{lang === 'kn' ? 'ಶೇರ್' : 'Share'}</span>
+        </button>
 
         {/* Tab 5: My Account / Admin */}
         <Link
