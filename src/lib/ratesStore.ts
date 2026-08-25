@@ -234,7 +234,8 @@ export const defaultRatesData: RatesData = {
 };
 
 export const defaultAdminSettings: AdminSettings = {
-  passcode: "1234",
+  username: "admin",
+  passcode: "2477",
   isAutoSync: true,
   manualRates: {},
   announcement: defaultRatesData.announcement,

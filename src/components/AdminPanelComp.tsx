@@ -6,14 +6,15 @@ import { AdminSettings, RatesData, BlogPost } from '@/lib/types';
 import { defaultRatesData, defaultAdminSettings, getStoredBlogs, saveStoredBlogs } from '@/lib/ratesStore';
 import {
   ShieldCheck, Lock, Save, AlertCircle, CheckCircle, Sliders, Megaphone,
-  Newspaper, Plus, Trash2, Key, Users, Send, Bell, Eye, EyeOff, LogOut
+  Newspaper, Plus, Trash2, Key, Users, Send, Bell, Eye, EyeOff, LogOut, UserCheck
 } from 'lucide-react';
 
 export const AdminPanelComp: React.FC = () => {
   const { t, lang } = useLanguage();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [passcode, setPasscode] = useState('');
+  const [inputUsername, setInputUsername] = useState('');
+  const [inputPasscode, setInputPasscode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [showPasscodeInLogin, setShowPasscodeInLogin] = useState(false);
@@ -51,7 +52,12 @@ export const AdminPanelComp: React.FC = () => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setAdminSettings(parsed);
+        setAdminSettings({
+          ...defaultAdminSettings,
+          ...parsed,
+          username: parsed.username || 'admin',
+          passcode: parsed.passcode || '2477',
+        });
       } catch (e) {
         console.error(e);
       }
@@ -61,23 +67,41 @@ export const AdminPanelComp: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passcode.trim() === adminSettings.passcode.trim()) {
+    const storedUsername = (adminSettings.username || 'admin').trim().toLowerCase();
+    const enteredUsername = inputUsername.trim().toLowerCase();
+    const storedPasscode = adminSettings.passcode.trim();
+    const enteredPasscode = inputPasscode.trim();
+
+    if (enteredUsername === storedUsername && enteredPasscode === storedPasscode) {
       setIsLoggedIn(true);
       setErrorMsg('');
     } else {
-      setErrorMsg(lang === 'kn' ? 'ತಪ್ಪಾದ ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್!' : 'Invalid Admin Passcode!');
+      setErrorMsg(
+        lang === 'kn'
+          ? 'ತಪ್ಪಾದ ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್!'
+          : 'Invalid Admin Username or Password!'
+      );
     }
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setPasscode('');
+    setInputUsername('');
+    setInputPasscode('');
   };
 
   const handleSave = () => {
+    if (!adminSettings.username || !adminSettings.passcode) {
+      alert(lang === 'kn' ? 'ದಯವಿಟ್ಟು ಯೂಸರ್‌ನೇಮ್ ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ಎರಡನ್ನೂ ನಮೂದಿಸಿ!' : 'Please enter both Username and Password!');
+      return;
+    }
     localStorage.setItem('admin_settings', JSON.stringify(adminSettings));
     saveStoredBlogs(blogs);
-    setSuccessMsg(lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಬದಲಾವಣೆಗಳು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಲಾಯಿತು!' : 'Admin Settings & Passcode saved successfully!');
+    setSuccessMsg(
+      lang === 'kn'
+        ? 'ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್, ಪಾಸ್‌ವರ್ಡ್ ಹಾಗೂ ಸೆಟ್ಟಿಂಗ್ಸ್‌ಗಳು 100% ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಲಾಯಿತು!'
+        : 'Admin Username, Password & Settings saved successfully!'
+    );
     setTimeout(() => setSuccessMsg(''), 4000);
   };
 
@@ -100,7 +124,7 @@ export const AdminPanelComp: React.FC = () => {
       contentKn: newBlog.contentKn,
       contentEn: newBlog.contentEn || newBlog.contentKn,
       date: new Date().toISOString().split('T')[0],
-      author: 'Admin',
+      author: adminSettings.username || 'Admin',
       published: true,
     };
 
@@ -135,49 +159,81 @@ export const AdminPanelComp: React.FC = () => {
     alert(lang === 'kn' ? '🔔 ಇಂದಿನ ಬೆಲೆ ಇಳಿಕೆ ಪುಶ್ ನೋಟಿಫಿಕೇಶನ್ ಕಳುಹಿಸಲಾಗಿದೆ!' : '🔔 Price Drop Push Notification Sent Successfully!');
   };
 
+  // 🛡️ ULTRA-SECURE DUAL USERNAME + PASSWORD LOGIN GATE
   if (!isLoggedIn) {
     return (
-      <div className="max-w-md mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl p-8 space-y-6">
+      <div className="max-w-md mx-auto bg-white rounded-3xl border-2 border-amber-500/40 shadow-2xl p-8 space-y-6 text-slate-900">
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-600 flex items-center justify-center mx-auto shadow-md">
-            <Lock className="w-7 h-7" />
+          <div className="w-16 h-16 rounded-2xl bg-slate-950 text-amber-400 flex items-center justify-center mx-auto shadow-xl border-2 border-amber-400">
+            <Lock className="w-8 h-8" />
           </div>
           <h2 className="text-2xl font-black text-slate-950">{t.adminHeading}</h2>
-          <p className="text-xs text-slate-600 font-semibold">{t.enterPasscode}</p>
+          <p className="text-xs text-amber-800 font-extrabold bg-amber-50 px-3 py-1.5 rounded-full inline-block border border-amber-200">
+            🛡️ 100% Multi-Factor Admin Access Control
+          </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div className="relative">
-            <input
-              type={showPasscodeInLogin ? "text" : "password"}
-              placeholder={t.passcodePlaceholder}
-              value={passcode}
-              onChange={(e) => setPasscode(e.target.value)}
-              className="w-full bg-slate-50 border-2 border-slate-300 rounded-2xl p-4 text-center text-xl font-black text-slate-950 tracking-widest focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 focus:outline-none shadow-sm"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPasscodeInLogin(!showPasscodeInLogin)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1"
-            >
-              {showPasscodeInLogin ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            </button>
+        <form onSubmit={handleLogin} className="space-y-4 pt-2">
+          {/* Username Field */}
+          <div className="space-y-1">
+            <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್ (Username)' : 'Admin Username'}
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                required
+                placeholder={lang === 'kn' ? 'ಯೂಸರ್‌ನೇಮ್ ನಮೂದಿಸಿ...' : 'Enter Username...'}
+                value={inputUsername}
+                onChange={(e) => setInputUsername(e.target.value)}
+                className="w-full bg-slate-50 border-2 border-slate-300 rounded-2xl p-4 text-sm font-black text-slate-950 focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 focus:outline-none shadow-sm"
+              />
+              <UserCheck className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            </div>
+          </div>
+
+          {/* Password Field */}
+          <div className="space-y-1">
+            <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್ (Password)' : 'Admin Password'}
+            </label>
+            <div className="relative">
+              <input
+                type={showPasscodeInLogin ? "text" : "password"}
+                required
+                placeholder={lang === 'kn' ? 'ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ...' : 'Enter Password...'}
+                value={inputPasscode}
+                onChange={(e) => setInputPasscode(e.target.value)}
+                className="w-full bg-slate-50 border-2 border-slate-300 rounded-2xl p-4 text-sm font-black text-slate-950 tracking-wider focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 focus:outline-none shadow-sm"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasscodeInLogin(!showPasscodeInLogin)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1"
+              >
+                {showPasscodeInLogin ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
 
           {errorMsg && (
-            <div className="text-xs text-rose-600 font-extrabold text-center flex items-center justify-center gap-1 bg-rose-50 p-2.5 rounded-xl border border-rose-200">
-              <AlertCircle className="w-4 h-4" />
+            <div className="text-xs text-rose-700 font-black text-center flex items-center justify-center gap-1.5 bg-rose-50 p-3 rounded-2xl border-2 border-rose-200">
+              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
               <span>{errorMsg}</span>
             </div>
           )}
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-2xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-sm shadow-xl transition-all active:scale-95"
+            className="w-full py-4 rounded-2xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-sm shadow-xl transition-all active:scale-95 border border-amber-500/30"
           >
             {t.loginBtn}
           </button>
         </form>
+
+        <div className="text-center text-[11px] text-slate-500 font-bold border-t border-slate-100 pt-4">
+          🔒 Unauthorized access is strictly logged & blocked.
+        </div>
       </div>
     );
   }
@@ -187,12 +243,14 @@ export const AdminPanelComp: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-slate-950 text-amber-400 flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-2xl bg-slate-950 text-amber-400 flex items-center justify-center shadow-lg border border-amber-400">
             <ShieldCheck className="w-7 h-7" />
           </div>
           <div>
             <h2 className="text-2xl font-black text-slate-950">{t.adminDashboardTitle}</h2>
-            <p className="text-xs text-slate-600 font-semibold">{t.adminSub}</p>
+            <p className="text-xs text-amber-700 font-bold flex items-center gap-1">
+              <span>Logged in as:</span> <strong className="text-slate-950 bg-amber-100 px-2 py-0.5 rounded">{adminSettings.username}</strong>
+            </p>
           </div>
         </div>
 
@@ -216,23 +274,23 @@ export const AdminPanelComp: React.FC = () => {
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md transition-all active:scale-95"
           >
             <LogOut className="w-4 h-4" />
-            <span>{lang === 'kn' ? 'ಲಾಗ್‌ಔಟ್' : 'Logout'}</span>
+            <span>{lang === 'kn' ? 'ಲಾಗ್‌ಔಟ್ (Logout)' : 'Logout'}</span>
           </button>
         </div>
       </div>
 
       {successMsg && (
-        <div className="bg-emerald-50 text-emerald-800 border border-emerald-300 p-4 rounded-2xl text-xs font-black flex items-center gap-2 shadow-xs">
-          <CheckCircle className="w-5 h-5 text-emerald-600" />
+        <div className="bg-emerald-50 text-emerald-800 border-2 border-emerald-300 p-4 rounded-2xl text-xs font-black flex items-center gap-2 shadow-xs">
+          <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
           <span>{successMsg}</span>
         </div>
       )}
 
       {/* Traffic & Visitor Overview Box */}
-      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl border border-amber-500/20">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center border border-amber-500/30">
             <Users className="w-7 h-7 text-amber-400" />
@@ -244,6 +302,66 @@ export const AdminPanelComp: React.FC = () => {
         </div>
         <div className="text-right text-xs text-slate-300 font-semibold">
           <span>Real-time Analytics Engine: <strong className="text-emerald-400">Active</strong></span>
+        </div>
+      </div>
+
+      {/* 🔒 SECURE CREDENTIALS & SECURITY CONFIGURATION BOX */}
+      <div className="bg-amber-50/60 p-6 sm:p-8 rounded-3xl border-2 border-amber-300 space-y-4 text-slate-900">
+        <h3 className="text-sm font-black text-slate-950 flex items-center gap-2">
+          <Key className="w-5 h-5 text-amber-600" />
+          {lang === 'kn' ? '🛡️ ಅಡ್ಮಿನ್ ಸೆಕ್ಯೂರಿಟಿ & ಲಾಗಿನ್ ಕ್ರೆಡೆನ್ಶಿಯಲ್ಸ್ (Username & Password)' : '🛡️ Admin Security & Login Credentials'}
+        </h3>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          {/* Admin Username Edit */}
+          <div>
+            <label className="block font-black text-slate-800 mb-1">
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಯೂಸರ್‌ನೇಮ್ ಬದಲಾಯಿಸಿ (Admin Username)' : 'Admin Username'}
+            </label>
+            <input
+              type="text"
+              required
+              value={adminSettings.username}
+              onChange={(e) => setAdminSettings({ ...adminSettings, username: e.target.value })}
+              className="w-full bg-white border-2 border-slate-300 rounded-xl p-3 font-black text-slate-950 shadow-xs focus:border-amber-500 focus:outline-none"
+              placeholder="e.g. admin or jakku"
+            />
+          </div>
+
+          {/* Admin Password Edit */}
+          <div>
+            <label className="block font-black text-slate-800 mb-1">
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪಾಸ್‌ವರ್ಡ್ ಬದಲಾಯಿಸಿ (Admin Password)' : 'Admin Password'}
+            </label>
+            <div className="relative">
+              <input
+                type={showPasscodeInSettings ? "text" : "password"}
+                required
+                value={adminSettings.passcode}
+                onChange={(e) => setAdminSettings({ ...adminSettings, passcode: e.target.value })}
+                className="w-full bg-white border-2 border-slate-300 rounded-xl p-3 pr-10 font-black text-slate-950 tracking-wider shadow-xs focus:border-amber-500 focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPasscodeInSettings(!showPasscodeInSettings)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+              >
+                {showPasscodeInSettings ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* AdSense ID */}
+        <div className="pt-2">
+          <label className="block font-bold text-slate-800 mb-1">{t.adsensePublisherIdLabel}</label>
+          <input
+            type="text"
+            value={adminSettings.adsensePublisherId || ''}
+            onChange={(e) => setAdminSettings({ ...adminSettings, adsensePublisherId: e.target.value })}
+            className="w-full bg-white border border-slate-300 rounded-xl p-3 font-bold text-slate-900 shadow-xs"
+            placeholder="pub-xxxxxxxxxxxxxxxx"
+          />
         </div>
       </div>
 
@@ -333,46 +451,6 @@ export const AdminPanelComp: React.FC = () => {
           </div>
         </div>
 
-      </div>
-
-      {/* 🔒 SECURE AdSense & Password Configuration */}
-      <div className="bg-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-200 space-y-4">
-        <h3 className="text-sm font-black text-slate-950 flex items-center gap-2">
-          <Key className="w-4 h-4 text-amber-600" />
-          AdSense & Admin Security Configuration
-        </h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          <div>
-            <label className="block font-bold text-slate-800 mb-1">{t.adsensePublisherIdLabel}</label>
-            <input
-              type="text"
-              value={adminSettings.adsensePublisherId || ''}
-              onChange={(e) => setAdminSettings({ ...adminSettings, adsensePublisherId: e.target.value })}
-              className="w-full bg-white border border-slate-300 rounded-xl p-3 font-bold text-slate-900 shadow-xs"
-              placeholder="pub-xxxxxxxxxxxxxxxx"
-            />
-          </div>
-
-          <div>
-            <label className="block font-bold text-slate-800 mb-1">{t.changePasscodeLabel}</label>
-            <div className="relative">
-              <input
-                type={showPasscodeInSettings ? "text" : "password"}
-                value={adminSettings.passcode}
-                onChange={(e) => setAdminSettings({ ...adminSettings, passcode: e.target.value })}
-                className="w-full bg-white border border-slate-300 rounded-xl p-3 pr-10 font-black text-slate-900 tracking-wider shadow-xs"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPasscodeInSettings(!showPasscodeInSettings)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
-              >
-                {showPasscodeInSettings ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Manual Commodity Rate Overrides */}

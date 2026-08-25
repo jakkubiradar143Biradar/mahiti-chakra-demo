@@ -83,6 +83,7 @@ export interface RatesData {
 }
 
 export interface AdminSettings {
+  username: string;
   passcode: string;
   isAutoSync: boolean;
   manualRates: Partial<RatesData['rates']>;
