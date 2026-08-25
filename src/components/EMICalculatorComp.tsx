@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import { useLanguage } from './LanguageContext';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { Calculator, Info, Landmark } from 'lucide-react';
+import { Calculator, Info, Landmark, Download } from 'lucide-react';
+import { PWAInstallModal } from './PWAInstallModal';
 
 export const EMICalculatorComp: React.FC = () => {
   const { t, lang } = useLanguage();
+  const [showToolInstallModal, setShowToolInstallModal] = useState(false);
 
   const [amount, setAmount] = useState<number>(1000000); // 10 Lakh default
   const [rate, setRate] = useState<number>(8.5); // 8.5% default
@@ -30,16 +32,35 @@ export const EMICalculatorComp: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-8">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-8 relative">
+      {/* 📲 STANDALONE TOOL PWA INSTALL MODAL */}
+      {showToolInstallModal && (
+        <PWAInstallModal
+          appName={lang === 'kn' ? t.emiHeading : 'Smart Loan EMI Calculator App'}
+          onClose={() => setShowToolInstallModal(false)}
+        />
+      )}
+
       {/* Title Header */}
-      <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600">
-          <Landmark className="w-6 h-6" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 shrink-0">
+            <Landmark className="w-6 h-6" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">{t.emiHeading}</h2>
+            <p className="text-xs text-slate-500">{t.emiSub}</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-slate-900">{t.emiHeading}</h2>
-          <p className="text-xs text-slate-500">{t.emiSub}</p>
-        </div>
+
+        {/* 📲 STANDALONE THIS-APP ONLY INSTALLATION BUTTON */}
+        <button
+          onClick={() => setShowToolInstallModal(true)}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 border border-amber-300 shrink-0 self-start sm:self-auto"
+        >
+          <Download className="w-4 h-4 text-slate-950" />
+          <span>{lang === 'kn' ? '📲 ಈ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ' : '📲 Install THIS App'}</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

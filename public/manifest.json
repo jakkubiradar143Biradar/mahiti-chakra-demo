@@ -1,21 +1,24 @@
 {
-  "name": "Rates & Calculators Hub - ದೈನಂದಿನ ದರಗಳು ಮತ್ತು ಕ್ಯಾಲ್ಕುಲೇಟರ್‌ಗಳು",
-  "short_name": "Rates & Calcs",
-  "description": "Live Gold, Silver, Fuel, Krushi & Grocery Rates with Instant Financial Calculators",
+  "name": "ಮಾಹಿತಿ ಚಕ್ರ - Mahiti Chakra Portal",
+  "short_name": "MahitiChakra",
+  "description": "ಕರ್ನಾಟಕದ #1 ಡಿಜಿಟಲ್ ಸಹಾಯ ಪೋರ್ಟಲ್. 33+ ಉಚಿತ ಕ್ಯಾಲ್ಕುಲೇಟರ್‌ಗಳು ಹಾಗೂ ದೈನಂದಿನ ಮಾರುಕಟ್ಟೆ ದರಗಳು.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
   "theme_color": "#f59e0b",
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

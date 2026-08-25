@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { useLanguage } from './LanguageContext';
-import { Calendar, Cake, Clock, Heart } from 'lucide-react';
+import { Calendar, Cake, Clock, Heart, Download } from 'lucide-react';
+import { PWAInstallModal } from './PWAInstallModal';
 
 export const AgeCalculatorComp: React.FC = () => {
   const { t, lang } = useLanguage();
+  const [showToolInstallModal, setShowToolInstallModal] = useState(false);
 
   const [dob, setDob] = useState<string>('2000-01-01');
   const [targetDate, setTargetDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -58,16 +60,35 @@ export const AgeCalculatorComp: React.FC = () => {
   const ageResult = calculateAgeDetails();
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-8">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-8 relative">
+      {/* 📲 STANDALONE TOOL PWA INSTALL MODAL */}
+      {showToolInstallModal && (
+        <PWAInstallModal
+          appName={lang === 'kn' ? t.ageHeading : 'Exact Age Calculator App'}
+          onClose={() => setShowToolInstallModal(false)}
+        />
+      )}
+
       {/* Header */}
-      <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-        <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-600">
-          <Cake className="w-6 h-6" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-600 shrink-0">
+            <Cake className="w-6 h-6" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">{t.ageHeading}</h2>
+            <p className="text-xs text-slate-500">{t.ageSub}</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-slate-900">{t.ageHeading}</h2>
-          <p className="text-xs text-slate-500">{t.ageSub}</p>
-        </div>
+
+        {/* 📲 STANDALONE THIS-APP ONLY INSTALLATION BUTTON */}
+        <button
+          onClick={() => setShowToolInstallModal(true)}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 border border-amber-300 shrink-0 self-start sm:self-auto"
+        >
+          <Download className="w-4 h-4 text-slate-950" />
+          <span>{lang === 'kn' ? '📲 ಈ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ' : '📲 Install THIS App'}</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">

@@ -7,8 +7,10 @@ import { defaultAdminSettings } from '@/lib/ratesStore';
 import { AdminSettings } from '@/lib/types';
 import {
   Coins, ShieldCheck, Heart, Newspaper, Shield, FileText, Info, Mail,
-  Send, MessageSquare, Youtube, Instagram, ArrowUp, Lock, Sparkles, CheckCircle2
+  Send, MessageSquare, Youtube, Instagram, ArrowUp, Lock, Sparkles, CheckCircle2,
+  ChevronRight, ExternalLink, Zap
 } from 'lucide-react';
+import { MahitiChakraLogo } from './MahitiChakraLogo';
 
 export const Footer: React.FC = () => {
   const { t, lang } = useLanguage();
@@ -34,38 +36,40 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-white text-slate-800 text-xs border-t-2 border-slate-200/90 mt-12 select-none relative z-30">
+    <footer className="bg-slate-50 text-slate-900 text-xs border-t-2 border-amber-300 mt-12 select-none relative z-30 overflow-hidden">
       
-      {/* TOP COMMUNITY & SOCIAL MEDIA BANNER (LIGHT PREMIUM CARD) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
-        <div className="bg-slate-950 text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-slate-800">
-          <div className="flex items-center gap-3 text-center md:text-left">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 text-slate-950 flex items-center justify-center font-black text-xl shadow-lg shadow-amber-500/20 shrink-0">
-              💛
-            </div>
-            <div>
-              <h3 className="text-base sm:text-lg font-black text-white tracking-tight flex items-center justify-center md:justify-start gap-2">
-                <span>MAHITI CHAKRA HELP PORTAL</span>
-                <span className="text-[9px] font-black text-slate-950 bg-amber-400 px-2.5 py-0.5 rounded-full uppercase">
+      {/* TOP COMMUNITY & SOCIAL MEDIA HERO BANNER (THEME MATCHED LIGHT GOLD CARD) */}
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-8 pb-4 relative z-10">
+        <div className="bg-gradient-to-br from-amber-500/15 via-white to-amber-500/10 text-slate-950 rounded-3xl p-5 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border-2 border-amber-400/50 relative overflow-hidden">
+          
+          {/* Left Hero Text */}
+          <div className="flex items-center gap-3.5 text-center md:text-left w-full md:w-auto">
+            <MahitiChakraLogo size={56} className="w-14 h-14 shrink-0" />
+            <div className="space-y-1 text-left">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-base sm:text-lg font-black text-slate-950 tracking-tight">
+                  MAHITI CHAKRA HELP PORTAL
+                </h3>
+                <span className="text-[9px] font-black text-slate-950 bg-amber-400 px-2.5 py-0.5 rounded-full uppercase shadow-2xs border border-amber-300">
                   VERIFIED 100% FREE
                 </span>
-              </h3>
-              <p className="text-xs font-semibold text-slate-400 mt-0.5">
+              </div>
+              <p className="text-xs font-bold text-slate-600 leading-snug">
                 {lang === 'kn' ? 'ಕರ್ನಾಟಕದ #1 ಡಿಜಿಟಲ್ ಸಹಾಯ, ಲೈವ್ ದರಗಳು & ಆನ್‌ಲೈನ್ ಉಪಕರಣಗಳ ವೇದಿಕೆ.' : "Karnataka's #1 Digital Help, Live Rates & Online Tools Hub."}
               </p>
             </div>
           </div>
 
-          {/* Social Media Group Buttons */}
-          <div className="flex items-center gap-2.5 flex-wrap justify-center">
+          {/* Social Media Buttons (Pro Theme-Matched Row) */}
+          <div className="flex items-center gap-2.5 flex-wrap justify-center w-full md:w-auto">
             {adminSettings.whatsappGroupUrl && (
               <a
                 href={adminSettings.whatsappGroupUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md transition-all active:scale-95 border border-emerald-500"
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-md border border-emerald-500 transition-all active:scale-95 min-w-[130px]"
               >
-                <MessageSquare className="w-4 h-4" />
+                <MessageSquare className="w-4 h-4 text-emerald-100" />
                 <span>WhatsApp Group</span>
               </a>
             )}
@@ -75,9 +79,9 @@ export const Footer: React.FC = () => {
                 href={adminSettings.telegramGroupUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-black text-xs shadow-md transition-all active:scale-95 border border-sky-500"
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-black text-xs shadow-md border border-sky-500 transition-all active:scale-95 min-w-[130px]"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4 text-sky-100" />
                 <span>Telegram Channel</span>
               </a>
             )}
@@ -87,9 +91,9 @@ export const Footer: React.FC = () => {
                 href={adminSettings.youtubeGroupUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md transition-all active:scale-95 border border-rose-500"
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs shadow-md border border-rose-500 transition-all active:scale-95 min-w-[130px]"
               >
-                <Youtube className="w-4 h-4" />
+                <Youtube className="w-4 h-4 text-rose-100" />
                 <span>YouTube Channel</span>
               </a>
             )}
@@ -97,13 +101,13 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      {/* 4 COLUMNS MAIN FOOTER GRID (LIGHT MODE PREMIUM) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      {/* 4 COLUMNS MAIN FOOTER GRID (LIGHT MATCHED CARDS) */}
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-8 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           
-          {/* Col 1: About Portal & Trust Marker */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider flex items-center gap-1.5 border-b border-amber-400 pb-1.5 w-fit">
+          {/* Col 1: About Portal Card */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3">
+            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider flex items-center gap-1.5 border-b-2 border-amber-400 pb-2 w-fit">
               <Sparkles className="w-4 h-4 text-amber-600" />
               <span>{lang === 'kn' ? 'ಮಾಹಿತಿ ಚಕ್ರ ಬಗ್ಗೆ' : 'About Mahiti Chakra'}</span>
             </h4>
@@ -112,125 +116,166 @@ export const Footer: React.FC = () => {
                 ? 'ಕರ್ನಾಟಕದ ಜನತೆಗೆ ಸೂಕ್ತ ಸಮಯದಲ್ಲಿ ನಿಖರವಾದ ದೈನಂದಿನ ದರಗಳು, ಸಾಲದ EMI ಲೆಕ್ಕಾಚಾರ, ವಯಸ್ಸು ಲೆಕ್ಕಾಚಾರ ಹಾಗೂ ಕೃಷಿ ಬೆಳೆ ದರಗಳನ್ನು ಉಚಿತವಾಗಿ ನೀಡುವ ಏಕೈಕ ಸಹಾಯ ಪೋರ್ಟಲ್.'
                 : 'Free Karnataka portal providing accurate daily market rates, loan calculators, age calculators, APMC crop prices & document tools.'}
             </p>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] font-bold text-emerald-800">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] font-bold text-emerald-800">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               <span>100% Free & Encrypted Service</span>
             </div>
           </div>
 
-          {/* Col 2: Popular Calculators & Tools */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider border-b border-amber-400 pb-1.5 w-fit">
+          {/* Col 2: Popular Tools Card */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3">
+            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider border-b-2 border-amber-400 pb-2 w-fit">
               {lang === 'kn' ? 'ಪ್ರಮುಖ ಉಪಕರಣಗಳು' : 'Popular Tools'}
             </h4>
-            <ul className="space-y-2 text-xs font-bold text-slate-700">
+            <ul className="space-y-2.5 text-xs font-bold text-slate-700">
               <li>
-                <Link href="/emi-calculator" className="hover:text-amber-700 transition-colors">
-                  ➔ {lang === 'kn' ? 'EMI ಸಾಲದ ಲೆಕ್ಕಾಚಾರ' : 'Home/Car Loan EMI Calc'}
+                <Link href="/emi-calculator" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+                    ➜
+                  </div>
+                  <span>{lang === 'kn' ? 'EMI ಸಾಲದ ಲೆಕ್ಕಾಚಾರ' : 'Home/Car Loan EMI Calc'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/age-calculator" className="hover:text-amber-700 transition-colors">
-                  ➔ {lang === 'kn' ? 'ವಯಸ್ಸು ಲೆಕ್ಕಾಚಾರ ಟೂಲ್' : 'Exact Age Calculator'}
+                <Link href="/age-calculator" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+                    ➜
+                  </div>
+                  <span>{lang === 'kn' ? 'ವಯಸ್ಸು ಲೆಕ್ಕಾಚಾರ ಟೂಲ್' : 'Exact Age Calculator'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/gold-rates" className="hover:text-amber-700 transition-colors">
-                  ➔ {lang === 'kn' ? 'ಇಂದಿನ ಚಿನ್ನ & ಬೆಳ್ಳಿ ದರ' : 'Live 24K/22K Gold Rates'}
+                <Link href="/gold-rates" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+                    ➜
+                  </div>
+                  <span>{lang === 'kn' ? 'ಇಂದಿನ ಚಿನ್ನ & ಬೆಳ್ಳಿ ದರ' : 'Live 24K/22K Gold Rates'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/krushi-rates" className="hover:text-amber-700 transition-colors">
-                  ➔ {lang === 'kn' ? 'ಕೃಷಿ & APMC ಬೆಳೆ ದರ' : 'Karnataka APMC Crop Prices'}
+                <Link href="/krushi-rates" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+                    ➜
+                  </div>
+                  <span>{lang === 'kn' ? 'ಕೃಷಿ & APMC ಬೆಳೆ ದರ' : 'Karnataka APMC Crop Prices'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/photo-resizer" className="hover:text-amber-700 transition-colors">
-                  ➔ {lang === 'kn' ? 'PDF to JPG & Photo Resizer' : '20KB Passport Photo Resizer'}
+                <Link href="/photo-resizer" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                  <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+                    ➜
+                  </div>
+                  <span>{lang === 'kn' ? 'PDF to JPG & Photo Resizer' : '20KB Passport Photo Resizer'}</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Legal & Policy Links */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider border-b border-amber-400 pb-1.5 w-fit">
+          {/* Col 3: Information & Legal Card */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3">
+            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider border-b-2 border-amber-400 pb-2 w-fit">
               {lang === 'kn' ? 'ಮಾಹಿತಿ & ನಿಯಮಗಳು' : 'Information & Legal'}
             </h4>
             <ul className="space-y-2 text-xs font-bold text-slate-700">
               <li>
-                <Link href="/about" className="hover:text-amber-700 transition-colors flex items-center gap-1.5">
-                  <Info className="w-3.5 h-3.5 text-amber-600" />
+                <Link href="/about" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Info className="w-4 h-4 text-amber-600" />
                   <span>{lang === 'kn' ? 'ನಮ್ಮ ಬಗ್ಗೆ (About Us)' : 'About Us'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-amber-700 transition-colors flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-amber-600" />
+                <Link href="/contact" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-amber-600" />
                   <span>{lang === 'kn' ? 'ಸಂಪರ್ಕಿಸಿ (Contact Us)' : 'Contact Us'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/privacy-policy" className="hover:text-amber-700 transition-colors flex items-center gap-1.5">
-                  <Shield className="w-3.5 h-3.5 text-slate-500" />
+                <Link href="/privacy-policy" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-slate-500" />
                   <span>{lang === 'kn' ? 'ಖಾಸಗಿತನದ ನೀತಿ (Privacy Policy)' : 'Privacy Policy'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-amber-700 transition-colors flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-slate-500" />
+                <Link href="/terms" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-slate-500" />
                   <span>{lang === 'kn' ? 'ನಿಯಮಗಳು (Terms & Conditions)' : 'Terms & Conditions'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="hover:text-amber-700 transition-colors flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-slate-500" />
+                <Link href="/disclaimer" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-slate-500" />
                   <span>{lang === 'kn' ? 'ಹಕ್ಕುತ್ಯಾಗ (Disclaimer)' : 'Disclaimer'}</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 4: Master Admin Control Link */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider border-b border-amber-400 pb-1.5 w-fit">
-              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ವ್ಯವಸ್ಥೆ' : 'Admin Control'}
+          {/* Col 4: Daily Rates & Quick Links Card */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3">
+            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider border-b-2 border-amber-400 pb-2 w-fit">
+              {lang === 'kn' ? 'ದೈನಂದಿನ ದರಗಳು' : 'Daily Live Rates'}
             </h4>
-            <div className="space-y-2">
-              <Link
-                href="/admin"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-xs shadow-lg transition-transform active:scale-95 border border-amber-400"
-              >
-                <Lock className="w-4 h-4" />
-                <span>{lang === 'kn' ? '🔒 ಅಡ್ಮಿನ್ ಲಾಗಿನ್ (Admin)' : '🔒 Admin Portal'}</span>
-              </Link>
-            </div>
+            <ul className="space-y-2 text-xs font-bold text-slate-700">
+              <li>
+                <Link href="/dinasi-rates" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Coins className="w-4 h-4 text-amber-600" />
+                  <span>{lang === 'kn' ? 'ದಿನಸಿ & ತರಕಾರಿ ದರ' : 'Grocery & Veg Rates'}</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/fuel-calculator" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-amber-600" />
+                  <span>{lang === 'kn' ? 'ಪೆಟ್ರೋಲ್ & ಡೀಸೆಲ್ ದರ' : 'Petrol & Diesel Rates'}</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/panchanga" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Newspaper className="w-4 h-4 text-amber-600" />
+                  <span>{lang === 'kn' ? 'ಇಂದಿನ ಪಂಚಾಂಗ' : 'Daily Panchanga'}</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/blogs" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-amber-600" />
+                  <span>{lang === 'kn' ? 'ಮಾಹಿತಿ ಲೇಖನಗಳು (Blogs)' : 'Help Articles'}</span>
+                </Link>
+              </li>
+            </ul>
           </div>
 
         </div>
       </div>
 
-      {/* BOTTOM COPYRIGHT & SCROLL TO TOP BAR (LIGHT MODE) */}
-      <div className="border-t border-slate-200 bg-slate-100 py-4 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-slate-600 font-bold gap-3">
-          <p className="text-center sm:text-left">
-            © {new Date().getFullYear()} MAHITI CHAKRA HELP PORTAL. {lang === 'kn' ? 'ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.' : 'All Rights Reserved.'}
-          </p>
+      {/* BOTTOM COPYRIGHT & SECURITY FOOTER BAR */}
+      <div className="border-t border-slate-200 bg-slate-100 py-4 px-4 sm:px-6 relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-600 font-extrabold">
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            <span>© {new Date().getFullYear()} MAHITI CHAKRA PORTAL.</span>
+            <span className="hidden sm:inline">•</span>
+            <span className="text-amber-800">💛 Crafted with Pride for Karnataka</span>
+          </div>
+
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">
-              Built with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline" /> for Karnataka
-            </span>
+            <Link
+              href="/admin"
+              className="text-slate-700 hover:text-amber-800 transition-colors flex items-center gap-1 bg-white px-2.5 py-1 rounded-lg border border-slate-300 shadow-2xs"
+            >
+              <Lock className="w-3 h-3 text-amber-600" />
+              <span>Admin Portal</span>
+            </Link>
+            
             <button
               onClick={scrollToTop}
-              className="p-2 rounded-xl bg-white hover:bg-slate-200 text-slate-900 border border-slate-300 shadow-2xs transition-all flex items-center gap-1 font-black text-[11px]"
+              className="p-2 rounded-xl bg-white hover:bg-slate-200 text-amber-800 transition-all border border-slate-300 shadow-2xs flex items-center gap-1"
               title="Scroll to Top"
             >
-              <span>{lang === 'kn' ? 'ಮೇಲಕ್ಕೆ' : 'Top'}</span>
-              <ArrowUp className="w-3.5 h-3.5 text-amber-600" />
+              <ArrowUp className="w-4 h-4 text-amber-600" />
+              <span className="text-[10px] font-black uppercase">Top</span>
             </button>
           </div>
         </div>
       </div>
+
     </footer>
   );
 };

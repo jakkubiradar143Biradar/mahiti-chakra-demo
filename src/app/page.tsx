@@ -8,12 +8,13 @@ import { AppItem, CategoryCard, HeroConfig } from '@/lib/types';
 import { SmartSearchModal } from '@/components/SmartSearchModal';
 import { CommentSection } from '@/components/CommentSection';
 import { ShareModal } from '@/components/ShareModal';
+import { PWAInstallModal } from '@/components/PWAInstallModal';
 import {
   Search, Star, ArrowRight, ShoppingCart, FileText, Coins,
   GraduationCap, Building2, Sparkles, Flame, Calendar, Calculator,
   HeartPulse, CalendarDays, Gauge, Zap, Trophy, ShieldCheck, Mail,
   CheckCircle2, Smartphone, Award, Grid, Lock, CheckCircle, X, ExternalLink,
-  Layers, Share2
+  Layers, Share2, Download
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
   const [selectedCategoryTab, setSelectedCategoryTab] = useState('all');
   const [showHeroSearchModal, setShowHeroSearchModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [installingAppItem, setInstallingAppItem] = useState<AppItem | null>(null);
   const [activeEmbedApp, setActiveEmbedApp] = useState<AppItem | null>(null);
 
   useEffect(() => {
@@ -115,6 +117,15 @@ export default function HomePage() {
                 </h3>
               </div>
               <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setInstallingAppItem(activeEmbedApp)}
+                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 border border-amber-300 flex items-center gap-1.5 shrink-0"
+                  title="Install this specific app to Home Screen"
+                >
+                  <Download className="w-3.5 h-3.5 text-slate-950" />
+                  <span>{lang === 'kn' ? '📲 ಇನ್‌ಸ್ಟಾಲ್' : '📲 Install'}</span>
+                </button>
+
                 <a
                   href={activeEmbedApp.embedLink}
                   target="_blank"
@@ -149,6 +160,14 @@ export default function HomePage() {
       {/* SHARE MODAL DRAWER */}
       {showShareModal && (
         <ShareModal onClose={() => setShowShareModal(false)} />
+      )}
+
+      {/* PER-APP STANDALONE PWA INSTALLATION MODAL */}
+      {installingAppItem && (
+        <PWAInstallModal
+          appName={lang === 'kn' ? installingAppItem.titleKn : installingAppItem.titleEn}
+          onClose={() => setInstallingAppItem(null)}
+        />
       )}
 
       {/* HERO BANNER BOX */}
@@ -345,18 +364,18 @@ export default function HomePage() {
                 {app.embedLink ? (
                   <button
                     onClick={() => setActiveEmbedApp(app)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] shadow-xs transition-all active:scale-95 shrink-0"
+                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
                   >
-                    <span>{lang === 'kn' ? 'ಓಪನ್ 🔗' : 'Embed Open'}</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
                   </button>
                 ) : (
                   <Link
                     href={app.href}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-[11px] shadow-xs transition-all active:scale-95 shrink-0"
+                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
                   >
-                    <span>{lang === 'kn' ? 'ಪ್ರಾರಂಭಿಸಿ' : 'Launch'}</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
                   </Link>
                 )}
               </div>
@@ -441,18 +460,18 @@ export default function HomePage() {
                 {app.embedLink ? (
                   <button
                     onClick={() => setActiveEmbedApp(app)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] shadow-xs transition-all active:scale-95 shrink-0"
+                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
                   >
-                    <span>{lang === 'kn' ? 'ಓಪನ್ 🔗' : 'Embed Open'}</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
                   </button>
                 ) : (
                   <Link
                     href={app.href}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-[11px] shadow-xs transition-all active:scale-95 shrink-0"
+                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
                   >
-                    <span>{lang === 'kn' ? 'ಪ್ರಾರಂಭಿಸಿ' : 'Launch'}</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
                   </Link>
                 )}
               </div>

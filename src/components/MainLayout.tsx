@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from './LanguageContext';
@@ -9,8 +9,10 @@ import { Footer } from './Footer';
 import { SupportersMarquee } from './SupportersMarquee';
 import { SmartSearchModal } from './SmartSearchModal';
 import { ShareModal } from './ShareModal';
+import { PWAInstallModal } from './PWAInstallModal';
+import { MahitiChakraLogo } from './MahitiChakraLogo';
 import {
-  Menu, Sun, Globe, User, Search, Home, Grid, Heart, ShieldCheck, X, Share2
+  Menu, Sun, Globe, User, Search, Home, Grid, Heart, ShieldCheck, X, Share2, Download
 } from 'lucide-react';
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -20,13 +22,51 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showPwaModal, setShowPwaModal] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    // 🚀 Register Service Worker for 100% PWA Support
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch((err) => {
+        console.log('SW error:', err);
+      });
+    }
+
+    // 📲 Capture Browser Native PWA Install Prompt
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      (window as any).deferredPwaPrompt = e;
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans select-none overflow-x-hidden max-w-full justify-between">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans select-none overflow-x-hidden max-w-full justify-between relative">
       
+      {/* GLOBAL STANDALONE SMART SEARCH MODAL */}
+      {showSearchModal && (
+        <SmartSearchModal
+          query={searchQuery}
+          onQueryChange={setSearchQuery}
+          onClose={() => setShowSearchModal(false)}
+        />
+      )}
+
       {/* SHARE MODAL DRAWER */}
       {showShareModal && (
         <ShareModal onClose={() => setShowShareModal(false)} />
+      )}
+
+      {/* PWA INSTALLATION MODAL DRAWER */}
+      {showPwaModal && (
+        <PWAInstallModal
+          deferredPrompt={deferredPrompt}
+          onClose={() => setShowPwaModal(false)}
+        />
       )}
 
       {/* TOP HEADER */}
@@ -43,20 +83,18 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               <Menu className="w-5 h-5" />
             </button>
 
-            <Link href="/" className="flex items-center gap-2 group shrink-0">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
-                <span className="text-lg">💛</span>
-              </div>
+            <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+              <MahitiChakraLogo size={42} className="w-10 h-10 group-hover:scale-105 transition-transform" />
               <div className="leading-tight">
                 <span className="font-black text-xs sm:text-sm text-slate-950 block tracking-tight">MAHITI CHAKRA</span>
-                <span className="text-[9px] font-extrabold text-amber-700 bg-amber-100 px-1.5 py-0.2 rounded uppercase">
-                  HELP PORTAL
+                <span className="text-[9px] font-black text-amber-800 bg-amber-100 border border-amber-300 px-1.5 py-0.2 rounded uppercase">
+                  HELP PORTAL & APPS
                 </span>
               </div>
             </Link>
           </div>
 
-          {/* Desktop Search Input with Smart Autocomplete Modal */}
+          {/* Desktop Search Input */}
           <div className="flex-1 max-w-md hidden md:block relative">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
@@ -68,28 +106,31 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
                 setShowSearchModal(true);
               }}
               onFocus={() => setShowSearchModal(true)}
-              className="w-full bg-slate-100 border border-slate-200 rounded-full py-2 pl-10 pr-4 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all shadow-2xs"
+              className="w-full bg-slate-100 border border-slate-200 rounded-full py-2 pl-10 pr-4 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all shadow-2xs cursor-pointer"
             />
-
-            {showSearchModal && searchQuery.trim() && (
-              <SmartSearchModal
-                query={searchQuery}
-                onQueryChange={setSearchQuery}
-                onClose={() => setShowSearchModal(false)}
-              />
-            )}
           </div>
 
           {/* Right Header Actions */}
           <div className="flex items-center gap-1.5 shrink-0">
+            {/* 📲 1-CLICK PWA INSTALL WEB APP BUTTON (Visible on tablet/desktop, mobile has bottom bar) */}
+            <button
+              id="global-pwa-install-btn"
+              onClick={() => setShowPwaModal(true)}
+              className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[10px] sm:text-[11px] shadow-sm transition-all active:scale-95 border border-amber-300"
+              title="Install App to Home Screen"
+            >
+              <Download className="w-3.5 h-3.5 text-slate-950" />
+              <span>{lang === 'kn' ? 'ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್' : 'Install App'}</span>
+            </button>
+
             {/* Share Website Pill Button */}
             <button
               onClick={() => setShowShareModal(true)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] sm:text-[11px] shadow-sm transition-all active:scale-95 border border-emerald-500"
+              className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] sm:text-[11px] shadow-sm transition-all active:scale-95 border border-emerald-500"
               title="Share Website"
             >
               <Share2 className="w-3.5 h-3.5" />
-              <span>{lang === 'kn' ? 'ಶೇರ್ ಮಾಡಿ' : 'Share'}</span>
+              <span>{lang === 'kn' ? 'ಶೇರ್' : 'Share'}</span>
             </button>
 
             {/* Language Switcher Pill */}
@@ -124,16 +165,8 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
               setShowSearchModal(true);
             }}
             onFocus={() => setShowSearchModal(true)}
-            className="w-full bg-slate-100 border border-slate-200 rounded-full py-2 pl-10 pr-4 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white shadow-2xs"
+            className="w-full bg-slate-100 border border-slate-200 rounded-full py-2 pl-10 pr-4 text-xs font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white shadow-2xs cursor-pointer"
           />
-
-          {showSearchModal && searchQuery.trim() && (
-            <SmartSearchModal
-              query={searchQuery}
-              onQueryChange={setSearchQuery}
-              onClose={() => setShowSearchModal(false)}
-            />
-          )}
         </div>
       </header>
 
@@ -143,7 +176,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         {sidebarOpen && (
           <div className="fixed inset-0 z-50 flex">
             <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs" onClick={() => setSidebarOpen(false)} />
-            <div className="relative z-10 w-64 bg-slate-900 h-full shadow-2xl">
+            <div className="relative z-10 w-64 bg-white h-full shadow-2xl">
               <Sidebar isOpen={true} onClose={() => setSidebarOpen(false)} />
             </div>
           </div>
@@ -155,19 +188,19 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         </main>
       </div>
 
-      {/* ❤️ CONTINUOUS ANIMATED SUPPORTERS & CREATOR WALL */}
-      <SupportersMarquee />
+      {/* ❤️ CONTINUOUS ANIMATED SUPPORTERS & CREATOR WALL (HOME PAGE ONLY) */}
+      {pathname === '/' && <SupportersMarquee />}
 
       {/* WORLD-CLASS ULTRA-PROFESSIONAL FOOTER */}
       <Footer />
 
       {/* MOBILE STICKY BOTTOM NAVIGATION BAR */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl px-2 py-1.5 flex items-center justify-around max-w-full overflow-hidden">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl px-2 py-1 flex items-center justify-around max-w-full overflow-visible">
         
         {/* Tab 1: Home */}
         <Link
           href="/"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 rounded-xl transition-all ${
+          className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all ${
             pathname === '/' ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
           }`}
         >
@@ -178,7 +211,7 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
         {/* Tab 2: All Apps */}
         <Link
           href="/#all-apps"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 rounded-xl transition-all ${
+          className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all ${
             pathname === '/#all-apps' ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
           }`}
         >
@@ -186,42 +219,40 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           <span className="text-[10px]">{lang === 'kn' ? 'ಎಲ್ಲಾ Apps' : 'All Apps'}</span>
         </Link>
 
-        {/* Tab 3: CENTER PROMINENT SEARCH BUTTON */}
+        {/* Tab 3: CENTER PROMINENT FLOATING SEARCH BUTTON */}
         <button
           onClick={() => {
-            const input = document.querySelector('header input') as HTMLInputElement;
-            if (input) {
-              input.focus();
-              setShowSearchModal(true);
-            }
+            setSearchQuery('');
+            setShowSearchModal(true);
           }}
-          className="flex flex-col items-center justify-center -mt-5 shrink-0"
+          className="flex flex-col items-center justify-center -mt-6 shrink-0 relative z-50 group"
+          title="Search Tools & Rates"
         >
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-500 text-slate-950 flex items-center justify-center font-black shadow-xl shadow-amber-500/30 border-4 border-white active:scale-95 transition-transform">
-            <Search className="w-5 h-5" />
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-500 text-slate-950 flex items-center justify-center font-black shadow-xl shadow-amber-500/40 border-4 border-white active:scale-95 transition-all group-hover:scale-105">
+            <Search className="w-6 h-6 text-slate-950" />
           </div>
           <span className="text-[10px] font-black text-slate-950 mt-0.5">{lang === 'kn' ? 'ಹುಡುಕು' : 'Search'}</span>
         </button>
 
-        {/* Tab 4: SHARE WEBSITE BUTTON */}
+        {/* Tab 4: 📲 INSTALL PWA APP BUTTON */}
         <button
-          onClick={() => setShowShareModal(true)}
-          className="flex flex-col items-center gap-0.5 px-2.5 py-1 rounded-xl transition-all text-emerald-700 font-extrabold"
+          onClick={() => setShowPwaModal(true)}
+          className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all text-amber-950 font-black"
         >
-          <Share2 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" />
-          <span className="text-[10px]">{lang === 'kn' ? 'ಶೇರ್' : 'Share'}</span>
+          <Download className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
+          <span className="text-[10px]">{lang === 'kn' ? 'ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್' : 'Install'}</span>
         </button>
 
-        {/* Tab 5: My Account / Admin */}
-        <Link
-          href="/admin"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 rounded-xl transition-all ${
-            pathname === '/admin' ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
+        {/* Tab 5: Menu Box Sidebar Drawer */}
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all ${
+            sidebarOpen ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
           }`}
         >
-          <User className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span className="text-[10px]">{lang === 'kn' ? 'ನನ್ನ ಖಾತೆ' : 'Account'}</span>
-        </Link>
+          <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-[10px]">{lang === 'kn' ? 'ಮೆನು' : 'Menu'}</span>
+        </button>
       </nav>
 
     </div>
