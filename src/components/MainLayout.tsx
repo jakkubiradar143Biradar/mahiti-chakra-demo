@@ -24,8 +24,21 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   const [showShareModal, setShowShareModal] = useState(false);
   const [showPwaModal, setShowPwaModal] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isEmbed, setIsEmbed] = useState(false);
 
   useEffect(() => {
+    // 🚀 Check if running in embed mode or iframe
+    if (typeof window !== 'undefined') {
+      const isEmbedUrl = 
+        window.location.search.includes('embed=true') || 
+        window.location.pathname.startsWith('/embed') ||
+        window.self !== window.top; // running inside an iframe
+      
+      if (isEmbedUrl) {
+        setIsEmbed(true);
+      }
+    }
+
     // 🚀 Register Service Worker for 100% PWA Support
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').catch((err) => {
@@ -43,6 +56,17 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
   }, []);
+
+  // 🎯 PURE EMBED MODE: HIDE ALL HEADERS, FOOTERS, MENUS AND NAVIGATION
+  if (isEmbed || pathname.startsWith('/embed')) {
+    return (
+      <div className="w-full min-h-screen bg-transparent p-0 m-0 overflow-x-hidden font-sans select-none">
+        <main className="w-full p-0 m-0">
+          {children}
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans select-none overflow-x-hidden max-w-full justify-between relative">
