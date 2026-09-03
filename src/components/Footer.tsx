@@ -129,43 +129,43 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2.5 text-xs font-bold text-slate-700">
               <li>
-                <Link href="/emi-calculator" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                <Link href="/letter-maker" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
                   <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
                     ➜
                   </div>
-                  <span>{lang === 'kn' ? 'EMI ಸಾಲದ ಲೆಕ್ಕಾಚಾರ' : 'Home/Car Loan EMI Calc'}</span>
+                  <span>{lang === 'kn' ? 'ಸರ್ಕಾರಿ ಅರ್ಜಿ (ಪತ್ರ) ಮೇಕರ್' : 'Govt Letter Maker'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/age-calculator" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                <Link href="/budget-planner" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
                   <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
                     ➜
                   </div>
-                  <span>{lang === 'kn' ? 'ವಯಸ್ಸು ಲೆಕ್ಕಾಚಾರ ಟೂಲ್' : 'Exact Age Calculator'}</span>
+                  <span>{lang === 'kn' ? 'ಮನೆ ಖರ್ಚು & ಬಜೆಟ್ ಪ್ಲಾನರ್' : 'Family Budget Planner'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/gold-rates" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                <Link href="/screenshot-editor" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
                   <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
                     ➜
                   </div>
-                  <span>{lang === 'kn' ? 'ಇಂದಿನ ಚಿನ್ನ & ಬೆಳ್ಳಿ ದರ' : 'Live 24K/22K Gold Rates'}</span>
+                  <span>{lang === 'kn' ? 'ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಎಡಿಟರ್' : 'Screenshot OCR Editor'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/krushi-rates" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                <Link href="/catering-estimator" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
                   <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
                     ➜
                   </div>
-                  <span>{lang === 'kn' ? 'ಕೃಷಿ & APMC ಬೆಳೆ ದರ' : 'Karnataka APMC Crop Prices'}</span>
+                  <span>{lang === 'kn' ? 'ಅಡುಗೆ ಸಾಮಗ್ರಿ ಅಂದಾಜು' : 'Catering Estimator'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/photo-resizer" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
+                <Link href="/kannada-calendar" className="hover:text-amber-700 transition-colors flex items-center gap-2 group">
                   <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
                     ➜
                   </div>
-                  <span>{lang === 'kn' ? 'PDF to JPG & Photo Resizer' : '20KB Passport Photo Resizer'}</span>
+                  <span>{lang === 'kn' ? 'ಸಾಂಪ್ರದಾಯಿಕ ಕನ್ನಡ ಕ್ಯಾಲೆಂಡರ್' : 'Kannada Calendar'}</span>
                 </Link>
               </li>
             </ul>
@@ -213,25 +213,25 @@ export const Footer: React.FC = () => {
           {/* Col 4: Daily Rates & Quick Links Card */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3">
             <h4 className="text-xs font-black text-slate-950 uppercase tracking-wider border-b-2 border-amber-400 pb-2 w-fit">
-              {lang === 'kn' ? 'ದೈನಂದಿನ ದರಗಳು' : 'Daily Live Rates'}
+              {lang === 'kn' ? 'ಇತರೆ ಸೇವೆಗಳು' : 'Other Services'}
             </h4>
             <ul className="space-y-2 text-xs font-bold text-slate-700">
               <li>
-                <Link href="/dinasi-rates" className="hover:text-amber-700 transition-colors flex items-center gap-2">
-                  <Coins className="w-4 h-4 text-amber-600" />
-                  <span>{lang === 'kn' ? 'ದಿನಸಿ & ತರಕಾರಿ ದರ' : 'Grocery & Veg Rates'}</span>
+                <Link href="/biodata-maker" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-amber-600" />
+                  <span>{lang === 'kn' ? 'ಮದುವೆ ಬಯೋಡೇಟಾ' : 'Marriage Biodata'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/fuel-calculator" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                <Link href="/land-converter" className="hover:text-amber-700 transition-colors flex items-center gap-2">
                   <Zap className="w-4 h-4 text-amber-600" />
-                  <span>{lang === 'kn' ? 'ಪೆಟ್ರೋಲ್ & ಡೀಸೆಲ್ ದರ' : 'Petrol & Diesel Rates'}</span>
+                  <span>{lang === 'kn' ? 'ಜಮೀನು ಸರ್ವೆ ನಕ್ಷೆ' : 'Land Survey Map'}</span>
                 </Link>
               </li>
               <li>
-                <Link href="/panchanga" className="hover:text-amber-700 transition-colors flex items-center gap-2">
-                  <Newspaper className="w-4 h-4 text-amber-600" />
-                  <span>{lang === 'kn' ? 'ಇಂದಿನ ಪಂಚಾಂಗ' : 'Daily Panchanga'}</span>
+                <Link href="/grama-baddi" className="hover:text-amber-700 transition-colors flex items-center gap-2">
+                  <Coins className="w-4 h-4 text-amber-600" />
+                  <span>{lang === 'kn' ? 'ಗ್ರಾಮೀಣ ಬಡ್ಡಿ ಲೆಕ್ಕಾಚಾರ' : 'Village Baddi Calc'}</span>
                 </Link>
               </li>
               <li>

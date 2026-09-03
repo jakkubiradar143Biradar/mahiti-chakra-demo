@@ -57,39 +57,35 @@ export const SmartSearchModal: React.FC<SmartSearchModalProps> = ({ query, onQue
 
     // Comprehensive Universal Keyword Dictionary for ALL Apps
     const appKeywords: Record<string, string[]> = {
-      mileage: ['vahana', 'vehi', 'vehicle', 'mileage', 'bike', 'car', 'auto', 'petrol', 'fuel', 'litre', 'kpl', 'maileju', 'ವಾಹನ', 'ಮೈಲೇಜ್', 'ಪೆಟ್ರೋಲ್', 'ಡೀಸೆಲ್'],
-      emi: ['saala', 'baddi', 'loan', 'interest', 'emi', 'kist', 'kistu', 'bank', 'home loan', 'car loan', 'mortgage', 'finance', 'ಸಾಲ', 'ಬಡ್ಡಿ', 'ಹಣಕಾಸು', 'ಲೆಕ್ಕಾಚಾರ'],
-      age: ['vayassu', 'vayas', 'age', 'dob', 'birth', 'date of birth', 'janma', 'janmadina', 'huttida', 'vayasina', 'ವಯಸ್ಸು', 'ಹುಟ್ಟಿದ ದಿನಾಂಕ', 'ದಿನಾಂಕ'],
-      lpg: ['lpg', 'gas', 'cylinder', 'dinasi', 'grocery', 'price', 'rate', 'bhavan', 'indane', 'hp', 'bharat', 'ಗ್ಯಾಸ್', 'ಸಿಲಿಂಡರ್', 'ದಿನಸಿ', 'ದರ'],
-      pdf: ['pdf', 'jpg', 'jpeg', 'photo', 'image', 'resizer', 'convert', 'converter', 'dakhale', '20kb', '50kb', '100kb', 'doc', 'document', 'ಫೋಟೋ', 'ದಾಖಲೆ', 'ಚಿತ್ರ'],
-      bmi: ['bmi', 'health', 'weight', 'height', 'body', 'arogya', 'tooga', 'fitness', 'ಆರೋಗ್ಯ', 'ತೂಕ', 'ಎತ್ತರ', 'ದೇಹ'],
-      date: ['date', 'interval', 'difference', 'days', 'duration', 'calendar', 'dinaanka', 'antar', 'ದಿನಾಂಕ', 'ಅಂತರ', 'ದಿನಗಳು'],
-      calorie: ['calorie', 'calories', 'diet', 'food', 'nutrition', 'intake', 'aahara', 'oota', 'ಕ್ಯಾಲೋರಿ', 'ಆಹಾರ', 'ಊಟ'],
-      krushi: ['krushi', 'apmc', 'raitha', 'bele', 'crop', 'adike', 'arecanut', 'coconut', 'bhatta', 'jolada', 'market', 'ಕೃಷಿ', 'ಬೆಳೆ', 'ಅಡಿಕೆ', 'ರೈತ'],
-      gold: ['gold', 'silver', 'chinna', 'belli', '24k', '22k', 'rate', 'price', 'tola', 'abharana', 'jewelry', 'ಚಿನ್ನ', 'ಬೆಳ್ಳಿ', 'ಆಭರಣ'],
-      panchanga: ['panchanga', 'rashi', 'nakshatra', 'jathaka', 'tithi', 'muhurtha', 'today', 'ಪಂಚಾಂಗ', 'ರಾಶಿ', 'ನಕ್ಷತ್ರ', 'ತಿಥಿ'],
-      tax: ['tax', 'gst', 'income tax', 'terige', 'it', 'filing', 'slab', 'percent', 'ತೆರಿಗೆ', 'ಜಿಎಸ್‌ಟಿ'],
-      sip: ['sip', 'mutual', 'fund', 'investment', 'hudaike', 'return', 'cagr', 'ಹೂಡಿಕೆ', 'ಮ್ಯೂಚುಯಲ್ ಫಂಡ್'],
-      land: ['land', 'converter', 'gunta', 'acre', 'cent', 'sqft', 'hektar', 'jameen', 'bhoomi', 'ಜಮೀನು', 'ಭೂಮಿ', 'ಗುಂಟೆ', 'ಎಕರೆ'],
+      letter: ['patra', 'letter', 'arji', 'application', 'complaint', 'duru', 'pdo', 'panchayat', 'tahsildar', 'police', 'rti', 'ಅರ್ಜಿ', 'ಪತ್ರ', 'ದೂರು', 'ಪಂಚಾಯತ್'],
+      budget: ['budget', 'kharchu', 'saving', 'family', 'salary', 'sambala', '50-30-20', 'expense', 'ಖರ್ಚು', 'ಬಜೆಟ್', 'ಉಳಿತಾಯ', 'ಸಂಬಳ'],
+      screenshot: ['screenshot', 'ocr', 'scanner', 'edit', 'replacer', 'image text', 'ಫೋಟೋ', 'ಚಿತ್ರ', 'ಸ್ಕ್ರೀನ್‌ಶಾಟ್', 'ಅಕ್ಷರ'],
+      catering: ['aduge', 'catering', 'samagri', 'grocery', 'meals', 'oota', 'rice', 'dal', 'oil', 'ಅಡುಗೆ', 'ಸಾಮಗ್ರಿ', 'ದಿನಸಿ', 'ಊಟ'],
+      calendar: ['calendar', 'tithi', 'nakshatra', 'rahu', 'panchanga', 'dina', 'ಕ್ಯಾಲೆಂಡರ್', 'ತಿಥಿ', 'ನಕ್ಷತ್ರ', 'ಪಂಚಾಂಗ'],
+      baby: ['baby', 'names', 'hesaru', 'namakarana', 'rashi', 'nakshatra', 'ಮಕ್ಕಳ ಹೆಸರು', 'ನಾಮಕರಣ', 'ಹೆಸರು'],
+      biodata: ['biodata', 'maduve', 'marriage', 'jathaka', 'horoscope', 'profile', 'ಬಯೋಡೇಟಾ', 'ಮದುವೆ', 'ಜಾತಕ'],
+      land: ['land', 'survey', 'map', 'gunta', 'acre', 'area', 'nakashe', 'jameenu', 'ಜಮೀನು', 'ಸರ್ವೆ', 'ಗುಂಟೆ', 'ಎಕರೆ'],
+      diet: ['diet', 'weight', 'loss', 'tooga', 'mudde', 'ragi', 'health', 'fitness', 'ಡಯಟ್', 'ತೂಕ', 'ಮುದ್ದೆ', 'ಆರೋಗ್ಯ'],
+      invitation: ['lagna', 'patrike', 'invitation', 'card', 'wedding', 'gruhapravesha', 'ಲಗ್ನ ಪತ್ರಿಕೆ', 'ಆಮಂತ್ರಣ', 'ಮದುವೆ'],
+      kirani: ['kirani', 'sante', 'list', 'grocery', 'checklist', 'dinasu', 'ಕಿರಣಿ', 'ಸಂತೆ', 'ಲಿಸ್ಟ್', 'ದಿನಸಿ'],
+      baddi: ['baddi', 'saala', 'interest', 'grama', 'rupee', 'noorakke', 'ಬಡ್ಡಿ', 'ಸಾಲ', 'ಗ್ರಾಮೀಣ'],
     };
 
     for (const [key, terms] of Object.entries(appKeywords)) {
       const matchQuery = terms.some(t => q.includes(t) || t.includes(q));
       if (matchQuery) {
-        if (key === 'mileage' && (id.includes('mileage') || href.includes('fuel') || titleKn.includes('ವಾಹನ') || titleEn.includes('mileage'))) return true;
-        if (key === 'emi' && (id.includes('emi') || href.includes('emi') || titleKn.includes('emi') || titleKn.includes('ಸಾ'))) return true;
-        if (key === 'age' && (id.includes('age') || href.includes('age') || titleKn.includes('ವಯಸ್ಸು'))) return true;
-        if (key === 'lpg' && (id.includes('lpg') || href.includes('dinasi') || titleKn.includes('lpg') || titleKn.includes('ಗ್ಯಾಸ್'))) return true;
-        if (key === 'pdf' && (id.includes('pdf') || href.includes('photo') || titleKn.includes('pdf') || titleKn.includes('ಫೋಟೋ'))) return true;
-        if (key === 'bmi' && (id.includes('bmi') || href.includes('tax') || titleKn.includes('bmi') || titleKn.includes('ಆರೋಗ್ಯ'))) return true;
-        if (key === 'date' && (id.includes('date') || titleKn.includes('ದಿನಾಂಕ'))) return true;
-        if (key === 'calorie' && (id.includes('calorie') || titleKn.includes('ಕ್ಯಾಲೋರಿ'))) return true;
-        if (key === 'krushi' && (id.includes('krushi') || href.includes('krushi') || titleKn.includes('ಕೃಷಿ'))) return true;
-        if (key === 'gold' && (id.includes('gold') || href.includes('gold') || titleKn.includes('ಚಿನ್ನ'))) return true;
-        if (key === 'panchanga' && (id.includes('panchanga') || href.includes('panchanga') || titleKn.includes('ಪಂಚಾಂಗ'))) return true;
-        if (key === 'tax' && (id.includes('tax') || href.includes('tax') || titleKn.includes('ತೆರಿಗೆ'))) return true;
-        if (key === 'sip' && (id.includes('sip') || href.includes('sip') || titleKn.includes('sip'))) return true;
+        if (key === 'letter' && (id.includes('letter') || href.includes('letter') || titleKn.includes('ಅರ್ಜಿ'))) return true;
+        if (key === 'budget' && (id.includes('budget') || href.includes('budget') || titleKn.includes('ಬಜೆಟ್'))) return true;
+        if (key === 'screenshot' && (id.includes('screenshot') || href.includes('screenshot') || titleKn.includes('ಸ್ಕ್ರೀನ್‌ಶಾಟ್'))) return true;
+        if (key === 'catering' && (id.includes('catering') || href.includes('catering') || titleKn.includes('ಅಡುಗೆ'))) return true;
+        if (key === 'calendar' && (id.includes('calendar') || href.includes('calendar') || titleKn.includes('ಕ್ಯಾಲೆಂಡರ್'))) return true;
+        if (key === 'baby' && (id.includes('baby') || href.includes('baby') || titleKn.includes('ಹೆಸರು'))) return true;
+        if (key === 'biodata' && (id.includes('biodata') || href.includes('biodata') || titleKn.includes('ಬಯೋಡೇಟಾ'))) return true;
         if (key === 'land' && (id.includes('land') || href.includes('land') || titleKn.includes('ಜಮೀನು'))) return true;
+        if (key === 'diet' && (id.includes('diet') || href.includes('diet') || titleKn.includes('ಡಯಟ್'))) return true;
+        if (key === 'invitation' && (id.includes('invitation') || href.includes('invitation') || titleKn.includes('ಲಗ್ನ'))) return true;
+        if (key === 'kirani' && (id.includes('kirani') || href.includes('kirani') || titleKn.includes('ಕಿರಣಿ'))) return true;
+        if (key === 'baddi' && (id.includes('baddi') || href.includes('baddi') || titleKn.includes('ಬಡ್ಡಿ'))) return true;
       }
     }
 
@@ -99,12 +95,12 @@ export const SmartSearchModal: React.FC<SmartSearchModalProps> = ({ query, onQue
   const popularApps = apps.slice(0, 6);
 
   const quickSearchTags = [
-    { kn: 'ವಯಸ್ಸು ಲೆಕ್ಕಾಚಾರ', en: 'age' },
-    { kn: 'EMI ಸಾಲದ ಲೆಕ್ಕ', en: 'emi' },
-    { kn: 'Photo Resizer', en: 'photo' },
-    { kn: 'ಚಿನ್ನದ ದರ', en: 'gold' },
-    { kn: 'APMC ಕೃಷಿ ಬೆಳೆ ದರ', en: 'krushi' },
-    { kn: 'ವಾಹನ ಮೈಲೇಜ್', en: 'mileage' },
+    { kn: 'ಸರ್ಕಾರಿ ಅರ್ಜಿ ಮೇಕರ್', en: 'letter' },
+    { kn: 'ಮನೆ ಬಜೆಟ್ ಪ್ಲಾನರ್', en: 'budget' },
+    { kn: 'ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಎಡಿಟರ್', en: 'screenshot' },
+    { kn: 'ಕನ್ನಡ ಕ್ಯಾಲೆಂಡರ್', en: 'calendar' },
+    { kn: 'ಮದುವೆ ಬಯೋಡೇಟಾ', en: 'biodata' },
+    { kn: 'ಜಮೀನು ಸರ್ವೆ ನಕ್ಷೆ', en: 'land' },
   ];
 
   const renderIcon = (name: string) => {

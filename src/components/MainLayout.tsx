@@ -12,7 +12,7 @@ import { ShareModal } from './ShareModal';
 import { PWAInstallModal } from './PWAInstallModal';
 import { MahitiChakraLogo } from './MahitiChakraLogo';
 import {
-  Menu, Sun, Globe, User, Search, Home, Grid, Heart, ShieldCheck, X, Share2, Download
+  Menu, Sun, Globe, User, Search, Home, Grid, Heart, ShieldCheck, X, Share2, Download, Radio
 } from 'lucide-react';
 
 export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -194,29 +194,28 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
       {/* WORLD-CLASS ULTRA-PROFESSIONAL FOOTER */}
       <Footer />
 
-      {/* MOBILE STICKY BOTTOM NAVIGATION BAR */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl px-2 py-1 flex items-center justify-around max-w-full overflow-visible">
+      {/* MOBILE STICKY BOTTOM NAVIGATION BAR (EXACT MATCH TO REFERENCE DESIGN) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-2xl px-2 py-1 flex items-center justify-around max-w-full overflow-visible select-none">
         
         {/* Tab 1: Home */}
         <Link
           href="/"
           className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all ${
-            pathname === '/' ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
+            pathname === '/' ? 'text-amber-600 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
           }`}
         >
-          <Home className="w-4 h-4 sm:w-5 sm:h-5" />
+          <Home className="w-5 h-5" />
           <span className="text-[10px]">{lang === 'kn' ? 'ಮುಖಪುಟ' : 'Home'}</span>
         </Link>
 
-        {/* Tab 2: All Apps */}
+        {/* Tab 2: Live Apps */}
         <Link
-          href="/#all-apps"
-          className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all ${
-            pathname === '/#all-apps' ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
-          }`}
+          href="/#live-apps"
+          className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all text-slate-600 hover:text-slate-900 font-bold relative"
         >
-          <Grid className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span className="text-[10px]">{lang === 'kn' ? 'ಎಲ್ಲಾ Apps' : 'All Apps'}</span>
+          <span className="w-2 h-2 rounded-full bg-rose-600 absolute top-1 right-3 animate-pulse" />
+          <Radio className="w-5 h-5 text-rose-600" />
+          <span className="text-[10px] text-slate-800 font-black">{lang === 'kn' ? 'Live Apps' : 'Live Apps'}</span>
         </Link>
 
         {/* Tab 3: CENTER PROMINENT FLOATING SEARCH BUTTON */}
@@ -228,30 +227,28 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
           className="flex flex-col items-center justify-center -mt-6 shrink-0 relative z-50 group"
           title="Search Tools & Rates"
         >
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-500 text-slate-950 flex items-center justify-center font-black shadow-xl shadow-amber-500/40 border-4 border-white active:scale-95 transition-all group-hover:scale-105">
+          <div className="w-13 h-13 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 flex items-center justify-center font-black shadow-xl shadow-amber-500/40 border-4 border-white active:scale-95 transition-all group-hover:scale-105">
             <Search className="w-6 h-6 text-slate-950" />
           </div>
           <span className="text-[10px] font-black text-slate-950 mt-0.5">{lang === 'kn' ? 'ಹುಡುಕು' : 'Search'}</span>
         </button>
 
-        {/* Tab 4: 📲 INSTALL PWA APP BUTTON */}
-        <button
-          onClick={() => setShowPwaModal(true)}
-          className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all text-amber-950 font-black"
+        {/* Tab 4: Tools */}
+        <Link
+          href="/#all-apps"
+          className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all text-slate-600 hover:text-slate-900 font-bold"
         >
-          <Download className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
-          <span className="text-[10px]">{lang === 'kn' ? 'ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್' : 'Install'}</span>
-        </button>
+          <Grid className="w-5 h-5" />
+          <span className="text-[10px]">{lang === 'kn' ? 'Tools' : 'Tools'}</span>
+        </Link>
 
-        {/* Tab 5: Menu Box Sidebar Drawer */}
+        {/* Tab 5: Account / Menu */}
         <button
           onClick={() => setSidebarOpen(true)}
-          className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all ${
-            sidebarOpen ? 'bg-amber-100 text-amber-950 font-black' : 'text-slate-600 hover:text-slate-900 font-bold'
-          }`}
+          className="flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl transition-all text-slate-600 hover:text-slate-900 font-bold"
         >
-          <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span className="text-[10px]">{lang === 'kn' ? 'ಮೆನು' : 'Menu'}</span>
+          <User className="w-5 h-5" />
+          <span className="text-[10px]">{lang === 'kn' ? 'ನನ್ನ ಖಾತೆ' : 'Account'}</span>
         </button>
       </nav>
 

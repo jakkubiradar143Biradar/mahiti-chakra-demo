@@ -70,6 +70,7 @@ export interface AppItem {
   isPopular?: boolean;
   isNew?: boolean;
   isHot?: boolean;
+  appType?: 'live' | 'utility';
 }
 
 export interface CategoryCard {

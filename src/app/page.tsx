@@ -14,8 +14,43 @@ import {
   GraduationCap, Building2, Sparkles, Flame, Calendar, Calculator,
   HeartPulse, CalendarDays, Gauge, Zap, Trophy, ShieldCheck, Mail,
   CheckCircle2, Smartphone, Award, Grid, Lock, CheckCircle, X, ExternalLink,
-  Layers, Share2, Download
+  Layers, Share2, Download, Radio, Wrench, RefreshCw, TrendingUp, TrendingDown,
+  CloudSun, DollarSign, Briefcase, Mic, SmartphoneIcon, Clock, Check, Crown,
+  UserCheck, Image as ImageIcon, QrCode, Layers3, PlusCircle
 } from 'lucide-react';
+import {
+  GoldBars3D, PetrolPump3D, VegBasket3D, WeatherSunCloud3D, StockChart3D, BitcoinCoin3D,
+  AgeCalc3D, EmiCalc3D, PdfToJpg3D, BmiCalc3D, ImageCompressor3D, QrGenerator3D,
+  KiraniList3D, VillageBaddi3D, Invitation3D, WeightLossDiet3D, LandSurvey3D, MarriageBiodata3D,
+  BabyNames3D, TraditionalCalendar3D, CateringEstimator3D, ScreenshotEditor3D, FamilyBudget3D, GovtLetter3D
+} from '@/components/LiveAppIcons3D';
+
+export interface LiveAppItemType {
+  id: string;
+  titleKn: string;
+  subTitleKn: string;
+  titleEn: string;
+  valueKn: string;
+  subValueKn?: string;
+  changeKn: string;
+  changeIsUp: boolean;
+  href: string;
+  timestamp: string;
+  source: string;
+  cardBg: string;
+  category: string;
+}
+
+export interface ToolItemType {
+  id: string;
+  titleKn: string;
+  descKn: string;
+  rating: string;
+  usersCount: string;
+  href: string;
+  cardBg: string;
+  category: string;
+}
 
 export default function HomePage() {
   const { t, lang } = useLanguage();
@@ -23,462 +58,513 @@ export default function HomePage() {
   const [heroConfig, setHeroConfig] = useState<HeroConfig>(defaultHeroConfig);
   const [categories, setCategories] = useState<CategoryCard[]>(defaultCategories);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategoryTab, setSelectedCategoryTab] = useState('all');
+  const [activeMainTab, setActiveMainTab] = useState<'live' | 'tools'>('tools');
+  const [activeLiveCategory, setActiveLiveCategory] = useState('all');
+  const [activeToolCategory, setActiveToolCategory] = useState('all');
   const [showHeroSearchModal, setShowHeroSearchModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [installingAppItem, setInstallingAppItem] = useState<AppItem | null>(null);
-  const [activeEmbedApp, setActiveEmbedApp] = useState<AppItem | null>(null);
 
   useEffect(() => {
     setApps(getStoredAppItems());
-  }, []);
 
-  // 🔍 BILINGUAL & TRANSLITERATED SMART FILTER FOR GRID
-  const filteredApps = apps.filter((app) => {
-    if (!searchQuery.trim()) return true;
-    const query = searchQuery.trim().toLowerCase();
-    const titleKn = (app.titleKn || '').toLowerCase();
-    const titleEn = (app.titleEn || '').toLowerCase();
-    const descKn = (app.descKn || '').toLowerCase();
-    const descEn = (app.descEn || '').toLowerCase();
-    const href = (app.href || '').toLowerCase();
-    const category = (app.category || '').toLowerCase();
-
-    // Universal Synonyms Table
-    const synonyms: Record<string, string[]> = {
-      calc: ['calculator', 'ಲೆಕ್ಕಾಚಾರ', 'emi', 'age', 'bmi', 'tax', 'gst', 'sip'],
-      saala: ['loan', 'baddi', 'emi', 'ಸಾಲ', 'ಬಡ್ಡಿ'],
-      vayassu: ['age', 'birth', 'ವಯಸ್ಸು', 'ದಿನಾಂಕ'],
-      chinna: ['gold', 'silver', 'ಬೆಳ್ಳಿ', 'ಚಿನ್ನ'],
-      photo: ['pdf', 'jpg', 'resizer', 'ದಾಖಲೆ', 'ಚಿತ್ರ'],
-      gas: ['lpg', 'cylinder', 'ದಿನಸಿ', 'ಗ್ಯಾಸ್'],
-      petrol: ['fuel', 'diesel', 'mileage', 'ವಾಹನ', 'vahana', 'vehi', 'vehicle'],
-      vahana: ['vehicle', 'vehi', 'mileage', 'bike', 'car', 'auto', 'ವಾಹನ'],
+    // Sync tab with URL hash or query params
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      const search = window.location.search;
+      if (hash === '#all-apps' || search.includes('tab=tools')) {
+        setActiveMainTab('tools');
+      } else if (hash === '#live-apps' || search.includes('tab=live')) {
+        setActiveMainTab('live');
+      }
     };
 
-    let matched = titleKn.includes(query) ||
-                  titleEn.includes(query) ||
-                  descKn.includes(query) ||
-                  descEn.includes(query) ||
-                  href.includes(query) ||
-                  category.includes(query);
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
-    if (!matched) {
-      Object.entries(synonyms).forEach(([key, synList]) => {
-        if (query.includes(key) || synList.some(s => query.includes(s))) {
-          if (titleKn.includes(key) || titleEn.includes(key) || href.includes(key) || synList.some(s => titleKn.includes(s) || titleEn.includes(s) || href.includes(s))) {
-            matched = true;
-          }
-        }
-      });
+  // 📡 PART 1: LIVE UPDATE APPS (CLEARED AND READY FOR YOUR CUSTOM LIST)
+  const liveUpdateApps: LiveAppItemType[] = [];
+
+  // 🛠️ PART 2: DAILY USEFUL TOOLS
+  const usefulTools: ToolItemType[] = [
+    {
+      id: 'tool-letter',
+      titleKn: 'ಸರ್ಕಾರಿ ಅರ್ಜಿ (ಪತ್ರ) ಮೇಕರ್',
+      descKn: 'ಗ್ರಾಮ ಪಂಚಾಯತ್, ತಹಶೀಲ್ದಾರ್, ಕರೆಂಟ್ & ಪೊಲೀಸ್ ದೂರು ಪತ್ರ',
+      rating: '4.9',
+      usersCount: '95K+',
+      href: '/letter-maker',
+      cardBg: 'bg-gradient-to-br from-blue-100/95 via-indigo-50/50 to-white border-2 border-blue-300 shadow-sm hover:shadow-xl hover:border-blue-400',
+      category: 'tools',
+    },
+    {
+      id: 'tool-budget',
+      titleKn: 'ಮನೆ ಖರ್ಚು & ಬಜೆಟ್ ಪ್ಲಾನರ್',
+      descKn: 'ಸಂಬಳ, ದಿನಸಿ, ಬಾಡಿಗೆ & 50-30-20 ಉಳಿತಾಯ ಕಾರ್ಡ್',
+      rating: '4.9',
+      usersCount: '86K+',
+      href: '/budget-planner',
+      cardBg: 'bg-gradient-to-br from-emerald-100/95 via-teal-50/50 to-white border-2 border-emerald-300 shadow-sm hover:shadow-xl hover:border-emerald-400',
+      category: 'finance',
+    },
+    {
+      id: 'tool-screenshot',
+      titleKn: 'ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಸ್ಕ್ಯಾನರ್ & ಎಡಿಟರ್',
+      descKn: 'ಫೋಟೋ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ ಚಿತ್ರದಲ್ಲೇ ಅಕ್ಷರ ಬದಲಿಸಿ',
+      rating: '4.9',
+      usersCount: '94K+',
+      href: '/screenshot-editor',
+      cardBg: 'bg-gradient-to-br from-sky-100/95 via-blue-50/50 to-white border-2 border-sky-300 shadow-sm hover:shadow-xl hover:border-sky-400',
+      category: 'tools',
+    },
+    {
+      id: 'tool-catering',
+      titleKn: 'ಅಡುಗೆ ಸಾಮಗ್ರಿ ಅಂದಾಜು',
+      descKn: '೫೦-೨೦೦೦ ಜನರಿಗೆ ಅಕ್ಕಿ, ಬೇಳೆ, ಎಣ್ಣೆ & ದಿನಸಿ ಶೀಟ್',
+      rating: '4.9',
+      usersCount: '78K+',
+      href: '/catering-estimator',
+      cardBg: 'bg-gradient-to-br from-amber-100/95 via-orange-50/50 to-white border-2 border-amber-300 shadow-sm hover:shadow-xl hover:border-amber-400',
+      category: 'shopping',
+    },
+    {
+      id: 'tool-calendar',
+      titleKn: 'ಸಾಂಪ್ರದಾಯಿಕ ಕನ್ನಡ ಕ್ಯಾಲೆಂಡರ್',
+      descKn: 'ದಿನದ ತಿಥಿ, ವಾರ, ನಕ್ಷತ್ರ, ರಾಹುಕಾಲ & HD ಶೀಟ್',
+      rating: '4.9',
+      usersCount: '112K+',
+      href: '/kannada-calendar',
+      cardBg: 'bg-gradient-to-br from-red-100/95 via-rose-50/50 to-white border-2 border-red-300 shadow-sm hover:shadow-xl hover:border-red-400',
+      category: 'lifestyle',
+    },
+    {
+      id: 'tool-baby',
+      titleKn: 'ಮಕ್ಕಳ ಸುಂದರ ಹೆಸರು & ಅರ್ಥ',
+      descKn: 'ರಾಶಿ, ನಕ್ಷತ್ರ & ನಾಮಕರಣ ಅನೌನ್ಸ್‌ಮೆಂಟ್ ಕಾರ್ಡ್',
+      rating: '4.9',
+      usersCount: '68K+',
+      href: '/baby-names',
+      cardBg: 'bg-gradient-to-br from-blue-100/95 via-indigo-50/50 to-white border-2 border-blue-300 shadow-sm hover:shadow-xl hover:border-blue-400',
+      category: 'lifestyle',
+    },
+    {
+      id: 'tool-biodata',
+      titleKn: 'ಮದುವೆ ಬಯೋಡೇಟಾ ಮೇಕರ್',
+      descKn: 'ವಧು-ವರರ ಜಾತಕ, ಶಿಕ್ಷಣ & ರಾಯಲ್ ಪ್ರೊಫೈಲ್ ಕಾರ್ಡ್',
+      rating: '4.9',
+      usersCount: '89K+',
+      href: '/biodata-maker',
+      cardBg: 'bg-gradient-to-br from-pink-100/95 via-rose-50/50 to-white border-2 border-pink-300 shadow-sm hover:shadow-xl hover:border-pink-400',
+      category: 'events',
+    },
+    {
+      id: 'tool-land',
+      titleKn: 'ಜಮೀನು ಅಳತೆ & ಸರ್ವೆ ನಕ್ಷೆ',
+      descKn: '೪ ದಿಕ್ಕುಗಳ ಅಳತೆ, ಗುಂಟೆ, ಎಕರೆ & HD ಸರ್ವೆ ಕಾರ್ಡ್',
+      rating: '4.9',
+      usersCount: '96K+',
+      href: '/land-converter',
+      cardBg: 'bg-gradient-to-br from-green-100/95 via-emerald-50/50 to-white border-2 border-green-300 shadow-sm hover:shadow-xl hover:border-green-400',
+      category: 'agriculture',
+    },
+    {
+      id: 'tool-diet',
+      titleKn: 'ತೂಕ ಇಳಿಸುವ ಡಯಟ್ ಚಾರ್ಟ್',
+      descKn: 'ರಾಗಿ ಮುದ್ದೆ & ಪೌಷ್ಟಿಕ ಆಹಾರದ HD ಡಯಟ್ ಪ್ಲಾನ್',
+      rating: '4.9',
+      usersCount: '83K+',
+      href: '/diet-chart',
+      cardBg: 'bg-gradient-to-br from-emerald-100/95 via-green-50/50 to-white border-2 border-emerald-300 shadow-sm hover:shadow-xl hover:border-emerald-400',
+      category: 'health',
+    },
+    {
+      id: 'tool-invitation',
+      titleKn: 'ಡಿಜಿಟಲ್ ಲಗ್ನ ಪತ್ರಿಕೆ ಮೇಕರ್',
+      descKn: 'ಮದುವೆ, ಗೃಹಪ್ರವೇಶಕ್ಕೆ ರಾಯಲ್ ಆಮಂತ್ರಣ ಕಾರ್ಡ್',
+      rating: '4.9',
+      usersCount: '74K+',
+      href: '/invitation-maker',
+      cardBg: 'bg-gradient-to-br from-rose-100/95 via-red-50/50 to-white border-2 border-rose-300 shadow-sm hover:shadow-xl hover:border-rose-400',
+      category: 'events',
+    },
+    {
+      id: 'tool-kirani',
+      titleKn: 'ಕಿರಣಿ ಸಂತೆ ಲಿಸ್ಟ್ ಮೇಕರ್',
+      descKn: 'ದಿನಸಿ & ಸಂತೆ ಸಾಮಗ್ರಿಗಳ HD ಲಿಸ್ಟ್ ರಚಿಸಿ',
+      rating: '4.9',
+      usersCount: '48K+',
+      href: '/kirani-sante',
+      cardBg: 'bg-gradient-to-br from-amber-100/95 via-yellow-50/50 to-white border-2 border-amber-300 shadow-sm hover:shadow-xl hover:border-amber-400',
+      category: 'shopping',
+    },
+    {
+      id: 'tool-baddi',
+      titleKn: 'ಗ್ರಾಮ ಬಡ್ಡಿ ಲೆಕ್ಕಾಚಾರ',
+      descKn: 'ನೂರಕ್ಕೆ ₹1, ₹2, ₹3 ತಿಂಗಳ ಬಡ್ಡಿ & HD ರಶೀದಿ',
+      rating: '4.9',
+      usersCount: '62K+',
+      href: '/grama-baddi',
+      cardBg: 'bg-gradient-to-br from-teal-100/95 via-emerald-50/50 to-white border-2 border-teal-300 shadow-sm hover:shadow-xl hover:border-teal-400',
+      category: 'finance',
+    },
+  ];
+
+  // Filtered lists based on category pills
+  const filteredLiveApps = liveUpdateApps.filter(app => {
+    if (activeLiveCategory === 'all') return true;
+    return app.category === activeLiveCategory;
+  });
+
+  const filteredUsefulTools = usefulTools.filter(tool => {
+    if (activeToolCategory === 'all') return true;
+    return tool.category === activeToolCategory;
+  });
+
+  const renderLive3DIcon = (id: string) => {
+    switch (id) {
+      case 'live-gold': return <GoldBars3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'live-petrol': return <PetrolPump3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'live-veg': return <VegBasket3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'live-weather': return <WeatherSunCloud3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'live-stock': return <StockChart3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'live-crypto': return <BitcoinCoin3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      default: return <GoldBars3D className="w-12 h-12 sm:w-14 sm:h-14" />;
     }
+  };
 
-    return matched;
-  });
-
-  const popularApps = filteredApps.filter(a => a.isPopular).slice(0, 8);
-  const allAppsDirectory = filteredApps.filter(app => {
-    if (selectedCategoryTab === 'all') return true;
-    return (app.category || '').toLowerCase().includes(selectedCategoryTab.toLowerCase());
-  });
-
-  const renderIcon = (name: string) => {
-    switch (name) {
-      case 'ShoppingCart': return <ShoppingCart className="w-5 h-5" />;
-      case 'FileText': return <FileText className="w-5 h-5" />;
-      case 'Coins': return <Coins className="w-5 h-5" />;
-      case 'GraduationCap': return <GraduationCap className="w-5 h-5" />;
-      case 'Building2': return <Building2 className="w-5 h-5" />;
-      case 'Sparkles': return <Sparkles className="w-5 h-5" />;
-      case 'Flame': return <Flame className="w-5 h-5" />;
-      case 'Calendar': return <Calendar className="w-5 h-5" />;
-      case 'HeartPulse': return <HeartPulse className="w-5 h-5" />;
-      case 'CalendarDays': return <CalendarDays className="w-5 h-5" />;
-      case 'Gauge': return <Gauge className="w-5 h-5" />;
-      case 'Zap': return <Zap className="w-5 h-5" />;
-      default: return <Calculator className="w-5 h-5" />;
+  const renderTool3DIcon = (id: string) => {
+    switch (id) {
+      case 'tool-letter': return <GovtLetter3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-budget': return <FamilyBudget3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-screenshot': return <ScreenshotEditor3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-catering': return <CateringEstimator3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-calendar': return <TraditionalCalendar3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-baby': return <BabyNames3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-biodata': return <MarriageBiodata3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-land': return <LandSurvey3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-diet': return <WeightLossDiet3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-invitation': return <Invitation3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-baddi': return <VillageBaddi3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-kirani': return <KiraniList3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-age': return <AgeCalc3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-emi': return <EmiCalc3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-pdf': return <PdfToJpg3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-bmi': return <BmiCalc3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-compressor': return <ImageCompressor3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      case 'tool-qr': return <QrGenerator3D className="w-12 h-12 sm:w-14 sm:h-14" />;
+      default: return <GovtLetter3D className="w-12 h-12 sm:w-14 sm:h-14" />;
     }
   };
 
   return (
-    <div className="space-y-8 max-w-full overflow-x-hidden select-none">
-
-      {/* EMBEDDED APP MODAL DRAWER */}
-      {activeEmbedApp && (
-        <div className="fixed inset-0 z-50 overflow-hidden bg-slate-950/80 backdrop-blur-md p-2 sm:p-6 flex items-center justify-center animate-fadeIn">
-          <div className="bg-white text-slate-900 w-full max-w-5xl h-[90vh] rounded-3xl p-4 sm:p-6 flex flex-col justify-between shadow-2xl relative border border-slate-200">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-black bg-amber-100 text-amber-900 px-3 py-1 rounded-full">
-                  🔗 Embed Web App
-                </span>
-                <h3 className="text-base font-black text-slate-950">
-                  {lang === 'kn' ? activeEmbedApp.titleKn : activeEmbedApp.titleEn}
-                </h3>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setInstallingAppItem(activeEmbedApp)}
-                  className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md transition-all active:scale-95 border border-amber-300 flex items-center gap-1.5 shrink-0"
-                  title="Install this specific app to Home Screen"
-                >
-                  <Download className="w-3.5 h-3.5 text-slate-950" />
-                  <span>{lang === 'kn' ? '📲 ಇನ್‌ಸ್ಟಾಲ್' : '📲 Install'}</span>
-                </button>
-
-                <a
-                  href={activeEmbedApp.embedLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span className="hidden sm:inline">Open External</span>
-                </a>
-                <button
-                  onClick={() => setActiveEmbedApp(null)}
-                  className="p-2 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            <div className="flex-1 w-full my-3 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50">
-              <iframe
-                src={activeEmbedApp.embedLink}
-                className="w-full h-full border-0"
-                title={activeEmbedApp.titleEn}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </div>
+    <div className="space-y-5 select-none max-w-full overflow-x-hidden pt-1">
+      
+      {/* GLOBAL SEARCH MODAL */}
+      {showHeroSearchModal && (
+        <SmartSearchModal
+          query={searchQuery}
+          onQueryChange={setSearchQuery}
+          onClose={() => setShowHeroSearchModal(false)}
+        />
       )}
 
-      {/* SHARE MODAL DRAWER */}
-      {showShareModal && (
-        <ShareModal onClose={() => setShowShareModal(false)} />
-      )}
+      {/* SHARE MODAL */}
+      {showShareModal && <ShareModal onClose={() => setShowShareModal(false)} />}
 
-      {/* PER-APP STANDALONE PWA INSTALLATION MODAL */}
+      {/* STANDALONE APP PWA INSTALLATION MODAL */}
       {installingAppItem && (
         <PWAInstallModal
           appName={lang === 'kn' ? installingAppItem.titleKn : installingAppItem.titleEn}
+          appUrl={installingAppItem.href}
           onClose={() => setInstallingAppItem(null)}
         />
       )}
 
-      {/* HERO BANNER BOX */}
-      <div className="relative overflow-visible bg-gradient-to-br from-amber-500/15 via-amber-500/5 to-amber-500/10 rounded-3xl border border-amber-500/30 p-5 sm:p-8 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6 max-w-full">
-        <div className="space-y-3.5 max-w-xl text-center sm:text-left z-10 w-full">
-          <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-950 font-black text-[11px] shadow-2xs">
-              <span>{lang === 'kn' ? heroConfig.badgeKn : heroConfig.badgeEn}</span>
-            </div>
-
-            <button
-              onClick={() => setShowShareModal(true)}
-              className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] shadow-sm transition-all active:scale-95 border border-emerald-500 shrink-0"
-            >
-              <Share2 className="w-3.5 h-3.5" />
-              <span>{lang === 'kn' ? '📲 ಜನರಿಗೆ ಶೇರ್ ಮಾಡಿ' : '📲 Share Portal'}</span>
-            </button>
-          </div>
-
-          <h1 className="text-xl sm:text-3xl font-black text-slate-950 leading-tight tracking-tight">
-            {lang === 'kn' ? heroConfig.headlineKn : heroConfig.headlineEn}
-          </h1>
-
-          <p className="text-xs sm:text-sm font-extrabold text-slate-600">
-            {lang === 'kn' ? heroConfig.subheadlineKn : heroConfig.subheadlineEn}
-          </p>
-
-          {/* HERO SEARCH BOX */}
-          <div className="pt-1 flex items-center gap-2 max-w-md mx-auto sm:mx-0 relative">
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                placeholder={lang === 'kn' ? 'ಹುಡುಕಿ... (ಉದಾ: calc, ಸಾಲ, age, photo)...' : 'Search... (e.g. calc, EMI, age, photo)...'}
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setShowHeroSearchModal(true);
-                }}
-                onFocus={() => setShowHeroSearchModal(true)}
-                className="w-full bg-white border-2 border-amber-400/80 rounded-2xl py-2.5 pl-10 pr-4 text-xs font-black text-slate-950 focus:outline-none focus:ring-4 focus:ring-amber-500/20 shadow-md"
-              />
-
-              {showHeroSearchModal && searchQuery.trim() && (
-                <SmartSearchModal
-                  query={searchQuery}
-                  onQueryChange={setSearchQuery}
-                  onClose={() => setShowHeroSearchModal(false)}
-                />
-              )}
-            </div>
-
-            <button
-              onClick={() => setShowHeroSearchModal(true)}
-              className="px-5 py-2.5 rounded-2xl bg-slate-950 hover:bg-slate-800 text-amber-400 font-black text-xs shadow-md transition-all active:scale-95 shrink-0"
-            >
-              {lang === 'kn' ? 'ಹುಡುಕಿ' : 'Search'}
-            </button>
-          </div>
-
-          {/* Quick Search Tags */}
-          <div className="pt-1 flex items-center justify-center sm:justify-start gap-1.5 flex-wrap text-[11px] font-bold text-slate-500">
-            <span className="text-slate-400 font-medium">{lang === 'kn' ? 'ಜನಪ್ರಿಯ:' : 'Popular:'}</span>
-            {heroConfig.quickTags.map((tag, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  setSearchQuery(tag.en);
-                  setShowHeroSearchModal(true);
-                }}
-                className="px-2.5 py-1 rounded-lg bg-white/90 border border-slate-200 text-slate-800 hover:bg-amber-500 hover:text-slate-950 transition-colors shadow-2xs font-extrabold"
-              >
-                {lang === 'kn' ? tag.kn : tag.en}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* 3D Smartphone Illustration */}
-        <div className="shrink-0 z-10 hidden sm:block">
-          <div className="w-40 h-40 rounded-3xl bg-gradient-to-tr from-amber-500 via-amber-400 to-amber-500 p-3 shadow-2xl flex items-center justify-center transform hover:rotate-2 transition-transform">
-            <div className="w-full h-full rounded-2xl bg-slate-950 text-amber-400 p-3 flex flex-col justify-between shadow-inner">
-              <div className="flex items-center justify-between text-xs font-black">
-                <span>MAHITI</span>
-                <Smartphone className="w-4 h-4" />
-              </div>
-              <div className="space-y-1 text-center">
-                <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto">
-                  <Sparkles className="w-5 h-5" />
-                </div>
-                <span className="text-[10px] font-black text-white block">33+ Smart Tools</span>
-              </div>
-              <div className="text-[9px] text-center font-extrabold text-slate-400 uppercase">
-                100% Free Karnataka
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* HIGH-TRUST BADGES BAR */}
-      <div className="grid grid-cols-3 gap-2 bg-white p-3 rounded-2xl border border-slate-200/80 shadow-2xs text-[10px] sm:text-xs font-black text-slate-800 text-center">
-        <div className="flex items-center justify-center gap-1">
-          <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-          <span>{lang === 'kn' ? '100% ಉಚಿತ ಪೋರ್ಟಲ್' : '100% Free Portal'}</span>
-        </div>
-        <div className="flex items-center justify-center gap-1 border-x border-slate-100 px-1">
-          <Zap className="w-4 h-4 text-amber-500 shrink-0" />
-          <span>{lang === 'kn' ? '0.1s ಅತಿ ವೇಗ' : '0.1s Super Fast'}</span>
-        </div>
-        <div className="flex items-center justify-center gap-1">
-          <Lock className="w-4 h-4 text-sky-600 shrink-0" />
-          <span>{lang === 'kn' ? 'ಸುರಕ್ಷಿತ & ಸೆಕ್ಯೂರ್' : '100% Safe & Secure'}</span>
-        </div>
-      </div>
-
-      {/* 6 CATEGORIES CAROUSEL */}
-      <div className="space-y-3" id="categories">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base font-black text-slate-950 flex items-center gap-2">
-            <Grid className="w-5 h-5 text-amber-600" />
-            <span>{lang === 'kn' ? 'ವಿಭಾಗಗಳು' : 'Categories'}</span>
-          </h2>
-          <Link href="/blogs" className="text-xs font-extrabold text-amber-700 hover:underline">
-            <span>{lang === 'kn' ? 'ಎಲ್ಲಾ ವಿಭಾಗಗಳು ➔' : 'All Categories ➔'}</span>
-          </Link>
-        </div>
-
-        <div className="flex sm:grid sm:grid-cols-3 md:grid-cols-6 gap-3 overflow-x-auto pb-2 snap-x custom-scrollbar max-w-full">
-          {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              href={cat.href}
-              className={`min-w-[135px] sm:min-w-0 p-3.5 rounded-2xl border transition-all hover:scale-[1.02] shadow-2xs flex flex-col items-start justify-between gap-2 snap-start shrink-0 sm:shrink ${cat.bgColor}`}
-            >
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-2xs ${cat.iconColor}`}>
-                {renderIcon(cat.iconName)}
-              </div>
-              <div>
-                <h3 className="text-xs font-black text-slate-950 leading-tight">
-                  {lang === 'kn' ? cat.titleKn : cat.titleEn}
-                </h3>
-                <span className="text-[10px] font-bold text-slate-500 block mt-0.5">
-                  {lang === 'kn' ? cat.appCountKn : cat.appCountEn}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* SECTION 1: 🔥 POPULAR APPS (TOP FEATURED APPS) */}
-      <div className="space-y-3" id="popular-apps">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base font-black text-slate-950 flex items-center gap-2">
-            <Flame className="w-5 h-5 text-rose-500" />
-            <span>{lang === 'kn' ? '🔥 ಜನಪ್ರಿಯ Apps (Popular Tools)' : '🔥 Popular Apps'}</span>
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 max-w-full">
-          {popularApps.map((app) => (
-            <div
-              key={app.id}
-              className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-2xs hover:shadow-xl hover:border-amber-400 transition-all flex flex-col justify-between space-y-3 group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-2xs ${app.bgColor}`}>
-                    {renderIcon(app.iconName)}
-                  </div>
-                  <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
-                    <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                    <span className="text-[11px] font-black text-amber-950">{app.rating}</span>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-xs sm:text-sm font-black text-slate-950 leading-tight group-hover:text-amber-600 transition-colors line-clamp-1">
-                    {lang === 'kn' ? app.titleKn : app.titleEn}
-                  </h3>
-                  <p className="text-[11px] font-semibold text-slate-500 leading-snug mt-1 line-clamp-2">
-                    {lang === 'kn' ? app.descKn : app.descEn}
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1">
-                <span className="text-[9px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-0.5 shrink-0">
-                  <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
-                  <span>Free</span>
-                </span>
-
-                {app.embedLink ? (
-                  <button
-                    onClick={() => setActiveEmbedApp(app)}
-                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
-                  >
-                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
-                  </button>
-                ) : (
-                  <Link
-                    href={app.href}
-                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
-                  >
-                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
-                  </Link>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* SECTION 2: 📱 ಎಲ್ಲಾ ಆಪ್‌ಗಳ ಪೂರ್ಣ ಪಟ್ಟಿ (ALL APPS COMPLETE DIRECTORY RIGHT BELOW POPULAR APPS) */}
-      <div className="space-y-4 pt-4 border-t border-slate-200" id="all-apps">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <Layers className="w-5 h-5 text-amber-600" />
-            <h2 className="text-base font-black text-slate-950">
-              {lang === 'kn' ? '📱 ಎಲ್ಲಾ ಆಪ್‌ಗಳು (Complete Apps Directory)' : '📱 All Apps Directory'}
-            </h2>
-            <span className="text-xs font-black bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full">
-              {allAppsDirectory.length} Apps
+      {/* 🌟 2 MAIN PILLARS FLOATING SWITCHER TABS */}
+      <div className="max-w-2xl mx-auto px-0.5">
+        <div className="bg-slate-100 p-1 rounded-full border border-slate-200 flex items-center gap-1 shadow-inner">
+          
+          {/* TAB 1: 📡 Live Update Apps */}
+          <button
+            onClick={() => setActiveMainTab('live')}
+            className={`flex-1 py-2.5 px-3 rounded-full text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-1.5 shadow-sm ${
+              activeMainTab === 'live'
+                ? 'bg-blue-600 text-white shadow-blue-500/30'
+                : 'bg-white text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <Radio className={`w-4 h-4 ${activeMainTab === 'live' ? 'text-white' : 'text-blue-600'}`} />
+            <span>{lang === 'kn' ? 'Live Update Apps' : 'Live Update Apps'}</span>
+            <span className="text-[9px] font-black bg-blue-900 text-white px-2 py-0.2 rounded-full">
+              {liveUpdateApps.length}
             </span>
-          </div>
+          </button>
 
-          {/* Category Filter Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full no-scrollbar">
-            {[
-              { id: 'all', kn: 'ಎಲ್ಲಾ', en: 'All' },
-              { id: 'finance', kn: 'ಹಣಕಾಸು', en: 'Finance' },
-              { id: 'daily rates', kn: 'ದರಗಳು', en: 'Daily Rates' },
-              { id: 'utility', kn: 'ಉಪಯುಕ್ತ', en: 'Utility' },
-              { id: 'document', kn: 'ದಾಖಲೆ', en: 'Document' },
-              { id: 'health', kn: 'ಆರೋಗ್ಯ', en: 'Health' },
-              { id: 'fuel', kn: 'ಇಂಧನ', en: 'Fuel' },
-              { id: 'agriculture', kn: 'ಕೃಷಿ', en: 'Agriculture' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedCategoryTab(tab.id)}
-                className={`px-3 py-1 rounded-xl text-xs font-black transition-all shrink-0 ${
-                  selectedCategoryTab === tab.id
-                    ? 'bg-slate-950 text-amber-400 shadow-md'
-                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
-                }`}
-              >
-                {lang === 'kn' ? tab.kn : tab.en}
-              </button>
-            ))}
-          </div>
+          {/* TAB 2: 🔮 Daily Useful Tools */}
+          <button
+            onClick={() => setActiveMainTab('tools')}
+            className={`flex-1 py-2.5 px-3 rounded-full text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-1.5 shadow-sm ${
+              activeMainTab === 'tools'
+                ? 'bg-purple-600 text-white shadow-purple-500/30'
+                : 'bg-white text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            <Grid className={`w-4 h-4 ${activeMainTab === 'tools' ? 'text-white' : 'text-purple-600'}`} />
+            <span>{lang === 'kn' ? 'Daily Useful Tools' : 'Daily Useful Tools'}</span>
+            <span className="text-[9px] font-black bg-purple-900 text-white px-2 py-0.2 rounded-full">
+              {usefulTools.length}
+            </span>
+          </button>
+
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 max-w-full">
-          {allAppsDirectory.map((app) => (
-            <div
-              key={app.id}
-              className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-2xs hover:shadow-xl hover:border-amber-400 transition-all flex flex-col justify-between space-y-3 group"
-            >
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-2xs ${app.bgColor}`}>
-                    {renderIcon(app.iconName)}
-                  </div>
-                  <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
-                    <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                    <span className="text-[11px] font-black text-amber-950">{app.rating}</span>
-                  </div>
+      {/* ========================================================================================= */}
+      {/* 📡 MODE 1: LIVE UPDATE APPS VIEW */}
+      {/* ========================================================================================= */}
+      {activeMainTab === 'live' && (
+        <div className="space-y-5 animate-fadeIn">
+          
+          {/* DEDICATED LIVE HERO BANNER */}
+          <div className="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-950 text-white rounded-3xl p-5 sm:p-7 shadow-xl relative overflow-hidden space-y-3 border border-blue-800/40">
+            
+            <div className="inline-flex items-center gap-1.5 bg-blue-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <span>LIVE UPDATES SECTION</span>
+            </div>
+
+            <h1 className="text-lg sm:text-2xl font-black tracking-tight leading-snug">
+              {lang === 'kn' ? 'ಲೈವ್ ಅಪ್‌ಡೇಟ್ ಆಪ್‌ಗಳ ವಿಭಾಗ' : 'Live Update Applications Section'}
+            </h1>
+
+            <p className="text-[11px] sm:text-xs font-semibold text-slate-300 leading-relaxed max-w-xl">
+              {lang === 'kn'
+                ? 'ನೀವು ಸೂಚಿಸುವ ಲೈವ್ ದರಗಳು ಮತ್ತು ಅಪ್‌ಡೇಟ್ ಆಪ್‌ಗಳನ್ನು (Gold, Petrol, Market, etc.) ಒಂದೊಂದಾಗಿ ಇಲ್ಲಿ ಸೇರಿಸಲಾಗುತ್ತದೆ.'
+                : 'Live update apps are ready to be added one by one according to your instructions.'}
+            </p>
+
+            <div className="flex items-center gap-2.5 text-[10px] font-bold text-slate-300">
+              <span className="flex items-center gap-1 text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Ready to Add Live Apps</span>
+              </span>
+            </div>
+
+          </div>
+
+          {/* 📡 LIVE UPDATE APPS GRID / EMPTY STATE */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Radio className="w-4 h-4 text-blue-600 animate-pulse" />
+                <h2 className="text-sm sm:text-base font-black text-slate-950">
+                  {lang === 'kn' ? 'Live Update Apps' : 'Live Update Apps'} ({liveUpdateApps.length})
+                </h2>
+              </div>
+            </div>
+
+            {liveUpdateApps.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                {filteredLiveApps.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className={`${item.cardBg} p-3.5 sm:p-4 rounded-3xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:scale-[1.02] flex flex-col justify-between space-y-3 group select-none relative`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="shrink-0 flex items-center justify-center filter drop-shadow-md">
+                        {renderLive3DIcon(item.id)}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-1">
+                          <div>
+                            <h3 className="text-xs sm:text-sm font-black text-slate-950 leading-tight group-hover:text-blue-600 transition-colors">
+                              {lang === 'kn' ? item.titleKn : item.titleEn}
+                            </h3>
+                            <p className="text-[10px] sm:text-[11px] font-bold text-slate-600 mt-0.5">
+                              {lang === 'kn' ? item.subTitleKn : item.titleEn}
+                            </p>
+                          </div>
+
+                          <span className="text-[8px] font-black text-white bg-rose-600 px-1.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 flex items-center gap-0.5 shadow-2xs">
+                            <span className="w-1 h-1 rounded-full bg-white animate-pulse" />
+                            <span>LIVE</span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between gap-1">
+                      <div>
+                        <span className="text-sm sm:text-base font-black text-slate-950 block tracking-tight">
+                          {item.valueKn}
+                        </span>
+                        {item.subValueKn && (
+                          <span className="text-[10px] font-bold text-slate-500">{item.subValueKn}</span>
+                        )}
+                      </div>
+
+                      <span className={`text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-lg flex items-center gap-0.5 shrink-0 ${
+                        item.changeIsUp
+                          ? 'bg-emerald-100/90 text-emerald-800 border border-emerald-300/80'
+                          : 'bg-rose-100/90 text-rose-800 border border-rose-300/80'
+                      }`}>
+                        {item.changeIsUp ? '▲' : '▼'} {item.changeKn}
+                      </span>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] font-extrabold text-slate-500">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3 text-slate-400" />
+                        <span>{item.timestamp}</span>
+                      </span>
+                      <span className="truncate">Source: {item.source}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white rounded-3xl border-2 border-dashed border-blue-200 p-8 sm:p-12 text-center space-y-4 shadow-sm">
+                <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center mx-auto text-blue-600 shadow-inner">
+                  <Radio className="w-8 h-8 text-blue-600 animate-pulse" />
                 </div>
 
-                <div>
-                  <h3 className="text-xs sm:text-sm font-black text-slate-950 leading-tight group-hover:text-amber-600 transition-colors line-clamp-1">
-                    {lang === 'kn' ? app.titleKn : app.titleEn}
+                <div className="space-y-1 max-w-md mx-auto">
+                  <h3 className="text-base sm:text-lg font-black text-slate-900">
+                    {lang === 'kn' ? 'ಲೈವ್ ಆಪ್‌ಗಳನ್ನು ಸೇರಿಸಲು ಸಿದ್ಧವಾಗಿದೆ!' : 'Ready to Add Live Apps!'}
                   </h3>
-                  <p className="text-[11px] font-semibold text-slate-500 leading-snug mt-1 line-clamp-2">
-                    {lang === 'kn' ? app.descKn : app.descEn}
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    {lang === 'kn'
+                      ? 'ನೀವು ತಿಳಿಸುವ ಲೈವ್ ಅಪ್‌ಡೇಟ್ ಆಪ್‌ನ ಹೆಸರನ್ನು (ಉದಾ: ಚಿನ್ನದ ದರ, ಪೆಟ್ರೋಲ್, ಹವಾಮಾನ, ಇತ್ಯಾದಿ) ಒಂದೊಂದಾಗಿ ಇಲ್ಲಿ ಸೇರಿಸಲಾಗುವುದು.'
+                      : 'Please tell the name of the live update app you want to add.'}
                   </p>
                 </div>
               </div>
+            )}
+          </div>
 
-              <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1">
-                <span className="text-[9px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded flex items-center gap-0.5 shrink-0">
-                  <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
-                  <span>Free</span>
-                </span>
+        </div>
+      )}
 
-                {app.embedLink ? (
-                  <button
-                    onClick={() => setActiveEmbedApp(app)}
-                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
-                  >
-                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
-                  </button>
-                ) : (
-                  <Link
-                    href={app.href}
-                    className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-black text-[11px] shadow-sm transition-all active:scale-95 shrink-0 border border-amber-300"
-                  >
-                    <span>{lang === 'kn' ? 'ಓಪನ್' : 'Open'}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
-                  </Link>
-                )}
+      {/* ========================================================================================= */}
+      {/* 🔮 MODE 2: DAILY USEFUL TOOLS VIEW */}
+      {/* ========================================================================================= */}
+      {activeMainTab === 'tools' && (
+        <div className="space-y-5 animate-fadeIn">
+          
+          {/* DEDICATED UTILITY HERO BANNER */}
+          <div className="bg-gradient-to-r from-purple-100 via-purple-50 to-indigo-100 text-slate-950 rounded-3xl p-5 sm:p-7 border-2 border-purple-200/80 shadow-md relative overflow-hidden space-y-3">
+            
+            <div className="inline-flex items-center gap-1.5 bg-purple-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+              <Sparkles className="w-3 h-3" />
+              <span>100% USEFUL APPS</span>
+            </div>
+
+            <h1 className="text-lg sm:text-2xl font-black tracking-tight leading-snug text-purple-950">
+              {lang === 'kn' ? 'ನಿಮ್ಮ ದಿನನಿತ್ಯದ ಕೆಲಸಗಳಿಗೆ ಅಗತ್ಯವಾದ ಆಪ್‌ಗಳು' : 'Daily Useful Tools & Applications'}
+            </h1>
+
+            <p className="text-[11px] sm:text-xs font-semibold text-purple-800 leading-relaxed max-w-xl">
+              {lang === 'kn'
+                ? 'ನೀವು ಸೂಚಿಸುವ ಪ್ರತಿಯೊಂದು ಆಪ್ ಅನ್ನು ಒಂದೊಂದಾಗಿ ಕರಾರುವಾಕ್ಕಾಗಿ ಇಲ್ಲಿ ಸೇರಿಸಲಾಗುತ್ತದೆ.'
+                : 'Apps are ready to be added one by one according to your requirements.'}
+            </p>
+
+            <div className="flex items-center gap-2.5 text-[11px] font-black text-purple-900 flex-wrap">
+              <span className="flex items-center gap-1 bg-white/80 px-2 py-0.5 rounded-full border border-purple-200">
+                <Check className="w-3 h-3 text-emerald-600" /> 100% Free
+              </span>
+              <span className="flex items-center gap-1 bg-white/80 px-2 py-0.5 rounded-full border border-purple-200">
+                <Check className="w-3 h-3 text-emerald-600" /> Fast & Accurate
+              </span>
+              <span className="flex items-center gap-1 bg-white/80 px-2 py-0.5 rounded-full border border-purple-200">
+                <Check className="w-3 h-3 text-emerald-600" /> Lifetime Zero-API
+              </span>
+            </div>
+
+          </div>
+
+          {/* 🔮 POPULAR TOOLS GRID / EMPTY STATE */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                <h2 className="text-sm sm:text-base font-black text-slate-950">
+                  {lang === 'kn' ? 'Daily Useful Tools' : 'Daily Useful Tools'} ({usefulTools.length})
+                </h2>
               </div>
             </div>
-          ))}
+
+            {usefulTools.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4">
+                {filteredUsefulTools.map((tool) => (
+                  <div
+                    key={tool.id}
+                    className={`${tool.cardBg} p-3.5 sm:p-4 rounded-3xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:scale-[1.02] flex flex-col justify-between space-y-3 group select-none relative`}
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="shrink-0 flex items-center justify-center filter drop-shadow-md">
+                          {renderTool3DIcon(tool.id)}
+                        </div>
+
+                        <div className="flex items-center gap-0.5 bg-amber-500/10 px-2 py-0.5 rounded-xl border border-amber-300/80 text-xs font-black text-amber-950">
+                          <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
+                          <span>{tool.rating} ({tool.usersCount})</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xs sm:text-sm font-black text-slate-950 leading-tight group-hover:text-purple-600 transition-colors">
+                          {tool.titleKn}
+                        </h3>
+                        <p className="text-[10px] sm:text-[11px] font-bold text-slate-600 mt-0.5">
+                          {tool.descKn}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between gap-1">
+                      <span className="text-[9px] font-black text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md border border-emerald-300/80 flex items-center gap-0.5 shrink-0">
+                        <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
+                        <span>Free Tool</span>
+                      </span>
+
+                      <Link
+                        href={tool.href}
+                        className="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-[11px] shadow-md transition-transform active:scale-95 flex items-center gap-0.5 shrink-0"
+                      >
+                        <span>ತೆರೆಯಿರಿ ➔</span>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white rounded-3xl border-2 border-dashed border-purple-200 p-8 sm:p-12 text-center space-y-4 shadow-sm">
+                <div className="w-16 h-16 rounded-full bg-purple-50 border border-purple-200 flex items-center justify-center mx-auto text-purple-600 shadow-inner">
+                  <PlusCircle className="w-8 h-8 text-purple-600 animate-pulse" />
+                </div>
+
+                <div className="space-y-1 max-w-md mx-auto">
+                  <h3 className="text-base sm:text-lg font-black text-slate-900">
+                    {lang === 'kn' ? 'ಆಪ್‌ಗಳನ್ನು ಸೇರಿಸಲು ಸಿದ್ಧವಾಗಿದೆ!' : 'Ready to Add Apps!'}
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    {lang === 'kn'
+                      ? 'ನೀವು ತಿಳಿಸುವ ಆಪ್‌ನ ಹೆಸರನ್ನು (ಉದಾ: ವಯಸ್ಸು ಲೆಕ್ಕಾಚಾರ, EMI, ಇತ್ಯಾದಿ) ಒಂದೊಂದಾಗಿ ಇಲ್ಲಿ ಪ್ರೀಮಿಯಂ 3D ಡಿಸೈನ್‌ನೊಂದಿಗೆ ಸೇರಿಸಲಾಗುವುದು.'
+                      : 'Please tell the name of the app you want to add one by one.'}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
         </div>
-      </div>
+      )}
 
       {/* 💬 PUBLIC COMMENT & REVIEWS SECTION */}
       <CommentSection pageId="home" />
