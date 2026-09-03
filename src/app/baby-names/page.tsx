@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { BabyNamesComp } from '@/components/BabyNamesComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Baby Names',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/baby-names',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/baby-names',
   },
   openGraph: {
     title: 'ಕನ್ನಡ ಮಕ್ಕಳ ಸುಂದರ ಹೆಸರುಗಳು & ಅರ್ಥ | Kannada Baby Names',
     description: 'ರಾಶಿ ಮತ್ತು ನಕ್ಷತ್ರ ಆಧಾರಿತ ಆಧುನಿಕ & ಸಾಂಪ್ರದಾಯಿಕ ಕನ್ನಡ ಮಕ್ಕಳ ಹೆಸರುಗಳು ಹಾಗೂ ನಾಮಕರಣ ಕಾರ್ಡ್.',
-    url: 'https://mahitichakra.com/baby-names',
+    url: 'https://mahiti-chakra-portal.vercel.app/baby-names',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function BabyNamesPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕನ್ನಡ ಮಕ್ಕಳ ಸುಂದರ ಹೆಸರುಗಳು & ನಾಮಕರಣ ಕಾರ್ಡ್ - Kannada Baby Names Finder',
-    'url': 'https://mahitichakra.com/baby-names',
+    'url': 'https://mahiti-chakra-portal.vercel.app/baby-names',
     'applicationCategory': 'LifestyleApplication',
     'operatingSystem': 'All',
     'description': 'ಕನ್ನಡ ಗಂಡು ಮತ್ತು ಹೆಣ್ಣು ಮಕ್ಕಳಿಗೆ ರಾಶಿ, ನಕ್ಷತ್ರ ಹಾಗೂ ಅಕ್ಷರ ಆಧಾರಿತ ಸುಂದರ ಹೆಸರುಗಳು, ಅರ್ಥ ಮತ್ತು ನಾಮಕರಣ ಘೋಷಣಾ ಕಾರ್ಡ್ ನೀಡುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

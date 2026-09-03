@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { KiraniSanteComp } from '@/components/KiraniSanteComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Kirani App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/kirani-sante',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/kirani-sante',
   },
   openGraph: {
     title: 'ಕಿರಣಿ ಸಂತೆ ಲಿಸ್ಟ್ ಮೇಕರ್ | Kirani Sante Grocery List Maker',
     description: 'ಮನೆಯ ದಿನಸಿ ಮತ್ತು ಸಂತೆ ಸಾಮಗ್ರಿಗಳ ಪಟ್ಟಿ ಸುಲಭವಾಗಿ ಸಿದ್ಧಪಡಿಸಿ HD ಇಮೇಜ್ ಡೌನ್‌ಲೋಡ್ & WhatsApp ಶೇರ್ ಮಾಡಿ.',
-    url: 'https://mahitichakra.com/kirani-sante',
+    url: 'https://mahiti-chakra-portal.vercel.app/kirani-sante',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function KiraniSantePage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕಿರಣಿ ಸಂತೆ ಲಿಸ್ಟ್ ಮೇಕರ್ - Kirani Sante Grocery Shopping List',
-    'url': 'https://mahitichakra.com/kirani-sante',
+    'url': 'https://mahiti-chakra-portal.vercel.app/kirani-sante',
     'applicationCategory': 'ShoppingApplication',
     'operatingSystem': 'All',
     'description': 'ಮನೆಯ ದಿನಸಿ, ಧಾನ್ಯ, ಎಣ್ಣೆ, ಮಸಾಲೆ ಹಾಗೂ ತರಕಾರಿಗಳ ಸಂತೆ ಲಿಸ್ಟ್ ತಯಾರಿಸಿ HD ಕಾರ್ಡ್ ಡೌನ್‌ಲೋಡ್ & WhatsApp ಶೇರ್ ಮಾಡುವ ಉಚಿತ ಆಪ್.',

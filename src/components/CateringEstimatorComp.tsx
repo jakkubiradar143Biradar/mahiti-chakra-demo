@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -359,7 +359,7 @@ export const CateringEstimatorComp: React.FC = () => {
   // 📸 & 💬 SMART WHATSAPP & IMAGE SHARE TO KIRANI MERCHANT
   const shareToWhatsApp = async () => {
     const canvas = generateCanvas();
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/catering-estimator` : 'https://mahitichakra.com/catering-estimator';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/catering-estimator` : 'https://mahiti-chakra-portal.vercel.app/catering-estimator';
 
     let itemsText = '';
     grocerySummary.categories.forEach(cat => {

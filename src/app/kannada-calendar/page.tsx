@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { TraditionalCalendarComp } from '@/components/TraditionalCalendarComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Daily Calendar',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/kannada-calendar',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/kannada-calendar',
   },
   openGraph: {
     title: 'ಮಾಹಿತಿ ಚಕ್ರ ಸಾಂಪ್ರದಾಯಿಕ ಕನ್ನಡ ಕ್ಯಾಲೆಂಡರ್ | Kannada Calendar',
     description: 'ಪ್ರತಿದಿನದ ನಿಖರ ಪಂಚಾಂಗ, ತಿಥಿ, ನಕ್ಷತ್ರ, ರಾಹುಕಾಲ, ಹಬ್ಬಗಳು & Ultra-HD ಕ್ಯಾಲೆಂಡರ್ ಡೌನ್‌ಲೋಡ್.',
-    url: 'https://mahitichakra.com/kannada-calendar',
+    url: 'https://mahiti-chakra-portal.vercel.app/kannada-calendar',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function KannadaCalendarPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಮಾಹಿತಿ ಚಕ್ರ ಸಾಂಪ್ರದಾಯಿಕ ಕನ್ನಡ ಕ್ಯಾಲೆಂಡರ್ - Kannada Traditional Calendar',
-    'url': 'https://mahitichakra.com/kannada-calendar',
+    'url': 'https://mahiti-chakra-portal.vercel.app/kannada-calendar',
     'applicationCategory': 'UtilitiesApplication',
     'operatingSystem': 'All',
     'description': 'ಕರ್ನಾಟಕದ ಸಾಂಪ್ರದಾಯಿಕ ಗೋಡೆ ಕ್ಯಾಲೆಂಡರ್ ಶೈಲಿಯಲ್ಲಿ ದಿನದ ಪಂಚಾಂಗ, ತಿಥಿ, ನಕ್ಷತ್ರ, ರಾಹುಕಾಲ ಹಾಗೂ ಹಬ್ಬ-ಹರಿದಿನಗಳನ್ನು ನೀಡುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

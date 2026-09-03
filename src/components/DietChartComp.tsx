@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -286,7 +286,7 @@ export const DietChartComp: React.FC = () => {
   // 📸 & 💬 SMART WHATSAPP & IMAGE SHARE WITH WEBSITE LINK
   const shareToWhatsApp = async () => {
     const canvas = generateCanvas();
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/diet-chart` : 'https://mahitichakra.com/diet-chart';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/diet-chart` : 'https://mahiti-chakra-portal.vercel.app/diet-chart';
 
     const shareText = `🥗 *ತೂಕ ಇಳಿಸುವ ಕನ್ನಡ ಡಯಟ್ ಚಾರ್ಟ್ (Mahiti Chakra)*\n\n` +
       `👤 ಹೆಸರು: *${name}*\n` +

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -273,7 +273,7 @@ export const BabyNamesComp: React.FC = () => {
   // 📸 & 💬 SMART WHATSAPP & IMAGE SHARE WITH WEBSITE LINK
   const shareToWhatsApp = async () => {
     const canvas = generateCanvas();
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/baby-names` : 'https://mahitichakra.com/baby-names';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/baby-names` : 'https://mahiti-chakra-portal.vercel.app/baby-names';
 
     const shareText = `👶 *ನಾಮಕರಣ ಸಂಭ್ರಮ & ಮಗುವಿನ ಶುಭ ಹೆಸರು*\n|| ಶ್ರೀ ಕೃಷ್ಣಾಯ ನಮಃ ||\n\n` +
       `✨ ನಮ್ಮ ಪ್ರೀತಿಯ ಕಂದಮ್ಮನ ಹೆಸರು: *${selectedCardName.nameKn} (${selectedCardName.nameEn})*\n` +

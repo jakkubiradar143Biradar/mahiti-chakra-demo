@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -445,7 +445,7 @@ export const GramaBaddiComp: React.FC = () => {
     ctx.fillText('ಸಾಲಗಾರರ ಸಹಿ (Borrower)', 160, tableY + 25);
     ctx.fillText('ಸಾಲದಾತರ ಸಹಿ (Lender)', canvas.width - 160, tableY + 25);
 
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/grama-baddi` : 'https://mahitichakra.com/grama-baddi';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/grama-baddi` : 'https://mahiti-chakra-portal.vercel.app/grama-baddi';
 
     const shareText = `🪙 *ಗ್ರಾಮ ಬಡ್ಡಿ ಲೆಕ್ಕಾಚಾರ ರಶೀದಿ (Mahiti Chakra)*\n\n` +
       `👤 ಸಾಲಗಾರರು: *${borrowerName}*\n` +

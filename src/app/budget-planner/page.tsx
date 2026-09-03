@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { FamilyBudgetComp } from '@/components/FamilyBudgetComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -17,12 +17,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Budget App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/budget-planner',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/budget-planner',
   },
   openGraph: {
     title: 'ಕುಟುಂಬದ ಮಾಸಿಕ ಮನೆ ಖರ್ಚು & ಬಜೆಟ್ ಪ್ಲಾನರ್ | Family Monthly Budget Planner',
     description: 'ಮನೆ ಬಾಡಿಗೆ, ದಿನಸಿ, ಬಿಲ್‌ಗಳು & ಮಕ್ಕಳ ಶಾಲಾ ಶುಲ್ಕದ ನಿಖರ ಲೆಕ್ಕ ಹಾಕಿ ಕುಟುಂಬದ ಉಳಿತಾಯ ಹೆಚ್ಚಿಸಿಕೊಳ್ಳಿ.',
-    url: 'https://mahitichakra.com/budget-planner',
+    url: 'https://mahiti-chakra-portal.vercel.app/budget-planner',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -34,7 +34,7 @@ export default function BudgetPlannerPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕುಟುಂಬದ ಮನೆ ಖರ್ಚು & ಮಾಸಿಕ ಬಜೆಟ್ ಪ್ಲಾನರ್ - Family Monthly Budget Planner',
-    'url': 'https://mahitichakra.com/budget-planner',
+    'url': 'https://mahiti-chakra-portal.vercel.app/budget-planner',
     'applicationCategory': 'FinanceApplication',
     'operatingSystem': 'All',
     'description': 'ಕುಟುಂಬದ ಮಾಸಿಕ ಆದಾಯ, ದಿನಸಿ, ಬಾಡಿಗೆ, ಯುಟಿಲಿಟಿ ಬಿಲ್‌ಗಳು ಮತ್ತು ಉಳಿತಾಯವನ್ನು 50-30-20 ನಿಯಮದಂತೆ ವೈಜ್ಞಾನಿಕವಾಗಿ ನಿರ್ವಹಿಸುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

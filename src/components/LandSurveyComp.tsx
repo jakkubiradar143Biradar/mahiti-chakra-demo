@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -316,7 +316,7 @@ export const LandSurveyComp: React.FC = () => {
   // 📸 & 💬 SMART WHATSAPP & IMAGE SHARE WITH WEBSITE LINK
   const shareToWhatsApp = async () => {
     const canvas = generateCanvas();
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/land-converter` : 'https://mahitichakra.com/land-converter';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/land-converter` : 'https://mahiti-chakra-portal.vercel.app/land-converter';
 
     const shareText = `🌾 *ಕರ್ನಾಟಕ ಜಮೀನು ಅಳತೆ & ಸರ್ವೆ ಪ್ರಮಾಣಪತ್ರ (Mahiti Chakra)*\n\n` +
       `👤 ಮಾಲೀಕರು: *${ownerName}*\n` +

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { CateringEstimatorComp } from '@/components/CateringEstimatorComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -17,12 +17,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Catering App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/catering-estimator',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/catering-estimator',
   },
   openGraph: {
     title: 'ಕಾರ್ಯಕ್ರಮದ ಅಡುಗೆ ಸಾಮಗ್ರಿ & ದಿನಸಿ ಅಂದಾಜು | Catering Grocery Estimator',
     description: 'ಮದುವೆ, ಗೃಹಪ್ರವೇಶ & ಪೂಜೆ ಊಟಕ್ಕೆ ಬೇಕಾಗುವ ಅಕ್ಕಿ, ಬೇಳೆ, ಎಣ್ಣೆ & ಸಾಮಗ್ರಿಗಳ ನಿಖರ ಕೆಜಿ ಪಟ್ಟಿ.',
-    url: 'https://mahitichakra.com/catering-estimator',
+    url: 'https://mahiti-chakra-portal.vercel.app/catering-estimator',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -34,7 +34,7 @@ export default function CateringEstimatorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕಾರ್ಯಕ್ರಮದ ಅಡುಗೆ ಸಾಮಗ್ರಿ ಅಂದಾಜು ಕ್ಯಾಲ್ಕುಲೇಟರ್ - Catering Grocery Estimator',
-    'url': 'https://mahitichakra.com/catering-estimator',
+    'url': 'https://mahiti-chakra-portal.vercel.app/catering-estimator',
     'applicationCategory': 'UtilitiesApplication',
     'operatingSystem': 'All',
     'description': 'ಮದುವೆ, ಗೃಹಪ್ರವೇಶ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಸಮಾರಂಭಗಳ ಊಟಕ್ಕೆ ಜನರ ಸಂಖ್ಯೆಗೆ ಅನುಗುಣವಾಗಿ ನಿಖರ ದಿನಸಿ ಮತ್ತು ತರಕಾರಿ ಪ್ರಮಾಣ ಲೆಕ್ಕ ಹಾಕುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

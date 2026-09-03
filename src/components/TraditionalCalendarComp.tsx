@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -381,7 +381,7 @@ export const TraditionalCalendarComp: React.FC = () => {
   // 📸 & 💬 SMART WHATSAPP & IMAGE SHARE WITH WEBSITE LINK
   const shareToWhatsApp = async () => {
     const canvas = drawMonthlyCalendarCanvas(currentYear, currentMonth);
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/kannada-calendar` : 'https://mahitichakra.com/kannada-calendar';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/kannada-calendar` : 'https://mahiti-chakra-portal.vercel.app/kannada-calendar';
 
     const shareText = `📅 *ಮಾಹಿತಿ ಚಕ್ರ ಸಾಂಪ್ರದಾಯಿಕ ಕನ್ನಡ ಕ್ಯಾಲೆಂಡರ್ & ದಿನದರ್ಶಿಕೆ ೨೦೨೬*\n|| ಶ್ರೀ ಮಹಾಲಕ್ಷ್ಮಿ ಪ್ರಸನ್ನ ||\n\n` +
       `🗓️ ಮಾಸ: *${KANNADA_MONTH_NAMES[currentMonth]} - ${currentYear} (${KANNADA_HINDU_MASAS[currentMonth]})*\n` +

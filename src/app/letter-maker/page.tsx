@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { GovtLetterComp } from '@/components/GovtLetterComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Letter Maker',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/letter-maker',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/letter-maker',
   },
   openGraph: {
     title: 'ಕರ್ನಾಟಕ ಸರ್ಕಾರಿ & ಸಾರ್ವಜನಿಕ ಅಧಿಕೃತ ಅರ್ಜಿ (ಪತ್ರ) ಮೇಕರ್ | Govt Letter Maker',
     description: 'ಗ್ರಾಮ ಪಂಚಾಯತ್, ತಹಶೀಲ್ದಾರ್, ಕರೆಂಟ್ & ಪೊಲೀಸ್ ಸಮಸ್ಯೆಗಳಿಗೆ ನಿಯಮಬದ್ಧ ಅಧಿಕೃತ ಪತ್ರ ರಚಿಸಿ.',
-    url: 'https://mahitichakra.com/letter-maker',
+    url: 'https://mahiti-chakra-portal.vercel.app/letter-maker',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function LetterMakerPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕರ್ನಾಟಕ ಸರ್ಕಾರಿ & ಸಾರ್ವಜನಿಕ ಅಧಿಕೃತ ಅರ್ಜಿ (ಪತ್ರ) ಮೇಕರ್ - Govt Application Letter Generator',
-    'url': 'https://mahitichakra.com/letter-maker',
+    'url': 'https://mahiti-chakra-portal.vercel.app/letter-maker',
     'applicationCategory': 'UtilitiesApplication',
     'operatingSystem': 'All',
     'description': 'ಗ್ರಾಮ ಪಂಚಾಯತ್, ಕಂದಾಯ, ವಿದ್ಯುತ್ ಹಾಗೂ ಪೊಲೀಸ್ ಇಲಾಖೆಗಳಿಗೆ ಅಧಿಕೃತ ನಿಯಮಗಳಂತೆ ಕನ್ನಡದಲ್ಲಿ ದೂರು ಮತ್ತು ಮನವಿ ಅರ್ಜಿಗಳನ್ನು ರಚಿಸುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

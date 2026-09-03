@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { InvitationCardComp } from '@/components/InvitationCardComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Invitation App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/invitation-maker',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/invitation-maker',
   },
   openGraph: {
     title: 'ಕನ್ನಡ ಡಿಜಿಟಲ್ ಲಗ್ನ ಪತ್ರಿಕೆ ರಚನೆ | Kannada Invitation Card Maker',
     description: 'ಮದುವೆ, ಗೃಹಪ್ರವೇಶ, ನಿಶ್ಚಿತಾರ್ಥಕ್ಕೆ ಪ್ರೀಮಿಯಂ ರಾಯಲ್ ಗೋಲ್ಡ್ ಕನ್ನಡ ಆಮಂತ್ರಣ ಪತ್ರಿಕೆ ತಯಾರಿಸಿ WhatsApp ಶೇರ್ ಮಾಡಿ.',
-    url: 'https://mahitichakra.com/invitation-maker',
+    url: 'https://mahiti-chakra-portal.vercel.app/invitation-maker',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function InvitationMakerPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕನ್ನಡ ಡಿಜಿಟಲ್ ಲಗ್ನ ಪತ್ರಿಕೆ ಮೇಕರ್ - Kannada Invitation Card Maker',
-    'url': 'https://mahitichakra.com/invitation-maker',
+    'url': 'https://mahiti-chakra-portal.vercel.app/invitation-maker',
     'applicationCategory': 'DesignApplication',
     'operatingSystem': 'All',
     'description': 'ಮದುವೆ, ನಿಶ್ಚಿತಾರ್ಥ, ಗೃಹಪ್ರವೇಶ ಮತ್ತು ನಾಮಕರಣ ಸಮಾರಂಭಗಳಿಗೆ ರಾಯಲ್ ಗೋಲ್ಡ್ ಕನ್ನಡ ಆಮಂತ್ರಣ ಪತ್ರಿಕೆ ರಚಿಸಿ HD ಡೌನ್‌ಲೋಡ್ ಮಾಡುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

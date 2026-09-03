@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { DietChartComp } from '@/components/DietChartComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Diet App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/diet-chart',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/diet-chart',
   },
   openGraph: {
     title: 'ತೂಕ ಇಳಿಸುವ ಕನ್ನಡ ಡಯಟ್ ಚಾರ್ಟ್ | Kannada Weight Loss Diet Chart',
     description: 'ರಾಗಿ ಮುದ್ದೆ ಮತ್ತು ನೈಸರ್ಗಿಕ ಆಹಾರದ ಮೂಲಕ ಸುಲಭವಾಗಿ ತಿಂಗಳಿಗೆ 3-4 ಕೆಜಿ ತೂಕ ಇಳಿಸುವ ಸಂಪೂರ್ಣ ಕನ್ನಡ ಡಯಟ್ ವೇಳಾಪಟ್ಟಿ.',
-    url: 'https://mahitichakra.com/diet-chart',
+    url: 'https://mahiti-chakra-portal.vercel.app/diet-chart',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function DietChartPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ತೂಕ ಇಳಿಸುವ ಕನ್ನಡ ಡಯಟ್ ಚಾರ್ಟ್ - Kannada Weight Loss Diet Chart Planner',
-    'url': 'https://mahitichakra.com/diet-chart',
+    'url': 'https://mahiti-chakra-portal.vercel.app/diet-chart',
     'applicationCategory': 'HealthApplication',
     'operatingSystem': 'All',
     'description': 'ವೈಜ್ಞಾನಿಕವಾಗಿ ತೂಕ ಇಳಿಸಲು ರಾಗಿ ಮುದ್ದೆ, ಸಿರಿಧಾನ್ಯ ಮತ್ತು ಪೌಷ್ಟಿಕ ಆಹಾರದ ಸಂಪೂರ್ಣ ಕನ್ನಡ ಡಯಟ್ ಚಾರ್ಟ್ ಇಮೇಜ್ ಪಡೆಯುವ ಉಚಿತ ಆಪ್.',

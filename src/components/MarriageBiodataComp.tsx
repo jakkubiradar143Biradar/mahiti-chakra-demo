@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -323,7 +323,7 @@ export const MarriageBiodataComp: React.FC = () => {
   // 📸 & 💬 SMART WHATSAPP & IMAGE SHARE WITH WEBSITE LINK
   const shareToWhatsApp = async () => {
     const canvas = generateCanvas();
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/biodata-maker` : 'https://mahitichakra.com/biodata-maker';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/biodata-maker` : 'https://mahiti-chakra-portal.vercel.app/biodata-maker';
 
     const shareText = `💍 *ವಿವಾಹ ಬಯೋಡೇಟಾ (Kannada Marriage Biodata)*\n${shloka}\n\n` +
       `👤 ಹೆಸರು: *${fullName}*\n` +

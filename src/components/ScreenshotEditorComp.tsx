@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -353,7 +353,7 @@ export const ScreenshotEditorComp: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/screenshot-editor` : 'https://mahitichakra.com/screenshot-editor';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/screenshot-editor` : 'https://mahiti-chakra-portal.vercel.app/screenshot-editor';
     const textPreview = detectedBlocks.filter(b => !b.isRemoved).slice(0, 5).map(b => `• ${b.replacementText}`).join('\n');
 
     const shareText = `📸 *ಮಾಹಿತಿ ಚಕ್ರ ಲೈವ್ ಇಮೇಜ್ OCR ಸ್ಕ್ಯಾನರ್ & ಟೆಕ್ಸ್ಟ್ ರಿಪ್ಲೇಸರ್*\n\n` +

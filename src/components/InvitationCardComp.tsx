@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useRef } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -362,7 +362,7 @@ export const InvitationCardComp: React.FC = () => {
   // 📸 & 💬 SMART WHATSAPP & IMAGE SHARE WITH WEBSITE LINK
   const shareToWhatsApp = async () => {
     const canvas = generateCanvas();
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/invitation-maker` : 'https://mahitichakra.com/invitation-maker';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/invitation-maker` : 'https://mahiti-chakra-portal.vercel.app/invitation-maker';
 
     const formattedDate = new Date(eventDate).toLocaleDateString('kn-IN', {
       day: 'numeric',

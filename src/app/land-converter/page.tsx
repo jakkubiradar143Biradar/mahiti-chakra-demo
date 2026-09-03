@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { LandSurveyComp } from '@/components/LandSurveyComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Land App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/land-converter',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/land-converter',
   },
   openGraph: {
     title: 'ಕರ್ನಾಟಕ ಜಮೀನು ಅಳತೆ & ಸರ್ವೆ ಪ್ರಮಾಣಪತ್ರ | Land Area Converter',
     description: '೪ ದಿಕ್ಕುಗಳ ಅಳತೆ, ಗುಂಟೆ, ಎಕರೆ, ಸೆಂಟು & ಅಂಕಣ ನಿಖರ ಭೂಮಾಪನ ಲೆಕ್ಕಾಚಾರ.',
-    url: 'https://mahitichakra.com/land-converter',
+    url: 'https://mahiti-chakra-portal.vercel.app/land-converter',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function LandConverterPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕರ್ನಾಟಕ ಜಮೀನು ಅಳತೆ & ಸರ್ವೆ ಕನ್ವರ್ಟರ್ - Karnataka Land Area Converter',
-    'url': 'https://mahitichakra.com/land-converter',
+    'url': 'https://mahiti-chakra-portal.vercel.app/land-converter',
     'applicationCategory': 'UtilitiesApplication',
     'operatingSystem': 'All',
     'description': 'ಕರ್ನಾಟಕದ ಜಮೀನು ಅಳತೆ, ಗುಂಟೆ, ಎಕರೆ, ಸೆಂಟು, ಅಂಕಣ ಹಾಗೂ ೪ ದಿಕ್ಕುಗಳ ಸರ್ವೆ ಪ್ರಮಾಣಪತ್ರ ನೀಡುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

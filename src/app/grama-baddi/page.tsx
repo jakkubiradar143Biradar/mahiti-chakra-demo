@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { GramaBaddiComp } from '@/components/GramaBaddiComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -19,12 +19,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Baddi Calculator',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/grama-baddi',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/grama-baddi',
   },
   openGraph: {
     title: 'ಗ್ರಾಮ ಬಡ್ಡಿ ಲೆಕ್ಕಾಚಾರ ಸಾಫ್ಟ್‌ವೇರ್ | Village Baddi Calculator',
     description: 'ನೂರಕ್ಕೆ ₹1, ₹2, ₹3 ತಿಂಗಳ ಬಡ್ಡಿಯನ್ನು ದಿನ ಸಮೇತ ನಿಖರವಾಗಿ ಲೆಕ್ಕ ಹಾಕಿ HD ರಶೀದಿ ಇಮೇಜ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.',
-    url: 'https://mahitichakra.com/grama-baddi',
+    url: 'https://mahiti-chakra-portal.vercel.app/grama-baddi',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -36,7 +36,7 @@ export default function GramaBaddiPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಗ್ರಾಮ ಬಡ್ಡಿ ಲೆಕ್ಕಾಚಾರ ಸಾಫ್ಟ್‌ವೇರ್ - Village Baddi Calculator',
-    'url': 'https://mahitichakra.com/grama-baddi',
+    'url': 'https://mahiti-chakra-portal.vercel.app/grama-baddi',
     'applicationCategory': 'FinanceApplication',
     'operatingSystem': 'All',
     'description': 'ನೂರಕ್ಕೆ ₹1, ₹2, ₹3 ತಿಂಗಳ ಬಡ್ಡಿ, ಸರಳ ಬಡ್ಡಿ & ಚಕ್ರ ಬಡ್ಡಿಯನ್ನು ದಿನ ಸಮೇತ ನಿಖರವಾಗಿ ಲೆಕ್ಕ ಹಾಕಿ HD ರಶೀದಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

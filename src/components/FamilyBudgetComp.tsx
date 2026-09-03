@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -333,7 +333,7 @@ export const FamilyBudgetComp: React.FC = () => {
   // 💬 WhatsApp Share with Image & Website Link
   const shareToWhatsApp = async () => {
     const canvas = generateCanvas();
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/budget-planner` : 'https://mahitichakra.com/budget-planner';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/budget-planner` : 'https://mahiti-chakra-portal.vercel.app/budget-planner';
 
     const shareText = `🧾 *ಕುಟುಂಬದ ಮಾಸಿಕ ಮನೆ ಖರ್ಚು & ಉಳಿತಾಯ ಪತ್ರ*\n|| ಶ್ರೀ ಮಹಾಲಕ್ಷ್ಮಿ ಪ್ರಸನ್ನ ||\n\n` +
       `👤 ಕುಟುಂಬ: *${familyName}*\n` +

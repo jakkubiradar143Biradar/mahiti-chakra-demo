@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo, useRef } from 'react';
 import html2canvas from 'html2canvas';
@@ -272,7 +272,7 @@ export const GovtLetterComp: React.FC = () => {
   // 💬 WhatsApp Share with Exact HD Image & Link
   const shareToWhatsApp = async () => {
     if (!letterPaperRef.current) return;
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/letter-maker` : 'https://mahitichakra.com/letter-maker';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/letter-maker` : 'https://mahiti-chakra-portal.vercel.app/letter-maker';
 
     const shareText = `🏛️ *ಕರ್ನಾಟಕ ಅಧಿಕೃತ ಮನವಿ / ದೂರು ಅರ್ಜಿ ಪತ್ರ*\n\n` +
       `📌 ವಿಷಯ: *${subjectText}*\n` +

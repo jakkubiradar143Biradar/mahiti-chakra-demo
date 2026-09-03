@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useRef } from 'react';
 import { useLanguage } from './LanguageContext';
@@ -340,7 +340,7 @@ export const KiraniSanteComp: React.FC = () => {
     ctx.fillText('✨ ಧನ್ಯವಾದಗಳು! - ಮಾಹಿತಿ ಚಕ್ರ (Mahiti Chakra App)', 40, y + 35);
 
     const today = new Date().toLocaleDateString('kn-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/kirani-sante` : 'https://mahitichakra.com/kirani-sante';
+    const siteUrl = typeof window !== 'undefined' ? `${window.location.origin}/kirani-sante` : 'https://mahiti-chakra-portal.vercel.app/kirani-sante';
     
     let text = `🛍️ *ಕಿರಣಿ & ಸಂತೆ ಸಾಮಗ್ರಿಗಳ ಪಟ್ಟಿ* (${today})\n\n`;
     selectedItems.forEach((item, idx) => {

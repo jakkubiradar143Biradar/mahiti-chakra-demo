@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { MarriageBiodataComp } from '@/components/MarriageBiodataComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -18,12 +18,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Biodata App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/biodata-maker',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/biodata-maker',
   },
   openGraph: {
     title: 'ಕನ್ನಡ ಮದುವೆ ಬಯೋಡೇಟಾ ಮೇಕರ್ | Kannada Marriage Biodata Maker',
     description: 'ವಧು-ವರರಿಗೆ ಪ್ರೀಮಿಯಂ ರಾಯಲ್ ಗೋಲ್ಡ್ ಕನ್ನಡ ಮ್ಯಾರೇಜ್ ಬಯೋಡೇಟಾ ಕಾರ್ಡ್ ತಯಾರಿಸಿ WhatsApp ಶೇರ್ ಮಾಡಿ.',
-    url: 'https://mahitichakra.com/biodata-maker',
+    url: 'https://mahiti-chakra-portal.vercel.app/biodata-maker',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -35,7 +35,7 @@ export default function BiodataMakerPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಕನ್ನಡ ಮದುವೆ ಬಯೋಡೇಟಾ ಮೇಕರ್ - Kannada Marriage Biodata Maker',
-    'url': 'https://mahitichakra.com/biodata-maker',
+    'url': 'https://mahiti-chakra-portal.vercel.app/biodata-maker',
     'applicationCategory': 'DesignApplication',
     'operatingSystem': 'All',
     'description': 'ವಧು ಮತ್ತು ವರರ ವಿವಾಹ ಸಂಬಂಧಗಳಿಗೆ ಜಾತಕ, ಶಿಕ್ಷಣ ಮತ್ತು ಕುಟುಂಬದ ವಿವರಗಳೊಂದಿಗೆ ಪ್ರೀಮಿಯಂ ರಾಯಲ್ ಕನ್ನಡ ಬಯೋಡೇಟಾ ರಚಿಸುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',

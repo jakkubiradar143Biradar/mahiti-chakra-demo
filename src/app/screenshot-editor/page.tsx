@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Metadata } from 'next';
 import { ScreenshotEditorComp } from '@/components/ScreenshotEditorComp';
 import { CommentSection } from '@/components/CommentSection';
@@ -17,12 +17,12 @@ export const metadata: Metadata = {
     'Mahiti Chakra Screenshot App',
   ],
   alternates: {
-    canonical: 'https://mahitichakra.com/screenshot-editor',
+    canonical: 'https://mahiti-chakra-portal.vercel.app/screenshot-editor',
   },
   openGraph: {
     title: 'ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಸ್ಕ್ಯಾನರ್ & ಲೈವ್ ಟೆಕ್ಸ್ಟ್ ಎಡಿಟರ್ | Screenshot OCR Editor',
     description: 'ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಅಥವಾ ಫೋಟೋದ ಮೇಲಿನ ಅಕ್ಷರಗಳನ್ನು ನೇರವಾಗಿ ಎಡಿಟ್ ಮಾಡುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',
-    url: 'https://mahitichakra.com/screenshot-editor',
+    url: 'https://mahiti-chakra-portal.vercel.app/screenshot-editor',
     siteName: 'Mahiti Chakra',
     locale: 'kn_IN',
     type: 'website',
@@ -34,7 +34,7 @@ export default function ScreenshotEditorPage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     'name': 'ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಸ್ಕ್ಯಾನರ್ & ಲೈವ್ ಟೆಕ್ಸ್ಟ್ ಎಡಿಟರ್ - Screenshot OCR Editor',
-    'url': 'https://mahitichakra.com/screenshot-editor',
+    'url': 'https://mahiti-chakra-portal.vercel.app/screenshot-editor',
     'applicationCategory': 'UtilitiesApplication',
     'operatingSystem': 'All',
     'description': 'ಯಾವುದೇ ಸ್ಕ್ರೀನ್‌ಶಾಟ್, ಬಿಲ್ ಅಥವಾ ಫೋಟೋದ ಪಠ್ಯವನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ ಚಿತ್ರದ ಮೇಲೆಯೇ ನೈಜವಾಗಿ ಅಕ್ಷರಗಳನ್ನು ಎಡಿಟ್ ಮಾಡುವ ಉಚಿತ ಸಾಫ್ಟ್‌ವೇರ್.',
