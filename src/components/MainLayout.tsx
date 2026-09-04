@@ -60,8 +60,8 @@ export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }
   // 🎯 PURE EMBED MODE: HIDE ALL HEADERS, FOOTERS, MENUS AND NAVIGATION
   if (isEmbed || pathname.startsWith('/embed')) {
     return (
-      <div className="w-full min-h-screen bg-transparent p-0 m-0 overflow-x-hidden font-sans select-none">
-        <main className="w-full p-0 m-0">
+      <div className="w-full h-auto min-h-0 bg-transparent p-0 m-0 overflow-hidden font-sans select-none">
+        <main className="w-full h-auto min-h-0 p-0 m-0">
           {children}
         </main>
       </div>

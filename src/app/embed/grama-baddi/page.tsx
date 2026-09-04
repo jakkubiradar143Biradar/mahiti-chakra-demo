@@ -5,33 +5,30 @@ import { GramaBaddiComp } from '@/components/GramaBaddiComp';
 
 export default function GramaBaddiEmbedPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastHeightRef = useRef<number>(0);
 
   useEffect(() => {
-    // 🚀 Send exact content height to parent window (WordPress/Blogger/Iframe parent)
     const sendHeightToParent = () => {
-      if (typeof window !== 'undefined' && window.parent) {
-        const height = Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight,
-          containerRef.current ? containerRef.current.scrollHeight : 0
-        );
-        window.parent.postMessage({ type: 'MC_RESIZE', height: height + 20 }, '*');
+      if (typeof window !== 'undefined' && window.parent && containerRef.current) {
+        const height = Math.ceil(containerRef.current.getBoundingClientRect().height);
+        // Only send if height significantly changed to prevent infinite loops
+        if (Math.abs(height - lastHeightRef.current) > 10) {
+          lastHeightRef.current = height;
+          window.parent.postMessage({ type: 'MC_RESIZE', height: height + 10 }, '*');
+        }
       }
     };
 
-    // Initial trigger
     sendHeightToParent();
-    const t1 = setTimeout(sendHeightToParent, 300);
-    const t2 = setTimeout(sendHeightToParent, 1000);
+    const t1 = setTimeout(sendHeightToParent, 200);
+    const t2 = setTimeout(sendHeightToParent, 800);
 
-    // Watch for window resize and DOM mutations
     window.addEventListener('resize', sendHeightToParent);
 
     let resizeObserver: ResizeObserver | null = null;
     if (typeof ResizeObserver !== 'undefined' && containerRef.current) {
       resizeObserver = new ResizeObserver(sendHeightToParent);
       resizeObserver.observe(containerRef.current);
-      resizeObserver.observe(document.body);
     }
 
     return () => {
@@ -43,7 +40,7 @@ export default function GramaBaddiEmbedPage() {
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full max-w-full p-2 sm:p-4 bg-transparent overflow-hidden">
+    <div ref={containerRef} className="w-full max-w-full p-1 sm:p-2 bg-transparent overflow-hidden">
       <GramaBaddiComp />
     </div>
   );
